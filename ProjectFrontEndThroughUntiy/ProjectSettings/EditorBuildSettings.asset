@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PartyChoose.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/PartyCaseSettings.unity
+    guid: f73bd0f818f6ebc778ae5b357f224e2b
+  - enabled: 1
+    path: Assets/Scenes/Information.unity
+    guid: beabc5c8c2816be689434491ccc1ba37
   m_configObjects: {}
