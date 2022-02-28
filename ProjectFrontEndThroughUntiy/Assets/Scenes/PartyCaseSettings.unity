@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 256778043}
   - component: {fileID: 256778045}
   - component: {fileID: 256778044}
+  - component: {fileID: 256778046}
   m_Layer: 5
   m_Name: Party
   m_TagString: Untagged
@@ -432,8 +433,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1be7fbeaea25f6851a458511c56b33ee, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -450,6 +451,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256778042}
   m_CullTransparentMesh: 1
+--- !u!114 &256778046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256778042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1148505be6e7847429a7a5f76e1cbdf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  likud: {fileID: 21300000, guid: 1be7fbeaea25f6851a458511c56b33ee, type: 3}
+  haavoda: {fileID: 21300000, guid: e8f7b6d696a8133f1a927b5fdbe8e4d1, type: 3}
+  hareshimaHamshutefet: {fileID: 21300000, guid: 5951feb2340b2f45d9164481e8f36117, type: 3}
+  hareshimaHaaravitHameshutefet: {fileID: 21300000, guid: 97f3ec097b1ed9335b650e9e24d31092, type: 3}
+  hazionutHadatit: {fileID: 21300000, guid: 48fc6022f2317b3ed88c2c8d45678e81, type: 3}
+  israelBeitenu: {fileID: 21300000, guid: 220e68c06f4a3f755a88bb990971ab2c, type: 3}
+  kaholLavan: {fileID: 21300000, guid: 5187609f7d7a81331bbf7a672e463b46, type: 3}
+  meretz: {fileID: 21300000, guid: dd71c2bb438d4f997b868da46e6ba293, type: 3}
+  shas: {fileID: 21300000, guid: 1ecd362e1ed896ddbabdd7454cacc883, type: 3}
+  tikvaHadasha: {fileID: 21300000, guid: 0ed94f4ca1603655e9b2d7fefd609f1b, type: 3}
+  yahadutHatora: {fileID: 21300000, guid: d969281d1690c9c97b4efba9146c903e, type: 3}
+  yemina: {fileID: 21300000, guid: 3c29af62c70415a5d998aaf372b7c329, type: 3}
+  yeshAtid: {fileID: 21300000, guid: 92f82a061e17020b996ebabd8cb5f3aa, type: 3}
+  current: {fileID: 256778044}
 --- !u!1 &274190784
 GameObject:
   m_ObjectHideFlags: 0
@@ -4206,17 +4233,17 @@ RectTransform:
   m_GameObject: {fileID: 1995031804}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.925, y: 1, z: 1}
   m_Children:
   - {fileID: 996484234}
   - {fileID: 1280426958}
   m_Father: {fileID: 1157972786}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.04532491, y: 0}
+  m_AnchorMax: {x: 0.95474726, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 134, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1995031806
 MonoBehaviour:

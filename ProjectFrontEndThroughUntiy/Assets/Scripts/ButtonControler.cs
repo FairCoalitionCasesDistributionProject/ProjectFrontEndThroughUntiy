@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 public class ButtonControler : MonoBehaviour
 {
@@ -12,8 +14,9 @@ public class ButtonControler : MonoBehaviour
     {
         SceneManager.LoadScene("Information");
     }
-    public void LoadPartyCaseSettings()
+    public void LoadPartyCaseSettings(string str)
     {
+        MainControl.current=str;
         SceneManager.LoadScene("PartyCaseSettings");
     }
 }

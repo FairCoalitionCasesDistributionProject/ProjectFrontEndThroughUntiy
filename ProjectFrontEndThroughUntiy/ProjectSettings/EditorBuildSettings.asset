@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Information.unity
     guid: beabc5c8c2816be689434491ccc1ba37
+  - enabled: 1
+    path: Assets/Scenes/CasesChoose.unity
+    guid: 10bf93239eec56e45b6542aa7210c834
   m_configObjects: {}
