@@ -14,9 +14,11 @@ public class ButtonControler : MonoBehaviour
     {
         SceneManager.LoadScene("Information");
     }
-    public void LoadPartyCaseSettings(string str)
+    public void LoadPartyCaseSettings(string partyName)
     {
-        MainControl.current=str;
+        MainControl.currentName=partyName;
         SceneManager.LoadScene("PartyCaseSettings");
     }
 }
+
+
