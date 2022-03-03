@@ -4,7 +4,7 @@ using UnityEngine;
 public class MainControl : MonoBehaviour
 {
     public static string currentName = "";
-    public static int currentIdentifier=0;
+    public static int currentIdentifier;
     public enum parties
     {
         likud = 0,
