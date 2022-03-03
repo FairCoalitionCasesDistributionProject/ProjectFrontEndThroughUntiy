@@ -4,15 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-public class NumberWithSlide : MonoBehaviour
+public class ShowAvailavlePoints : MonoBehaviour
 {
-    public int caseNumber;
-    public Text number;
-    public Slider slider;
-    public TextMeshProUGUI name;
+    public Text balance;
+    // Start is called before the first frame update
     void Start()
     {
-        switch (MainControl.currentName)
+      switch (MainControl.currentName)
         {
             case "likud":
                 MainControl.currentIdentifier = ((int)MainControl.parties.likud);
@@ -53,26 +51,14 @@ public class NumberWithSlide : MonoBehaviour
             case "meretz":
                 MainControl.currentIdentifier = ((int)MainControl.parties.meretz);
                 break;
-        }
-        slider.value = MainControl.partyParameters[MainControl.currentIdentifier, caseNumber];
-        number.text = " " + slider.value;
-        name.text = MainControl.casesNameTranslation[caseNumber];
+        }  
     }
+
+    // Update is called once per frame
     void Update()
     {
-        slider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
-    }
-    public async void ValueChangeCheck()
-    {
-        MainControl.partyParameters[MainControl.currentIdentifier, caseNumber] = (int)Math.Round(slider.value);
-        MainControl.partyBalance[MainControl.currentIdentifier]=0;
-        for (int i = 0; i < 29; i++)
-        {
-            MainControl.partyBalance[MainControl.currentIdentifier] += MainControl.partyParameters[MainControl.currentIdentifier, i];
-        }
-        number.text = " " + slider.value;
+        balance.text = " " + (100-MainControl.partyBalance[MainControl.currentIdentifier]);
     }
 }
-
 
 
