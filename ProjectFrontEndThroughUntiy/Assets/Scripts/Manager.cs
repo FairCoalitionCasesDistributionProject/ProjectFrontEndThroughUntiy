@@ -6,13 +6,17 @@ using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System.IO;
 public class Manager : MonoBehaviour
 {
     public void Send()
     {
         string draft = "{\"items\":" + MainControl.numberOfCases + ",\n\"mandates\":" + mandatesString() + ",\n\"preferences\":" + preferencesString() + "}";
         MainControl.serverInput = draft;
-        //*SceneManager.LoadScene("CasesChoose");
+        //*SceneManager.LoadScene("Results");
         Server();
 
     }
@@ -34,7 +38,7 @@ public class Manager : MonoBehaviour
             preferences += "[";
             for (int j = 0; j < MainControl.partyParameters.GetLength(1); j++)
             {
-                preferences += MainControl.partyParameters[i, j] + "" + ((j == MainControl.partyParameters.GetLength(1)-1) ? "" : ",");
+                preferences += MainControl.partyParameters[i, j] + "" + ((j == MainControl.partyParameters.GetLength(1) - 1) ? "" : ",");
             }
             preferences += "]" + ((i == MainControl.partyParameters.GetLength(0) - 1) ? "" : ",");
         }
@@ -58,9 +62,26 @@ public class Manager : MonoBehaviour
         {
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
-            string strResponse = reader.ReadToEnd();
-            Debug.Log(strResponse);
+            MainControl.serverOutput = reader.ReadToEnd();
+            Parse(MainControl.serverOutput);
         }
         response.Close();
+    }
+    public void Parse(string input)
+    {
+        if (input == "-1")
+        {
+            //*TODO: What to do if the input is broken.
+            return;
+        }
+        var cleanedRows = Regex.Split(input, @"]\s*,\s*[").Select(r => r.Replace("[", "").Replace("]", "").Trim()).ToList();
+
+        var matrix = new float[cleanedRows.Count][];
+        for (var i = 0; i < cleanedRows.Count; i++)
+        {
+            var data = cleanedRows.ElementAt(i).Split(',');
+            matrix[i] = data.Select(c => float.Parse(c.Trim())).ToArray();
+        }
+        MainControl.results = matrix;
     }
 }

@@ -7,7 +7,18 @@ public class ShowNumber1 : MonoBehaviour
     public Text number;
     void Start()
     {
-        number.text = MainControl.serverInput;
+        number.text = MainControl.serverOutput + "";
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+

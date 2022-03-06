@@ -64,8 +64,15 @@ public class MainControl : MonoBehaviour
 
 
 
+
+
+
+
+
+
     public static string serverInput = "";
     public static string serverOutput = "";
+    public static float[][] results;
 }
 
 

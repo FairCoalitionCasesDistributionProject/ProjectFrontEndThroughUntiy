@@ -7,7 +7,6 @@ using System;
 public class ShowAvailavlePoints : MonoBehaviour
 {
     public Text balance;
-    // Start is called before the first frame update
     void Start()
     {
       switch (MainControl.currentName)
@@ -53,12 +52,8 @@ public class ShowAvailavlePoints : MonoBehaviour
                 break;
         }  
     }
-
-    // Update is called once per frame
     void Update()
     {
         balance.text = " " + (100-MainControl.partyBalance[MainControl.currentIdentifier]);
     }
 }
-
-
