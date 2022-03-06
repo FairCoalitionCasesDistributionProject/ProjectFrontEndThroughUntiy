@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class MainControl : MonoBehaviour
 {
+    public static int numberOfParties = 13;
+    public static int numberOfCases = 30;
     public static string currentName = "";
     public static int currentIdentifier = 0;
     public enum parties
@@ -57,8 +59,13 @@ public class MainControl : MonoBehaviour
     public static int[,] partyParameters = new int[13, 30];
     public static string[] partyNames = new string[13] { "likud", "haavoda", "hareshimaHamshutefet", "hareshimaHaaravitHameshutefet", "hazionutHadatit", "israelBeitenu", "kaholLavan", "meretz", "shas", "tikvaHadasha", "yahadutHatora", "yemina", "yeshAtid" };
     public static string[] casesNameTranslation = new string[30] { "משרד ראש הממשלה", "המשרד לביטחון הפנים", "המשרד להגנת הסביבה", "המשרד לפיתוח הפריפריה, הנגב והגליל", "המשרד לשוויון חברתי", "המשרד לשירותי דת", "המשרד לשיתוף פעולה אזורי", "זרוע העבודה", "משרד האוצר", "משרד האנרגיה", "משרד הביטחון", "משרד הבינוי והשיכון", "משרד הבריאות", "משרד החוץ", "משרד החינוך", "משרד החקלאות ופיתוח הכפר", "משרד הכלכלה והתעשייה", "משרד החדשנות, המדע והטכנולוגיה", "משרד המודיעין", "משרד המשפטים", "משרד הרווחה והביטחון החברתי", "משרד העלייה והקליטה", "משרד הפנים", "משרד התחבורה והבטיחות בדרכים", "משרד התיירות", "משרד התפוצות", "משרד התקשורת", "משרד התרבות והספורט", "משרד ירושלים ומורשת", "משרד ההתיישבות" };
-
+    public static int[] mandates = new int[13] { 30, 7, 6, 4, 6, 7, 8, 6, 9, 6, 7, 7, 17 };
     public static int[] partyBalance = new int[13] { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+
+
+
+    public static string serverInput = "";
+    public static string serverOutput = "";
 }
 
 
