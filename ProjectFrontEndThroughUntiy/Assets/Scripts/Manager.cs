@@ -62,7 +62,8 @@ public class Manager : MonoBehaviour
         {
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
-            MainControl.serverOutput = reader.ReadToEnd();
+            MainControl.serverOutput = reader.ReadToEnd().Replace("\"", "");
+            Debug.Log(MainControl.serverOutput);
             Parse(MainControl.serverOutput);
         }
         response.Close();
@@ -74,7 +75,7 @@ public class Manager : MonoBehaviour
             //*TODO: What to do if the input is broken.
             return;
         }
-        var cleanedRows = Regex.Split(input, @"]\s*,\s*[").Select(r => r.Replace("[", "").Replace("]", "").Trim()).ToList();
+        var cleanedRows = Regex.Split(input, @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
 
         var matrix = new float[cleanedRows.Count][];
         for (var i = 0; i < cleanedRows.Count; i++)
@@ -82,6 +83,6 @@ public class Manager : MonoBehaviour
             var data = cleanedRows.ElementAt(i).Split(',');
             matrix[i] = data.Select(c => float.Parse(c.Trim())).ToArray();
         }
-        MainControl.results = matrix;
+        //*MainControl.results = matrix;
     }
 }
