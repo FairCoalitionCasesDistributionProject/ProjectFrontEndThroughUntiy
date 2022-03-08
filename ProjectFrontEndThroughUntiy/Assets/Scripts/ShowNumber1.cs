@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ShowNumber1 : MonoBehaviour
 {
-    public Text number;
+    public Text output;
     void Start()
     {
-        number.text = MainControl.serverOutput;
+        output.text = MainControl.serverOutput;
     }
 }
 

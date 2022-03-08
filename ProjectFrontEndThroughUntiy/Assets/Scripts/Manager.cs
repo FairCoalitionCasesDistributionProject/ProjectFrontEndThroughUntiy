@@ -16,8 +16,9 @@ public class Manager : MonoBehaviour
     {
         string draft = "{\"items\":" + MainControl.numberOfCases + ",\n\"mandates\":" + mandatesString() + ",\n\"preferences\":" + preferencesString() + "}";
         MainControl.serverInput = draft;
-        //*SceneManager.LoadScene("Results");
+        
         Server();
+        SceneManager.LoadScene("Results");
 
     }
     public string mandatesString()
@@ -47,7 +48,7 @@ public class Manager : MonoBehaviour
     }
     public void Server()
     {
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:8000/api/");
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://faircol2.herokuapp.com/api/");
         request.Method = "POST";
         // ... just sending a string
         string data = MainControl.serverInput;
@@ -63,8 +64,8 @@ public class Manager : MonoBehaviour
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             MainControl.serverOutput = reader.ReadToEnd().Replace("\"", "");
-            Debug.Log(MainControl.serverOutput);
-            Parse(MainControl.serverOutput);
+            //*Debug.Log(MainControl.serverOutput);
+            //*Parse(MainControl.serverOutput);
         }
         response.Close();
     }
