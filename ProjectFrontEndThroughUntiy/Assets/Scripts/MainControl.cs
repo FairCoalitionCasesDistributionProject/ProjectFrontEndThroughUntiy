@@ -65,3 +65,14 @@ public class MainControl : MonoBehaviour
     public static string serverOutput = "";
     public static float[,] results = new float[30,13];
 }
+
+
+
+
+
+
+
+
+
+
+

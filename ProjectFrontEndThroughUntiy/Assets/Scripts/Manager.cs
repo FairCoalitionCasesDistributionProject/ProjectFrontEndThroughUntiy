@@ -12,26 +12,17 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.IO;
 
-
-
-
-
-
-
-
-
-
-
-
 public class Manager : MonoBehaviour
 {
     public void Send()
     {
         string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + "}";
         MainControl.serverInput = draft;
+        SceneManager.LoadScene("Loading");
+        
+        
+        
         Server();
-        //*SceneManager.LoadScene("Results");
-
     }
     public string mandatesString()
     {
@@ -100,3 +91,5 @@ public class Manager : MonoBehaviour
         //*MainControl.results = matrix;
     }
 }
+
+

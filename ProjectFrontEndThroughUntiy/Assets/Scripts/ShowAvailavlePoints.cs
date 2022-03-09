@@ -57,3 +57,18 @@ public class ShowAvailavlePoints : MonoBehaviour
         balance.text = " " + (100-MainControl.partyBalance[MainControl.currentIdentifier]);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
