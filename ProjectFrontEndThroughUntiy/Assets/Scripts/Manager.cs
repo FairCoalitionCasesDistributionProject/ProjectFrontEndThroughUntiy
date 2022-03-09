@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 using System;
 using System.IO;
 using System.Net;
@@ -10,15 +11,26 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.IO;
+
+
+
+
+
+
+
+
+
+
+
+
 public class Manager : MonoBehaviour
 {
     public void Send()
     {
-        string draft = "{\"items\":" + MainControl.numberOfCases + ",\n\"mandates\":" + mandatesString() + ",\n\"preferences\":" + preferencesString() + "}";
+        string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + "}";
         MainControl.serverInput = draft;
-        
         Server();
-        SceneManager.LoadScene("Results");
+        //*SceneManager.LoadScene("Results");
 
     }
     public string mandatesString()
@@ -48,26 +60,28 @@ public class Manager : MonoBehaviour
     }
     public void Server()
     {
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://faircol2.herokuapp.com/api/");
-        request.Method = "POST";
-        // ... just sending a string
-        string data = MainControl.serverInput;
-        request.ContentType = "application/json";
-        request.ContentLength = data.Length;
-        StreamWriter streamWriter = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
-        streamWriter.Write(data);
-        streamWriter.Close();
-        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-        if (response.StatusCode == HttpStatusCode.OK)
+        StartCoroutine(Upload());
+    }
+    IEnumerator Upload()
+    {
+        string URL = "http://faircol.herokuapp.com/api/";
+        string json = MainControl.serverInput;
+        var uwr = new UnityWebRequest(URL, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+        uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        uwr.SetRequestHeader("Content-Type", "application/json");
+        yield return uwr.SendWebRequest();
+        if (uwr.isNetworkError)
         {
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            MainControl.serverOutput = reader.ReadToEnd().Replace("\"", "");
-            //*Debug.Log(MainControl.serverOutput);
-            //*Parse(MainControl.serverOutput);
+            Debug.Log("Error While Sending: " + uwr.error);
         }
-        response.Close();
+        else
+        {
+            Debug.Log("Received: " + uwr.downloadHandler.text);
+            MainControl.serverOutput = uwr.downloadHandler.text;
+            SceneManager.LoadScene("Results");
+        }
     }
     public void Parse(string input)
     {
@@ -77,7 +91,6 @@ public class Manager : MonoBehaviour
             return;
         }
         var cleanedRows = Regex.Split(input, @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
-
         var matrix = new float[cleanedRows.Count][];
         for (var i = 0; i < cleanedRows.Count; i++)
         {
