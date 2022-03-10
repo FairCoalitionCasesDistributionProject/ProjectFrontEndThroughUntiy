@@ -63,10 +63,10 @@ public class MainControl : MonoBehaviour
     public static int[] partyBalance = new int[13] { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
     public static string serverInput = "";
     public static string serverOutput = "";
-    public static float[,] results = new float[30,13];
+    public static float[,] results = new float[30, 13];
+    public static string key = "";
+    public static string lastPage = "";
 }
-
-
 
 
 

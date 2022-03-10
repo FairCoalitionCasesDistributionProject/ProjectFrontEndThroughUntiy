@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using System;
@@ -11,17 +12,21 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.IO;
-
+using System.Threading.Tasks;
 public class Manager : MonoBehaviour
 {
+    public GameObject mainImage;
+    public GameObject loading;
+    void Start()
+    {
+        loading.SetActive(false);
+    }
     public void Send()
     {
-        string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + "}";
+        int[] key = CurrentDateTime();
+        string draft = "{\"key\":" + keyString(key) + "\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + "}";
+        MainControl.key = EncodeTo64(key);
         MainControl.serverInput = draft;
-        SceneManager.LoadScene("Loading");
-        
-        
-        
         Server();
     }
     public string mandatesString()
@@ -55,6 +60,8 @@ public class Manager : MonoBehaviour
     }
     IEnumerator Upload()
     {
+        mainImage.SetActive(false);
+        loading.SetActive(true);
         string URL = "http://faircol.herokuapp.com/api/";
         string json = MainControl.serverInput;
         var uwr = new UnityWebRequest(URL, "POST");
@@ -66,13 +73,14 @@ public class Manager : MonoBehaviour
         if (uwr.isNetworkError)
         {
             Debug.Log("Error While Sending: " + uwr.error);
+            MainControl.serverOutput = "" + (-1);
         }
         else
         {
             Debug.Log("Received: " + uwr.downloadHandler.text);
             MainControl.serverOutput = uwr.downloadHandler.text;
-            SceneManager.LoadScene("Results");
         }
+        SceneManager.LoadScene("Results");
     }
     public void Parse(string input)
     {
@@ -82,14 +90,57 @@ public class Manager : MonoBehaviour
             return;
         }
         var cleanedRows = Regex.Split(input, @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
-        var matrix = new float[cleanedRows.Count][];
+        float[,] matrix = new float[cleanedRows.Count, 13];
         for (var i = 0; i < cleanedRows.Count; i++)
         {
             var data = cleanedRows.ElementAt(i).Split(',');
-            matrix[i] = data.Select(c => float.Parse(c.Trim())).ToArray();
+            float[] matrixHelper = data.Select(c => float.Parse(c.Trim())).ToArray();
+            for (var j = 0; j < matrixHelper.Length; j++)
+            {
+                matrix[i, j] = matrixHelper[j];
+            }
         }
-        //*MainControl.results = matrix;
+        MainControl.results = matrix;
     }
+    public int[] CurrentDateTime()
+    {
+        DateTime currentDateTime = DateTime.Now;
+        return new int[7] { currentDateTime.Year, currentDateTime.Month, currentDateTime.Day, currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second, currentDateTime.Millisecond };
+    }
+
+    public string keyString(int[] key)
+    {
+        string output = "";
+        for (int i = 0; i < key.Length; i++)
+        {
+            output += key[i] + ".";
+        }
+        return output;
+    }
+
+
+
+
+
+
+
+    public string EncodeTo64(int[] key)
+    {
+        string output = "";
+        for (int i = 0; i < key.Length; i++)
+        {
+            string current = baseConversator10To64(key[i]);
+            output += (key[i] < 64) ? "A" + current : current;
+        }
+        return output;
+    }
+    public string baseConversator10To64(int number)
+    {
+        string output = Convert.ToBase64String(Encoding.UTF8.GetBytes(number.ToString()));
+        return output;
+    }
+
+
 }
 
 

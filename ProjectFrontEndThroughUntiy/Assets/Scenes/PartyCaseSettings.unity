@@ -29670,7 +29670,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 763860122}
         m_TargetAssemblyTypeName: ButtonControler, Assembly-CSharp
-        m_MethodName: LoadPartyChoose
+        m_MethodName: Back
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42577,7 +42577,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1425250911}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.15405402
+  m_Size: 0.15445222
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

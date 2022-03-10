@@ -7,7 +7,7 @@ public class ShowNumber1 : MonoBehaviour
     public Text output;
     void Start()
     {
-        output.text = MainControl.serverOutput;
+        output.text = "Result: "+MainControl.serverOutput+"\nKey: "+MainControl.key;
     }
 }
 
