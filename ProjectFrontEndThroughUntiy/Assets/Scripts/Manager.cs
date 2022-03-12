@@ -24,7 +24,7 @@ public class Manager : MonoBehaviour
     public void Send()
     {
         int[] key = CurrentDateTime();
-        string draft = "{\"key\":" + keyString(key) + "\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + "}";
+        string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + keyString(key) + "\"}";
         MainControl.key = EncodeTo64(key);
         MainControl.serverInput = draft;
         Server();
@@ -113,7 +113,7 @@ public class Manager : MonoBehaviour
         string output = "";
         for (int i = 0; i < key.Length; i++)
         {
-            output += key[i] + ".";
+            output += "" + key[i] + ((i < (key.Length - 1)) ? "." : "");
         }
         return output;
     }
