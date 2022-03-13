@@ -66,10 +66,10 @@ public class MainControl : MonoBehaviour
     public static float[,] results = new float[30, 13];
     public static string key = "";
     public static string lastPage = "";
+    public static bool[] relevantParties = new bool[13];
+    public static bool [] relevantCases =new bool[30];
+    
 }
-
-
-
 
 
 

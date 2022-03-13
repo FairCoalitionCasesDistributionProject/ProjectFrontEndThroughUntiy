@@ -38,35 +38,15 @@ public class FirstScreenController : MonoBehaviour
     {
         wasChanged = true;
     }
-    public string baseConversator64To10(string key)
+    public string baseConversator64To10(string input)
     {
-        if (key.Length == 14)
+        string[] array = input.Split('_');
+        string output = "";
+        for (int i = 0; i < array.Length; i++)
         {
-            string[] keyArray = new string[7] { key[0] + "" + key[1], key[2] + "" + key[3], key[4] + "" + key[5], key[6] + "" + key[7], key[8] + "" + key[9], key[10] + "" + key[11], key[12] + "" + key[13] };
-            return keyString(keyArray);
+            output += ((i == 0) ? "" : ".") + Convert.ToInt32(array[i], 64).ToString();
         }
-        else
-        {
-            return "";
-        }
-    }
-    public int decode(string key)
-    {
-        int keyInt = 0;
-        for (int i = 0; i < key.Length; i++)
-        {
-            keyInt += (int)Math.Pow(64, key.Length - i - 1) * (key[i] - 'A');
-        }
-        return keyInt;
-    }
-    public string keyString(string[] key)
-    {
-        string keyString = "";
-        for (int i = 0; i < key.Length; i++)
-        {
-            keyString += decode(key[i]) + ((i == key.Length - 1) ? "" : ".");
-        }
-        return keyString;
+        return output;
     }
 }
 

@@ -26,6 +26,8 @@ public class Manager : MonoBehaviour
         int[] key = CurrentDateTime();
         string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + keyString(key) + "\"}";
         MainControl.key = EncodeTo64(key);
+        MainControl.relevantCases = relevantColumnCheck(MainControl.partyParameters);
+        MainControl.relevantParties = relevantRowCheck(MainControl.partyParameters);
         MainControl.serverInput = draft;
         Server();
     }
@@ -54,6 +56,35 @@ public class Manager : MonoBehaviour
         preferences += "]";
         return preferences;
     }
+    public bool[] relevantRowCheck(int[,] array)
+    {
+        bool[] check = new bool[array.GetLength(0)];
+        for (int i = 0; i < array.GetLength(0); i++)
+        {
+            int sum = 0;
+            for (int j = 0; j < array.GetLength(1); j++)
+            {
+                sum += array[i, j];
+            }
+            check[i] = (sum != 0);
+        }
+        return check;
+    }
+
+    public bool[] relevantColumnCheck(int[,] array)
+    {
+        bool[] check = new bool[array.GetLength(1)];
+        for (int i = 0; i < array.GetLength(1); i++)
+        {
+            int sum = 0;
+            for (int j = 0; j < array.GetLength(0); j++)
+            {
+                sum += array[j, i];
+            }
+            check[i] = (sum != 0);
+        }
+        return check;
+    }
     public void Server()
     {
         StartCoroutine(Upload());
@@ -80,6 +111,7 @@ public class Manager : MonoBehaviour
             Debug.Log("Received: " + uwr.downloadHandler.text);
             MainControl.serverOutput = uwr.downloadHandler.text;
         }
+        Parse(MainControl.serverOutput);
         SceneManager.LoadScene("Results");
     }
     public void Parse(string input)
@@ -89,12 +121,12 @@ public class Manager : MonoBehaviour
             //*TODO: What to do if the input is broken.
             return;
         }
-        var cleanedRows = Regex.Split(input, @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
+        var cleanedRows = Regex.Split(input.Replace("\"", ""), @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
         float[,] matrix = new float[cleanedRows.Count, 13];
         for (var i = 0; i < cleanedRows.Count; i++)
         {
             var data = cleanedRows.ElementAt(i).Split(',');
-            float[] matrixHelper = data.Select(c => float.Parse(c.Trim())).ToArray();
+            var matrixHelper = data.Select(c => float.Parse(c.Trim())).ToArray();
             for (var j = 0; j < matrixHelper.Length; j++)
             {
                 matrix[i, j] = matrixHelper[j];
@@ -102,6 +134,7 @@ public class Manager : MonoBehaviour
         }
         MainControl.results = matrix;
     }
+
     public int[] CurrentDateTime()
     {
         DateTime currentDateTime = DateTime.Now;
@@ -118,29 +151,14 @@ public class Manager : MonoBehaviour
         return output;
     }
 
-
-
-
-
-
-
-    public string EncodeTo64(int[] key)
+    public string EncodeTo64(int[] input)
     {
         string output = "";
-        for (int i = 0; i < key.Length; i++)
+        for (int i = 0; i < input.Length; i++)
         {
-            string current = baseConversator10To64(key[i]);
-            output += (key[i] < 64) ? "A" + current : current;
+            output += "" + input[i] + ((i < (input.Length - 1)) ? "_" : "");
         }
-        return output;
+        return Convert.ToBase64String(Encoding.UTF8.GetBytes(output));
     }
-    public string baseConversator10To64(int number)
-    {
-        string output = Convert.ToBase64String(Encoding.UTF8.GetBytes(number.ToString()));
-        return output;
-    }
-
-
 }
-
 
