@@ -7,9 +7,11 @@ using UnityEngine.UI;
 public class ResultsController : MonoBehaviour
 {
     public GameObject CaseViewRow;
+    public Text InputKey1;
     void Start()
     {
         InstantiateCaseViewRows();
+        InputKey1.text=MainControl.key;
     }
     public void InstantiateCaseViewRows()
     {
@@ -22,9 +24,19 @@ public class ResultsController : MonoBehaviour
                 numberOfInstantiation++;
                 GameObject newCaseViewRow = Instantiate(CaseViewRow,transform.position,transform.rotation,transform);
                 newCaseViewRow.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                newCaseViewRow.transform.position = new Vector3(681, height*numberOfInstantiation ,0);
+                newCaseViewRow.transform.position = new Vector3(647, height*numberOfInstantiation ,0);
                 newCaseViewRow.GetComponent<Results>().caseNumber=i;
             }
         }
+    }
+
+
+
+    public void CopyToClipboard()
+    {
+        TextEditor textEditor = new TextEditor();
+        textEditor.text = InputKey1.text;
+        textEditor.SelectAll();
+        textEditor.Copy();
     }
 }

@@ -156,9 +156,33 @@ public class Manager : MonoBehaviour
         string output = "";
         for (int i = 0; i < input.Length; i++)
         {
-            output += "" + input[i] + ((i < (input.Length - 1)) ? "_" : "");
+            output += ((i == 0) ? "" : "|") + fromDeci(61, input[i]);
         }
-        return Convert.ToBase64String(Encoding.UTF8.GetBytes(output));
+        return output;
     }
+    public char reVal(int num)
+    {
+        if (num >= 0 && num <= 9)
+        {
+            return (char)(num + 48);
+        }
+        else
+        {
+            return (char)(num - 10 + 65);
+        }
+    }
+    public string fromDeci(int base1, int inputNum)
+    {
+        string s = "";
+        while (inputNum > 0)
+        {
+            s += reVal(inputNum % base1);
+            inputNum /= base1;
+        }
+        char[] res = s.ToCharArray();
+        Array.Reverse(res);
+        return new String(res);
+    }
+    
 }
 

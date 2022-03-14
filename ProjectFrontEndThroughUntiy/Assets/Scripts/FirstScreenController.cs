@@ -40,14 +40,62 @@ public class FirstScreenController : MonoBehaviour
     }
     public string baseConversator64To10(string input)
     {
-        string[] array = input.Split('_');
+        string[] array = input.Split('|');
         string output = "";
+        string pre = "";
         for (int i = 0; i < array.Length; i++)
         {
-            output += ((i == 0) ? "" : ".") + Convert.ToInt32(array[i], 64).ToString();
+            int deciNum = toDeci(array[i], 61);
+            if (deciNum != -1)
+            {
+                Debug.Log("Error: Invalid input.");
+                return "";
+            }
+            else
+            {
+                if (i == 0)
+                {
+                    pre = "";
+                }
+                else
+                {
+                    pre = ".";
+                }
+                output += pre + deciNum;
+            }
         }
         return output;
     }
+    public int val(char c)
+    {
+        if (c >= '0' && c <= '9')
+        {
+            return (int)c - '0';
+        }
+        else
+        {
+            return (int)c - 'A' + 10;
+        }
+    }
+    public int toDeci(string str, int toBase)
+    {
+        int len = str.Length;
+        int power = 1;
+        int num = 0;
+        int i;
+        for (i = len - 1; i >= 0; i--)
+        {
+            if (val(str[i]) >= toBase)
+            {
+                return -1;
+            }
+            num += val(str[i]) * power;
+            power = power * toBase;
+        }
+        return num;
+    }
+
+
 }
 
 
