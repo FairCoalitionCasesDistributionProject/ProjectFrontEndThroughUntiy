@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 public class MainControl : MonoBehaviour
 {
@@ -68,9 +69,14 @@ public class MainControl : MonoBehaviour
     public static string lastPage = "";
     public static bool[] relevantParties = new bool[13];
     public static bool [] relevantCases =new bool[30];
-    
-}
 
+
+
+
+
+
+
+}
 
 
 
