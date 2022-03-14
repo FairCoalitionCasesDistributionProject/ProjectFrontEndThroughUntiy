@@ -26,12 +26,17 @@ public class FirstScreenController : MonoBehaviour
     }
     public void LoadPartyChoose()
     {
-        if (wasChanged)
+        if (wasChanged || key.text != "")
         {
             wasChanged = false;
             string input = baseConversator64To10(key.text);
             MainControl.key = input;
             ReUse();
+        }
+        else
+        {
+            MainControl.lastPage = "PartyChoose";
+            SceneManager.LoadScene("PartyChoose");
         }
     }
     public void LoadInformation()
@@ -153,6 +158,9 @@ public class FirstScreenController : MonoBehaviour
         MainControl.partyParameters = matrix;
     }
 }
+
+
+
 
 
 
