@@ -17,7 +17,6 @@ public class FirstScreenController : MonoBehaviour
 {
     public Text key;
     public bool wasChanged = false;
-    public GameObject mainImage;
     public GameObject loading;
     void Start()
     {
