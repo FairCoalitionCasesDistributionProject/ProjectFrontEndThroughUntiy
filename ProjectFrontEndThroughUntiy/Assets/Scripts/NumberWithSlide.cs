@@ -86,3 +86,29 @@ public class NumberWithSlide : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

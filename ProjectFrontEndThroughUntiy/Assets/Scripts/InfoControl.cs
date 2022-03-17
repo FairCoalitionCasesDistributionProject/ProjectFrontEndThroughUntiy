@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class InfoControl : MonoBehaviour
 {
     public GameObject infoMain;
@@ -9,7 +8,6 @@ public class InfoControl : MonoBehaviour
     public GameObject infoAlgo;
     public GameObject infoTech;
     public GameObject infoAbout;
-
     void Start()
     {
         infoMain.SetActive(true);
@@ -58,5 +56,4 @@ public class InfoControl : MonoBehaviour
         infoTech.SetActive(false);
         infoAbout.SetActive(true);
     }
-
 }
