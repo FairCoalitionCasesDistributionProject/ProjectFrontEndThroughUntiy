@@ -21,7 +21,7 @@ public class Results : MonoBehaviour
         bool equal = isEqual(tuple);
         int theBigger = bigger(tuple);
         slider.value = (equal) ? MainControl.results[caseNumber, tuple.Item1] : MainControl.results[caseNumber, theBigger];
-        number.text = "" + slider.value;
+        number.text = "" + percentage(slider.value);
         party.sprite = partyImages(tuple.Item1);
         party.SetNativeSize();
         if (equal)
@@ -33,7 +33,7 @@ public class Results : MonoBehaviour
         {
             party1.sprite = partyImages(tuple.Item2);
             party1.SetNativeSize();
-            number1.text = "" + (1 - slider.value);
+            number1.text = "" + percentage(1 - slider.value);
         }
         name.text = MainControl.casesNameTranslation[caseNumber];
     }
@@ -68,13 +68,6 @@ public class Results : MonoBehaviour
     {
         return tuple.Item1 == tuple.Item2;
     }
-
-
-
-
-
-
-
     public Sprite partyImages(int partyNumber)
     {
         switch (partyNumber)
@@ -109,8 +102,9 @@ public class Results : MonoBehaviour
                 return likud;
         }
     }
-
-
-
+    public string percentage(float value)
+    {
+        return (value * 100).ToString("0.00") + "%";
+    }
 
 }

@@ -106,35 +106,58 @@ public class FirstScreenController : MonoBehaviour
         }
         return num;
     }
-    public void ReUse()
+
+
+
+
+
+
+    public void awake()
     {
-        StartCoroutine(Upload());
+        string URL = "http://faircol.herokuapp.com/api/";
+        string json = "{WakeUpAndBeReady.}";
+        StartCoroutine(Upload(URL, json,true));
     }
-    IEnumerator Upload()
+    public void ReUse()
     {
         string URL = "http://faircol.herokuapp.com/api/getsave";
         string json = "{\"key\":\"" + MainControl.key + "\"}";
-        loading.SetActive(true);
+        StartCoroutine(Upload(URL, json,false));
+    }
+    IEnumerator Upload(string URL, string json, bool forWakingUp)
+    {
+        if (!forWakingUp)
+        {
+            loading.SetActive(true);
+        }
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
         uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         uwr.SetRequestHeader("Content-Type", "application/json");
         yield return uwr.SendWebRequest();
-        if (uwr.isNetworkError)
+        if (!forWakingUp)
         {
-            Debug.Log("Error While Sending: " + uwr.error);
-            MainControl.serverOutput = "" + (-1);
+            if (uwr.isNetworkError)
+            {
+                Debug.Log("Error While Sending: " + uwr.error);
+                MainControl.serverOutput = "" + (-1);
+            }
+            else
+            {
+                Debug.Log("Received: " + uwr.downloadHandler.text);
+                MainControl.serverOutput = uwr.downloadHandler.text;
+            }
+            Parse(MainControl.serverOutput);
+            loading.SetActive(false);
+            MainControl.lastPage = "PartyChoose";
+            SceneManager.LoadScene("PartyChoose");
+
+
+
+
+
         }
-        else
-        {
-            Debug.Log("Received: " + uwr.downloadHandler.text);
-            MainControl.serverOutput = uwr.downloadHandler.text;
-        }
-        Parse(MainControl.serverOutput);
-        loading.SetActive(false);
-        MainControl.lastPage = "PartyChoose";
-        SceneManager.LoadScene("PartyChoose");
     }
     public void Parse(string input)
     {

@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 using UnityEngine.UI;
 public class ResultsController : MonoBehaviour
 {
     public GameObject CaseViewRow;
-    //*public Text InputKey1;
     public InputField InputKey1;
     void Start()
     {
@@ -18,7 +18,7 @@ public class ResultsController : MonoBehaviour
     public void InstantiateCaseViewRows()
     {
         float height = -105f;
-        int numberOfInstantiation = -5;
+        float numberOfInstantiation = -5.79f;
         for (int i = 0; i < MainControl.relevantCases.Length; i++)
         {
             if (MainControl.relevantCases[i])
@@ -31,14 +31,8 @@ public class ResultsController : MonoBehaviour
             }
         }
     }
-
-
-
-    public void CopyToClipboard()
+    public void Reload()
     {
-        TextEditor textEditor = new TextEditor();
-        textEditor.text = InputKey1.text;
-        textEditor.SelectAll();
-        textEditor.Copy();
+        SceneManager.LoadScene("PartyChoose");
     }
 }

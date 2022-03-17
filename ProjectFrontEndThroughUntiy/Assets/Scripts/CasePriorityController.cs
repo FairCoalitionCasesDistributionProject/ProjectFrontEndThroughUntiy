@@ -62,8 +62,8 @@ public class CasePriorityController : MonoBehaviour
                 current.sprite = meretz;
                 MainControl.currentIdentifier = ((int)MainControl.parties.meretz);
                 break;
-            current.SetNativeSize();
         }
+        current.SetNativeSize();
     }
 }
 
