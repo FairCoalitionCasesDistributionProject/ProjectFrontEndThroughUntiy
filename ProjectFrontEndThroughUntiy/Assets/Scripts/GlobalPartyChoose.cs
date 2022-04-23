@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GlobalPartyChoose : MonoBehaviour
 {
     public Text numberOfParties;
+    public Text amountOfMandate;
     public Button confirm;
     public GameObject alert;
     public Text alertText;
@@ -23,7 +24,8 @@ public class GlobalPartyChoose : MonoBehaviour
 
     public void confirmPressed()
     {
-        if (numberOfParties.text == "" || !int.TryParse(numberOfParties.text, out int numberOfPartiesInt))
+        if ((numberOfParties.text == "" || !int.TryParse(numberOfParties.text, out int numberOfPartiesInt)) || 
+            (amountOfMandate.text == "" || !int.TryParse(amountOfMandate.text, out int amountOfMandateInt)))
         {
             alertShow(true, "Please enter a number .", 1.5f);
         }
