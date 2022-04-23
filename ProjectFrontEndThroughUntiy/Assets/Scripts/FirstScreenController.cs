@@ -152,13 +152,10 @@ public class FirstScreenController : MonoBehaviour
             loading.SetActive(false);
             MainControl.lastPage = "PartyChoose";
             SceneManager.LoadScene("PartyChoose");
-
-
-
-
-
         }
     }
+    
+    
     public void Parse(string input)
     {
         if (input == "-1")

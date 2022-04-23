@@ -24,7 +24,7 @@ public class Manager : MonoBehaviour
     }
     public void Send()
     {
-        
+
         recievedAnswer = false;
         int[] key = CurrentDateTime();
         string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + keyString(key) + "\"}";
@@ -115,8 +115,9 @@ public class Manager : MonoBehaviour
             MainControl.serverOutput = uwr.downloadHandler.text;
         }
         Parse(MainControl.serverOutput);
-        if(recievedAnswer){
-        SceneManager.LoadScene("Results");
+        if (recievedAnswer)
+        {
+            SceneManager.LoadScene("Results");
         }
     }
     public void Parse(string input)
@@ -138,7 +139,7 @@ public class Manager : MonoBehaviour
             }
         }
         MainControl.results = matrix;
-        recievedAnswer=true;
+        recievedAnswer = true;
     }
 
     public int[] CurrentDateTime()
@@ -189,6 +190,5 @@ public class Manager : MonoBehaviour
         Array.Reverse(res);
         return new String(res);
     }
-    
-}
 
+}

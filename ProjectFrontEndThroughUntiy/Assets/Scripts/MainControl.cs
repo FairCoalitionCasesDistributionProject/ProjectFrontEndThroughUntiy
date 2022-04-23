@@ -68,7 +68,7 @@ public class MainControl : MonoBehaviour
     public static string key = "";
     public static string lastPage = "";
     public static bool[] relevantParties = new bool[13];
-    public static bool [] relevantCases =new bool[30];
+    public static bool[] relevantCases = new bool[30];
 
 
 
