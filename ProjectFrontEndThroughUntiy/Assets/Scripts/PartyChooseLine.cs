@@ -32,6 +32,10 @@ public class PartyChooseLine : MonoBehaviour
     }
 
     
+    public void sliderClicked(){
+        partyMandatesSlider.maxValue = amountOfMandates-GlobalPartyChoose.summary;
+    }
+    
     public async void sliderMoves()
     {
         partyMandates.text = " " + partyMandatesSlider.value.ToString();
