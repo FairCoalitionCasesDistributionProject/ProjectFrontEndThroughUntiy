@@ -72,6 +72,8 @@ public class GlobalPartyChoose : MonoBehaviour
                 }
                 else
                 {
+                    settings0.SetActive(false);
+                    settings1.SetActive(false);
                     numberOfMinisteriesInt = int.Parse(numberOfMinisteries.text);
                     if (numberOfMinisteriesInt <= 0)
                     {
@@ -80,7 +82,10 @@ public class GlobalPartyChoose : MonoBehaviour
                     }
                     else
                     {
-                        ministeries = new string[numberOfMinisteriesInt];
+                        if (control > 0)
+                        {
+                            ministeries = new string[numberOfMinisteriesInt];
+                        }
                         settings0.SetActive(false);
                         back.interactable = true;
                         float height = 49f;
@@ -119,8 +124,6 @@ public class GlobalPartyChoose : MonoBehaviour
                 else
                 {
                     amountOfMandateInt = int.Parse(amountOfMandate.text);
-
-
                     numberOfPartiesInt = int.Parse(numberOfParties.text);
                     if (amountOfMandateInt <= 0 || numberOfPartiesInt <= 0)
                     {
@@ -129,8 +132,12 @@ public class GlobalPartyChoose : MonoBehaviour
                     }
                     else
                     {
-                        partyNames = new string[numberOfPartiesInt];
-                        mandates = new int[numberOfPartiesInt];
+                        if (control > 0)
+                        {
+                            partyNames = new string[numberOfPartiesInt];
+                            mandates = new int[numberOfPartiesInt];
+                            partyParameters = new int[numberOfPartiesInt, ministeries.Length];
+                        }
                         confirm.GetComponentInChildren<Text>().text = "Calculate";
                         settings1.SetActive(false);
                         float height = -41f;

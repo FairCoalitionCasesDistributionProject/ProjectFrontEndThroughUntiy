@@ -14,29 +14,19 @@ public class PartyChooseLine : MonoBehaviour
     public Button partyPreference;
     public GameObject alert;
     public Text alertText;
-
-
     void Start()
     {
-        partyDefaultName.text = "Party" + index;
         partyMandatesSlider.minValue = 0;
         partyMandatesSlider.maxValue = amountOfMandates;
-        partyMandatesSlider.value = 0;
+        partyMandatesSlider.value = GlobalPartyChoose.mandates[index];
+        partyName.text = (GlobalPartyChoose.partyNames[index] == null) ? "Party" + index : GlobalPartyChoose.partyNames[index];
+        partyDefaultName.text = (GlobalPartyChoose.partyNames[index] == null) ? "Party" + index : GlobalPartyChoose.partyNames[index];
     }
-
     void Update()
     {
         partyMandatesSlider.onValueChanged.AddListener(delegate { sliderMoves(); });
-
-
-
-
-
-        GlobalPartyChoose.mandates[index] = (int)partyMandatesSlider.value;
-        GlobalPartyChoose.partyNames[index] = (partyName.text == "") ? partyDefaultName.text : partyName.text;
+        GlobalPartyChoose.partyNames[index] = partyName.text;
     }
-
-
     public void sliderClicked()
     {
         int res = (amountOfMandates - GlobalPartyChoose.summary);
@@ -46,13 +36,11 @@ public class PartyChooseLine : MonoBehaviour
             partyMandatesSlider.maxValue = 0;
         }
     }
-
     public async void sliderMoves()
     {
         partyMandates.text = " " + partyMandatesSlider.value.ToString();
+        GlobalPartyChoose.mandates[index] = (int)partyMandatesSlider.value;
     }
-
-
     public void manualChangeOfPartyMandate()
     {
         if (partyMandates.text == "" || (int.TryParse(partyMandates.text, out int partyMandatesInt)))
@@ -72,23 +60,23 @@ public class PartyChooseLine : MonoBehaviour
 
         }
     }
-
     public void alertShow(bool show, string message, float time)
     {
         alert.SetActive(show);
         alertText.text = message;
         StartCoroutine(hideAlert(time));
     }
-
-
-
-
     IEnumerator hideAlert(float time)
     {
         yield return new WaitForSeconds(time);
         alert.SetActive(false);
     }
 }
+
+
+
+
+
 
 
 

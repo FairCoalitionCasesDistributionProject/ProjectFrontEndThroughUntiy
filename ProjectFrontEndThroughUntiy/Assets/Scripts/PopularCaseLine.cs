@@ -9,10 +9,16 @@ public class PopularCaseLine : MonoBehaviour
     public Text caseName;
     void Start()
     {
-        caseDefaultName.text = "Case" + index;
+        caseDefaultName.text = (GlobalPartyChoose.ministeries[index]==null)? "Case" + index: GlobalPartyChoose.ministeries[index];
+        caseName.text = (GlobalPartyChoose.ministeries[index]==null)? "Case" + index: GlobalPartyChoose.ministeries[index];
     }
     void Update()
     {
-        GlobalPartyChoose.ministeries[index] = (caseName.text == "") ? caseDefaultName.text : caseName.text;
+        GlobalPartyChoose.ministeries[index] = caseName.text;
     }
 }
+
+
+
+
+

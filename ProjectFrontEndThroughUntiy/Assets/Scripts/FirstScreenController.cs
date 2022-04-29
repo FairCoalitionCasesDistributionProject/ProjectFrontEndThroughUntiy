@@ -106,12 +106,6 @@ public class FirstScreenController : MonoBehaviour
         }
         return num;
     }
-
-
-
-
-
-
     public void awake()
     {
         string URL = "http://faircol.herokuapp.com/api/";
@@ -154,8 +148,6 @@ public class FirstScreenController : MonoBehaviour
             SceneManager.LoadScene("PartyChoose");
         }
     }
-    
-    
     public void Parse(string input)
     {
         if (input == "-1")
@@ -177,18 +169,6 @@ public class FirstScreenController : MonoBehaviour
         MainControl.partyParameters = matrix;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
