@@ -1424,7 +1424,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8109797660757864055}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 0
   m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
@@ -1793,7 +1793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c27e79ceb630d518a17f971569148b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfMandates: 120
+  amountOfMandates: 0
   index: 0
   partyDefaultName: {fileID: 8109797661543861879}
   partyName: {fileID: 8109797660359246730}

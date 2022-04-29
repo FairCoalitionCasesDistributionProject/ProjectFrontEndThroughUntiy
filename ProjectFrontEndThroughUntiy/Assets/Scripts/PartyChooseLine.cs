@@ -15,33 +15,44 @@ public class PartyChooseLine : MonoBehaviour
     public GameObject alert;
     public Text alertText;
 
-    
+
     void Start()
     {
         partyDefaultName.text = "Party" + index;
         partyMandatesSlider.minValue = 0;
         partyMandatesSlider.maxValue = amountOfMandates;
-
-
         partyMandatesSlider.value = 0;
     }
-    
+
     void Update()
     {
         partyMandatesSlider.onValueChanged.AddListener(delegate { sliderMoves(); });
+
+
+
+
+
+        GlobalPartyChoose.mandates[index] = (int)partyMandatesSlider.value;
+        GlobalPartyChoose.partyNames[index] = (partyName.text == "") ? partyDefaultName.text : partyName.text;
     }
 
-    
-    public void sliderClicked(){
-        partyMandatesSlider.maxValue = amountOfMandates-GlobalPartyChoose.summary;
+
+    public void sliderClicked()
+    {
+        int res = (amountOfMandates - GlobalPartyChoose.summary);
+        partyMandatesSlider.maxValue = (GlobalPartyChoose.summary == 0) ? amountOfMandates : partyMandatesSlider.value + res;
+        if (partyMandatesSlider.maxValue < 0)
+        {
+            partyMandatesSlider.maxValue = 0;
+        }
     }
-    
+
     public async void sliderMoves()
     {
         partyMandates.text = " " + partyMandatesSlider.value.ToString();
     }
 
-    
+
     public void manualChangeOfPartyMandate()
     {
         if (partyMandates.text == "" || (int.TryParse(partyMandates.text, out int partyMandatesInt)))
@@ -61,23 +72,50 @@ public class PartyChooseLine : MonoBehaviour
 
         }
     }
-    
+
     public void alertShow(bool show, string message, float time)
     {
         alert.SetActive(show);
         alertText.text = message;
         StartCoroutine(hideAlert(time));
     }
-    
-    
-    
-    
+
+
+
+
     IEnumerator hideAlert(float time)
     {
         yield return new WaitForSeconds(time);
         alert.SetActive(false);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
