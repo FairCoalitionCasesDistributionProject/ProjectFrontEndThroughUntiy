@@ -18,6 +18,11 @@ public class GlobalPartyChoose : MonoBehaviour
     public GameObject settings1;
     public GameObject partyChooseLine;
     public GameObject popularCaseLine;
+
+
+
+
+
     public int timeConfirm;
     public static string[] ministeries;
     public static string[] partyNames;
@@ -163,6 +168,15 @@ public class GlobalPartyChoose : MonoBehaviour
                 break;
         }
     }
+
+
+
+
+
+
+
+
+    
     public void alertShow(bool show, string message, float time)
     {
         alert.SetActive(show);
@@ -175,6 +189,11 @@ public class GlobalPartyChoose : MonoBehaviour
         alert.SetActive(false);
     }
 }
+
+
+
+
+
 
 
 

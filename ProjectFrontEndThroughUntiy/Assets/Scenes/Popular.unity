@@ -3021,7 +3021,8 @@ MonoBehaviour:
   positions: {fileID: 88456832}
   settings0: {fileID: 1749090666}
   settings1: {fileID: 644344825}
-  partyChooseLine: {fileID: 8109797661729100453, guid: 23b33ba7892bca612a08e577f76c550f, type: 3}
+  partyChooseLine: {fileID: 8109797661729100453, guid: 8512724702360db469442f0d97442bdd, type: 3}
   popularCaseLine: {fileID: 5549240050799811657, guid: b1943bceb37c7b44c9c8cd8491b7d7c7, type: 3}
+  party: {fileID: 8109797661729100453, guid: 23b33ba7892bca612a08e577f76c550f, type: 3}
   timeConfirm: 0
   back: {fileID: 1079696560}
