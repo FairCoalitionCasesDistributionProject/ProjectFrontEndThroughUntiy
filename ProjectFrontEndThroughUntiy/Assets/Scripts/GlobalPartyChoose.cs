@@ -29,6 +29,11 @@ public class GlobalPartyChoose : MonoBehaviour
     public GameObject preferences;
     public GameObject partyScreen;
     public GameObject party;
+
+
+
+    public static bool wasClicked ;
+    public static int preferenceIndex;
     void Start()
     {
         partyScreen.SetActive(false);
@@ -37,6 +42,8 @@ public class GlobalPartyChoose : MonoBehaviour
         alert.SetActive(false);
         timeConfirm = 0;
         back.interactable = false;
+        wasClicked = false;
+        preferenceIndex = -1;
     }
     void Update()
     {
@@ -46,13 +53,24 @@ public class GlobalPartyChoose : MonoBehaviour
             foreach (Transform child in positions.transform)
             {
                 GameObject now = child.gameObject;
-                now.GetComponent<PartyChooseLine>().partyPreference.onClick.AddListener(delegate
-                {
+                // now.GetComponent<PartyChooseLine>().partyPreference.onClick.AddListener(delegate
+                // {
+                //     partyScreen.SetActive(true);
+                //     float height = 41f;
+                //     float numberOfInstantiation = -5.79f;
+                //     preferences.GetComponent<RectTransform>().sizeDelta = new Vector2(preferences.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length * height) - 447.5f);
+                //     for (int i = 0; i < ministeries.Length; i++)
+                //     {
+                //         numberOfInstantiation++;
+                //         GameObject newPartyChooseLine = Instantiate(party, transform.position, transform.rotation, preferences.transform);
+                //         //*newPartyChooseLine.transform.localScale = new Vector3(0.39f, 0.39f, 0.39f);
+                //         newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
+                //         newPartyChooseLine.GetComponent<PartySlider>().party = now.GetComponent<PartyChooseLine>().index;
+                //         newPartyChooseLine.GetComponent<PartySlider>().index = i;
+                //     }
+                // });
+                if(wasClicked){
                     partyScreen.SetActive(true);
-                    foreach (Transform child in preferences.transform)
-                    {
-                        Destroy(child.gameObject);
-                    }
                     float height = 41f;
                     float numberOfInstantiation = -5.79f;
                     preferences.GetComponent<RectTransform>().sizeDelta = new Vector2(preferences.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length * height) - 447.5f);
@@ -62,10 +80,12 @@ public class GlobalPartyChoose : MonoBehaviour
                         GameObject newPartyChooseLine = Instantiate(party, transform.position, transform.rotation, preferences.transform);
                         //*newPartyChooseLine.transform.localScale = new Vector3(0.39f, 0.39f, 0.39f);
                         newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
-                        newPartyChooseLine.GetComponent<PartySlider>().party = now.GetComponent<PartyChooseLine>().index;
+                        newPartyChooseLine.GetComponent<PartySlider>().party =preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
-                });
+                    wasClicked=false;
+                    preferenceIndex= -1;
+                }
                 sum += (int)now.GetComponent<PartyChooseLine>().partyMandatesSlider.value;
             }
             GlobalPartyChoose.summary = sum;
@@ -224,6 +244,10 @@ public class GlobalPartyChoose : MonoBehaviour
 
     public void backFromPartyWasPressed()
     {
+        foreach (Transform child in preferences.transform)
+        {
+            Destroy(child.gameObject);
+        }
         partyScreen.SetActive(false);
     }
 }

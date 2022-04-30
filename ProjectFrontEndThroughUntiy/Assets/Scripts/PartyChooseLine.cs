@@ -40,6 +40,13 @@ public class PartyChooseLine : MonoBehaviour
         partyMandates.text = " " + partyMandatesSlider.value.ToString();
         GlobalPartyChoose.mandates[index] = (int)partyMandatesSlider.value;
     }
+
+
+    public void preferenceClicked()
+    {
+        GlobalPartyChoose.wasClicked = true;
+        GlobalPartyChoose.preferenceIndex = index;
+    }
 }
 
 
