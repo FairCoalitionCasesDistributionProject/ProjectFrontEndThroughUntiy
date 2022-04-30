@@ -76,7 +76,7 @@ public class MainControl : MonoBehaviour
 
 
 
-
+    public static string url = "http://faircol.herokuapp.com/api/";
 
 
 

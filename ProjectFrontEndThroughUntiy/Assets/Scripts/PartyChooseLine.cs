@@ -18,8 +18,8 @@ public class PartyChooseLine : MonoBehaviour
         partyMandatesSlider.minValue = 0;
         partyMandatesSlider.maxValue = amountOfMandates;
         partyMandatesSlider.value = GlobalPartyChoose.mandates[index];
-        partyName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
-        partyDefaultName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
+        partyName.text = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? "Party" + index : GlobalPartyChoose.partyNames[index];
+        partyDefaultName.text = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? "Party" + index : GlobalPartyChoose.partyNames[index];
     }
     void Update()
     {
@@ -28,7 +28,7 @@ public class PartyChooseLine : MonoBehaviour
     }
     public bool allSpaces(string str)
     {
-        return str.Replace(" ","").Length == 0;
+        return str.Replace(" ", "").Length == 0;
     }
     public void sliderClicked()
     {

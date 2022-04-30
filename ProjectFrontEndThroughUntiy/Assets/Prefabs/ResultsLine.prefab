@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 2554104254738597853}
   - component: {fileID: 2554104254738597852}
   m_Layer: 5
-  m_Name: ResultLine1
+  m_Name: ResultsLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,6 +218,7 @@ MonoBehaviour:
   index: 0
   caseName: {fileID: 2554104255593262049}
   result: {fileID: 2554104256132190792}
+  resultsCell: {fileID: 3313985174264366558, guid: 21886b0db27b92a4abc50248ecaa3469, type: 3}
 --- !u!1 &2554104254876832097
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,7 +609,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 295, y: 0}
+  m_AnchoredPosition: {x: 293.84195, y: 0}
   m_SizeDelta: {x: 587.6839, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2554104255697133059

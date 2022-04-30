@@ -17,9 +17,12 @@ public class Manager : MonoBehaviour
 {
     public GameObject mainImage;
     public GameObject loading;
+    public GameObject settings1;
+    public Text settingsInp;
     private bool recievedAnswer = false;
     void Start()
     {
+        settings1.SetActive(false);
         loading.SetActive(false);
     }
     public void Send()
@@ -73,7 +76,6 @@ public class Manager : MonoBehaviour
         }
         return check;
     }
-
     public bool[] relevantColumnCheck(int[,] array)
     {
         bool[] check = new bool[array.GetLength(1)];
@@ -96,7 +98,7 @@ public class Manager : MonoBehaviour
     {
         mainImage.SetActive(false);
         loading.SetActive(true);
-        string URL = "http://faircol.herokuapp.com/api/";
+        string URL = MainControl.url;
         string json = MainControl.serverInput;
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -141,13 +143,11 @@ public class Manager : MonoBehaviour
         MainControl.results = matrix;
         recievedAnswer = true;
     }
-
     public int[] CurrentDateTime()
     {
         DateTime currentDateTime = DateTime.Now;
         return new int[7] { currentDateTime.Year, currentDateTime.Month, currentDateTime.Day, currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second, currentDateTime.Millisecond };
     }
-
     public string keyString(int[] key)
     {
         string output = "";
@@ -157,7 +157,6 @@ public class Manager : MonoBehaviour
         }
         return output;
     }
-
     public string EncodeTo64(int[] input)
     {
         string output = "";
@@ -190,5 +189,20 @@ public class Manager : MonoBehaviour
         Array.Reverse(res);
         return new String(res);
     }
-
+    public void settingsPressed()
+    {
+        settings1.SetActive(true);
+    }
+    public void save1()
+    {
+        if (settingsInp.text != "")
+        {
+            MainControl.url = settingsInp.text;
+        }
+        settings1.SetActive(false);
+    }
+    public void cancel1()
+    {
+        settings1.SetActive(false);
+    }
 }

@@ -83,7 +83,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 }
                 wasClicked = false;
                 preferenceIndex = -1;
-                sum += (int)now.GetComponent<PartyChooseLine>().partyMandatesSlider.value;
+                sum += ((int)(now.GetComponent<PartyChooseLine>().partyMandatesSlider.value));
             }
             GlobalPartyChoose.summary = sum;
         }
