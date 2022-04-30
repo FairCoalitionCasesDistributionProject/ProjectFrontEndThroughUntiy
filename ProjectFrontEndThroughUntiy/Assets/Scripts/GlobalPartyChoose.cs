@@ -43,6 +43,7 @@ public class GlobalPartyChoose : MonoBehaviour
     public static float[,] results;
     public bool recievedAnswer = false;
     public GameObject loading;
+    public GameObject resultLine1;
     void Start()
     {
         partyScreen.SetActive(false);
@@ -78,14 +79,18 @@ public class GlobalPartyChoose : MonoBehaviour
                         newPartyChooseLine.GetComponent<PartySlider>().party = preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
-                    partyName.text = partyNames[preferenceIndex];
-                    wasClicked = false;
-                    preferenceIndex = -1;
+                    partyName.text = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? partyNames[preferenceIndex] : "Party" + preferenceIndex;
                 }
+                wasClicked = false;
+                preferenceIndex = -1;
                 sum += (int)now.GetComponent<PartyChooseLine>().partyMandatesSlider.value;
             }
             GlobalPartyChoose.summary = sum;
         }
+    }
+    public bool allSpaces(string str)
+    {
+        return str.Replace(" ", "").Length == 0;
     }
     public void confirmPressed(int control)
     {
@@ -178,8 +183,6 @@ public class GlobalPartyChoose : MonoBehaviour
                             mandates = new int[numberOfPartiesInt];
                             partyParameters = new int[numberOfPartiesInt, ministeries.Length];
                             results = new float[ministeries.Length, numberOfPartiesInt];
-
-
                         }
                         confirm.GetComponentInChildren<Text>().text = "Calculate";
                         settings1.SetActive(false);
@@ -269,21 +272,9 @@ public class GlobalPartyChoose : MonoBehaviour
         Parse(serverOutput);
         if (recievedAnswer)
         {
-            //*SceneManager.LoadScene("Results");
-
-
-
-
-
-
-
-
-
-
-
-
             loading.SetActive(false);
             Debug.Log("Recieved");
+            showResults();
         }
     }
 
@@ -349,5 +340,17 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
-
+    public void showResults()
+    {
+        float height = 147.89f;
+        float numberOfInstantiation = (1/5.79f);
+        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length * height) - 447.5f);
+        for (int i = 0; i < ministeries.Length; i++)
+        {
+            numberOfInstantiation++;
+            GameObject newPartyChooseLine = Instantiate(resultLine1, transform.position, transform.rotation, positions.transform);
+            newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * numberOfInstantiation) + 567.495f, 0);
+            newPartyChooseLine.GetComponent<ResultLine1>().index = i;
+        }
+    }
 }

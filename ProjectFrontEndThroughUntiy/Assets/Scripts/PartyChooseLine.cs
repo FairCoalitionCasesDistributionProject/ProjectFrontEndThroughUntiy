@@ -24,7 +24,11 @@ public class PartyChooseLine : MonoBehaviour
     void Update()
     {
         partyMandatesSlider.onValueChanged.AddListener(delegate { sliderMoves(); });
-        GlobalPartyChoose.partyNames[index] = partyName.text;
+        GlobalPartyChoose.partyNames[index] = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? partyName.text : partyDefaultName.text;
+    }
+    public bool allSpaces(string str)
+    {
+        return str.Replace(" ","").Length == 0;
     }
     public void sliderClicked()
     {
