@@ -40,8 +40,9 @@ public class GlobalPartyChoose : MonoBehaviour
     public static bool wasClicked;
     public static int preferenceIndex;
     public static string serverOutput;
-    public static float [,] results;
+    public static float[,] results;
     public bool recievedAnswer = false;
+    public GameObject loading;
     void Start()
     {
         partyScreen.SetActive(false);
@@ -53,6 +54,7 @@ public class GlobalPartyChoose : MonoBehaviour
         wasClicked = false;
         preferenceIndex = -1;
         recievedAnswer = false;
+        loading.SetActive(false);
     }
     void Update()
     {
@@ -196,13 +198,26 @@ public class GlobalPartyChoose : MonoBehaviour
                 }
                 break;
             case 4:
+                bool allMandatesFilled = true;
                 foreach (Transform child in positions.transform)
                 {
-                    Destroy(child.gameObject);
+                    if (child.gameObject.GetComponent<PartyChooseLine>().partyMandatesSlider.value == 0)
+                    {
+                        alertShow(true, "All the members of the coalition should have some amount of mandates (not zero) .", 1.5f);
+                        timeConfirm--;
+                        allMandatesFilled = false;
+                        break;
+                    }
                 }
-
-
-                StartCoroutine(Upload());
+                if (allMandatesFilled)
+                {
+                    foreach (Transform child in positions.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    StartCoroutine(Upload());
+                    break;
+                }
                 break;
         }
     }
@@ -227,6 +242,7 @@ public class GlobalPartyChoose : MonoBehaviour
     }
     IEnumerator Upload()
     {
+        loading.SetActive(true);
         foreach (Transform child in preferences.transform)
         {
             Destroy(child.gameObject);
@@ -234,7 +250,6 @@ public class GlobalPartyChoose : MonoBehaviour
         string URL = "http://faircol.herokuapp.com/api/";
         int[] key = CurrentDateTime();
         string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + keyString(key) + "\"}";
-        Debug.Log(json);
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
@@ -256,6 +271,18 @@ public class GlobalPartyChoose : MonoBehaviour
         {
             //*SceneManager.LoadScene("Results");
 
+
+
+
+
+
+
+
+
+
+
+
+            loading.SetActive(false);
             Debug.Log("Recieved");
         }
     }
