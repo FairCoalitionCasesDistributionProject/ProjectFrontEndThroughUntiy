@@ -18,8 +18,8 @@ public class PartyChooseLine : MonoBehaviour
         partyMandatesSlider.minValue = 0;
         partyMandatesSlider.maxValue = amountOfMandates;
         partyMandatesSlider.value = GlobalPartyChoose.mandates[index];
-        partyName.text = (GlobalPartyChoose.partyNames[index] == null) ? "Party" + index : GlobalPartyChoose.partyNames[index];
-        partyDefaultName.text = (GlobalPartyChoose.partyNames[index] == null) ? "Party" + index : GlobalPartyChoose.partyNames[index];
+        partyName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
+        partyDefaultName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
     }
     void Update()
     {
