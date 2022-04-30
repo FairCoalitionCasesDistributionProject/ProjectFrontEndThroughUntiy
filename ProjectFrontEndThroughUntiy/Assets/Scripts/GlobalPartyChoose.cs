@@ -277,8 +277,6 @@ public class GlobalPartyChoose : MonoBehaviour
             showResults();
         }
     }
-
-
     public void Parse(string input)
     {
         if (input == "-1")
@@ -300,7 +298,6 @@ public class GlobalPartyChoose : MonoBehaviour
         results = matrix;
         recievedAnswer = true;
     }
-
     public int[] CurrentDateTime()
     {
         DateTime currentDateTime = DateTime.Now;
@@ -354,3 +351,8 @@ public class GlobalPartyChoose : MonoBehaviour
         }
     }
 }
+
+
+
+
+
