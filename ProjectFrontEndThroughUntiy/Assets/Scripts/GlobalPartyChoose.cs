@@ -5,6 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
+using UnityEngine.Networking;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System.IO;
+using System.Threading.Tasks;
 public class GlobalPartyChoose : MonoBehaviour
 {
     public Text numberOfParties;
@@ -25,15 +33,15 @@ public class GlobalPartyChoose : MonoBehaviour
     public static int[,] partyParameters;
     public static int summary;
     public Button back;
-
     public GameObject preferences;
     public GameObject partyScreen;
     public GameObject party;
-
-
-
-    public static bool wasClicked ;
+    public Text partyName;
+    public static bool wasClicked;
     public static int preferenceIndex;
+    public static string serverOutput;
+    public static float [,] results;
+    public bool recievedAnswer = false;
     void Start()
     {
         partyScreen.SetActive(false);
@@ -44,6 +52,7 @@ public class GlobalPartyChoose : MonoBehaviour
         back.interactable = false;
         wasClicked = false;
         preferenceIndex = -1;
+        recievedAnswer = false;
     }
     void Update()
     {
@@ -53,7 +62,8 @@ public class GlobalPartyChoose : MonoBehaviour
             foreach (Transform child in positions.transform)
             {
                 GameObject now = child.gameObject;
-                if(wasClicked){
+                if (wasClicked)
+                {
                     partyScreen.SetActive(true);
                     float height = 41f;
                     float numberOfInstantiation = -5.79f;
@@ -62,13 +72,13 @@ public class GlobalPartyChoose : MonoBehaviour
                     {
                         numberOfInstantiation++;
                         GameObject newPartyChooseLine = Instantiate(party, transform.position, transform.rotation, preferences.transform);
-                        //*newPartyChooseLine.transform.localScale = new Vector3(0.39f, 0.39f, 0.39f);
                         newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
-                        newPartyChooseLine.GetComponent<PartySlider>().party =preferenceIndex;
+                        newPartyChooseLine.GetComponent<PartySlider>().party = preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
-                    wasClicked=false;
-                    preferenceIndex= -1;
+                    partyName.text = partyNames[preferenceIndex];
+                    wasClicked = false;
+                    preferenceIndex = -1;
                 }
                 sum += (int)now.GetComponent<PartyChooseLine>().partyMandatesSlider.value;
             }
@@ -124,7 +134,6 @@ public class GlobalPartyChoose : MonoBehaviour
                         {
                             numberOfInstantiation++;
                             GameObject newPartyChooseLine = Instantiate(popularCaseLine, transform.position, transform.rotation, positions.transform);
-                            //*newPartyChooseLine.transform.localScale = new Vector3(0.39f, 0.39f, 0.39f);
                             newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
                             newPartyChooseLine.GetComponent<PopularCaseLine>().index = i;
                         }
@@ -166,6 +175,9 @@ public class GlobalPartyChoose : MonoBehaviour
                             partyNames = new string[numberOfPartiesInt];
                             mandates = new int[numberOfPartiesInt];
                             partyParameters = new int[numberOfPartiesInt, ministeries.Length];
+                            results = new float[ministeries.Length, numberOfPartiesInt];
+
+
                         }
                         confirm.GetComponentInChildren<Text>().text = "Calculate";
                         settings1.SetActive(false);
@@ -176,7 +188,6 @@ public class GlobalPartyChoose : MonoBehaviour
                         {
                             numberOfInstantiation++;
                             GameObject newPartyChooseLine = Instantiate(partyChooseLine, transform.position, transform.rotation, positions.transform);
-                            //*newPartyChooseLine.transform.localScale = new Vector3(0.39f, 0.39f, 0.39f);
                             newPartyChooseLine.transform.position = new Vector3(480, (height * i) + 447.5f, 0);
                             newPartyChooseLine.GetComponent<PartyChooseLine>().index = i;
                             newPartyChooseLine.GetComponent<PartyChooseLine>().amountOfMandates = amountOfMandateInt;
@@ -189,17 +200,12 @@ public class GlobalPartyChoose : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
+
+
+                StartCoroutine(Upload());
                 break;
         }
     }
-
-
-
-
-
-
-
-
     public void alertShow(bool show, string message, float time)
     {
         alert.SetActive(show);
@@ -211,21 +217,6 @@ public class GlobalPartyChoose : MonoBehaviour
         yield return new WaitForSeconds(time);
         alert.SetActive(false);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public void backFromPartyWasPressed()
     {
         foreach (Transform child in preferences.transform)
@@ -234,4 +225,102 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         partyScreen.SetActive(false);
     }
+    IEnumerator Upload()
+    {
+        foreach (Transform child in preferences.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        string URL = "http://faircol.herokuapp.com/api/";
+        int[] key = CurrentDateTime();
+        string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + keyString(key) + "\"}";
+        Debug.Log(json);
+        var uwr = new UnityWebRequest(URL, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+        uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        uwr.SetRequestHeader("Content-Type", "application/json");
+        yield return uwr.SendWebRequest();
+        if (uwr.isNetworkError)
+        {
+            Debug.Log("Error While Sending: " + uwr.error);
+            serverOutput = "" + (-1);
+        }
+        else
+        {
+            Debug.Log("Received: " + uwr.downloadHandler.text);
+            serverOutput = uwr.downloadHandler.text;
+        }
+        Parse(serverOutput);
+        if (recievedAnswer)
+        {
+            //*SceneManager.LoadScene("Results");
+
+            Debug.Log("Recieved");
+        }
+    }
+
+
+    public void Parse(string input)
+    {
+        if (input == "-1")
+        {
+            //*TODO: What to do if the input is broken.
+            return;
+        }
+        var cleanedRows = Regex.Split(input.Replace("\"", ""), @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
+        float[,] matrix = new float[cleanedRows.Count, partyNames.Length];
+        for (var i = 0; i < cleanedRows.Count; i++)
+        {
+            var data = cleanedRows.ElementAt(i).Split(',');
+            var matrixHelper = data.Select(c => float.Parse(c.Trim())).ToArray();
+            for (var j = 0; j < matrixHelper.Length; j++)
+            {
+                matrix[i, j] = matrixHelper[j];
+            }
+        }
+        results = matrix;
+        recievedAnswer = true;
+    }
+
+    public int[] CurrentDateTime()
+    {
+        DateTime currentDateTime = DateTime.Now;
+        return new int[7] { currentDateTime.Year, currentDateTime.Month, currentDateTime.Day, currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second, currentDateTime.Millisecond };
+    }
+    public string mandatesString()
+    {
+        string mandates1 = "[";
+        for (int i = 0; i < mandates.GetLength(0); i++)
+        {
+            mandates1 += ((i == 0 || i == mandates.GetLength(0)) ? "" : ",") + mandates[i];
+        }
+        mandates1 += "]";
+        return mandates1;
+    }
+    public string preferencesString()
+    {
+        string preference1 = "[";
+        for (int i = 0; i < partyParameters.GetLength(0); i++)
+        {
+            preference1 += "[";
+            for (int j = 0; j < partyParameters.GetLength(1); j++)
+            {
+                preference1 += partyParameters[i, j] + "" + ((j == partyParameters.GetLength(1) - 1) ? "" : ",");
+            }
+            preference1 += "]" + ((i == partyParameters.GetLength(0) - 1) ? "" : ",");
+        }
+        preference1 += "]";
+        return preference1;
+    }
+    public string keyString(int[] key)
+    {
+        string output = "";
+        for (int i = 0; i < key.Length; i++)
+        {
+            output += "" + key[i] + ((i < (key.Length - 1)) ? "." : "");
+        }
+        return output;
+    }
+
 }

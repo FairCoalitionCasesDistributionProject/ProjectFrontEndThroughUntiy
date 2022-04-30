@@ -98,6 +98,21 @@ public class Manager : MonoBehaviour
         loading.SetActive(true);
         string URL = "http://faircol.herokuapp.com/api/";
         string json = MainControl.serverInput;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Debug.Log(json);
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
