@@ -23,17 +23,18 @@ public class Welcome : MonoBehaviour
     {
         SceneManager.LoadScene("Popular");
     }
+
+#if !UNITY_EDITOR
     void Start()
     {
         string url = Application.absoluteURL;
-        Debug.Log(remove1(getUrlWithoutDomain(url)));
-        Debug.Log(baseConversator64To10(remove1(getUrlWithoutDomain(url))));
         string key = baseConversator64To10(remove1(getUrlWithoutDomain(url)));
         if(key != ""){
             MainControl.key = key;
             ReUse();
         }
     }
+#endif
     public string remove1(string str)
     {
         return str.Replace("?", "").Replace("/", "");
@@ -51,7 +52,7 @@ public class Welcome : MonoBehaviour
     }
     public void ReUse()
     {
-        string URL = "http://faircol.herokuapp.com/api/getsave";
+        string URL = MainControl.url + "/getsave";
         string json = "{\"key\":\"" + MainControl.key + "\"}";
         StartCoroutine(Upload(URL, json));
     }
@@ -99,7 +100,7 @@ public class Welcome : MonoBehaviour
     }
     public string baseConversator64To10(string input)
     {
-        string[] array = input.Split('|');
+        string[] array = input.Split('.');
         string output = "";
         string pre = "";
         for (int i = 0; i < array.Length; i++)

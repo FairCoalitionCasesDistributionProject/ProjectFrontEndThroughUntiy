@@ -82,7 +82,7 @@ public class GlobalPartyChoose : MonoBehaviour
                         newPartyChooseLine.GetComponent<PartySlider>().party = preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
-                    partyName.text =  partyNames[preferenceIndex] ;
+                    partyName.text = partyNames[preferenceIndex];
                 }
                 wasClicked = false;
                 preferenceIndex = -1;
@@ -101,6 +101,7 @@ public class GlobalPartyChoose : MonoBehaviour
         switch (timeConfirm)
         {
             case 0:
+                confirm.GetComponentInChildren<Text>().text = "Confirm";
                 foreach (Transform child in positions.transform)
                 {
                     Destroy(child.gameObject);
@@ -110,6 +111,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 settings1.SetActive(false);
                 break;
             case 1:
+                confirm.GetComponentInChildren<Text>().text = "Confirm";
                 foreach (Transform child in positions.transform)
                 {
                     Destroy(child.gameObject);
@@ -152,6 +154,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 }
                 break;
             case 2:
+                confirm.GetComponentInChildren<Text>().text = "Confirm";
                 foreach (Transform child in positions.transform)
                 {
                     Destroy(child.gameObject);
@@ -160,6 +163,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 settings1.SetActive(true);
                 break;
             case 3:
+                confirm.GetComponentInChildren<Text>().text = "Confirm";
                 foreach (Transform child in positions.transform)
                 {
                     Destroy(child.gameObject);
@@ -181,27 +185,34 @@ public class GlobalPartyChoose : MonoBehaviour
                     }
                     else
                     {
-                        if (control > 0 && numberOfPartiesWasChanged)
+                        if (numberOfPartiesInt > amountOfMandateInt)
                         {
-                            partyNames = stringArray(numberOfPartiesInt, "Party");
-                            mandates = new int[numberOfPartiesInt];
-                            partyParameters = new int[numberOfPartiesInt, ministeries.Length];
-                            results = new float[ministeries.Length, numberOfPartiesInt];
-                            numberOfPartiesWasChanged = false;
+                            alertShow(true, "Number of parties must be greater than number of mandates .", 1.5f);
+                            timeConfirm--;
                         }
-
-                        confirm.GetComponentInChildren<Text>().text = "Calculate";
-                        settings1.SetActive(false);
-                        float height = -41f;
-                        float numberOfInstantiation = -5.79f;
-                        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfPartiesInt * 41) - 447.5f);
-                        for (int i = 0; i < numberOfPartiesInt; i++)
+                        else
                         {
-                            numberOfInstantiation++;
-                            GameObject newPartyChooseLine = Instantiate(partyChooseLine, transform.position, transform.rotation, positions.transform);
-                            newPartyChooseLine.transform.position = new Vector3(480, (height * i) + 447.5f, 0);
-                            newPartyChooseLine.GetComponent<PartyChooseLine>().index = i;
-                            newPartyChooseLine.GetComponent<PartyChooseLine>().amountOfMandates = amountOfMandateInt;
+                            if (control > 0 && numberOfPartiesWasChanged)
+                            {
+                                partyNames = stringArray(numberOfPartiesInt, "Party");
+                                mandates = new int[numberOfPartiesInt];
+                                partyParameters = new int[numberOfPartiesInt, ministeries.Length];
+                                results = new float[ministeries.Length, numberOfPartiesInt];
+                                numberOfPartiesWasChanged = false;
+                            }
+                            confirm.GetComponentInChildren<Text>().text = "Calculate";
+                            settings1.SetActive(false);
+                            float height = -41f;
+                            float numberOfInstantiation = -5.79f;
+                            positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfPartiesInt * 41) - 447.5f);
+                            for (int i = 0; i < numberOfPartiesInt; i++)
+                            {
+                                numberOfInstantiation++;
+                                GameObject newPartyChooseLine = Instantiate(partyChooseLine, transform.position, transform.rotation, positions.transform);
+                                newPartyChooseLine.transform.position = new Vector3(480, (height * i) + 447.5f, 0);
+                                newPartyChooseLine.GetComponent<PartyChooseLine>().index = i;
+                                newPartyChooseLine.GetComponent<PartyChooseLine>().amountOfMandates = amountOfMandateInt;
+                            }
                         }
                     }
                 }
@@ -218,6 +229,11 @@ public class GlobalPartyChoose : MonoBehaviour
                         break;
                     }
                 }
+                back.interactable = false;
+
+
+                timeConfirm = -1;
+                confirm.GetComponentInChildren<Text>().text = "Recalculate";
                 if (allMandatesFilled)
                 {
                     foreach (Transform child in positions.transform)

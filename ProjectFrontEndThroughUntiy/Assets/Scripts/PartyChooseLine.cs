@@ -27,18 +27,11 @@ public class PartyChooseLine : MonoBehaviour
             GlobalPartyChoose.mandates[index] = amountOfMandates;
         }
         partyMandates.text = " " + partyMandatesSlider.value;
-        
-
-
-
-
         partyDefaultName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
         partyName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
-        
     }
     void Update()
     {
-
         GlobalPartyChoose.partyNames[index] = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? partyName.text : partyDefaultName.text;
         partyMandatesSlider.onValueChanged.AddListener(delegate { sliderMoves(); });
     }
@@ -60,14 +53,25 @@ public class PartyChooseLine : MonoBehaviour
         partyMandates.text = " " + partyMandatesSlider.value.ToString();
         GlobalPartyChoose.mandates[index] = (int)partyMandatesSlider.value;
     }
-
-
     public void preferenceClicked()
     {
         GlobalPartyChoose.wasClicked = true;
         GlobalPartyChoose.preferenceIndex = index;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

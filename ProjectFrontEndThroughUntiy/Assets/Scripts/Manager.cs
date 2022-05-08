@@ -162,7 +162,7 @@ public class Manager : MonoBehaviour
         string output = "";
         for (int i = 0; i < input.Length; i++)
         {
-            output += ((i == 0) ? "" : "|") + fromDeci(61, input[i]);
+            output += ((i == 0) ? "" : ".") + fromDeci(61, input[i]);
         }
         return output;
     }
