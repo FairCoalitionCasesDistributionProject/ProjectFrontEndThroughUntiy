@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class ButtonControler : MonoBehaviour
 {
-    public  void LoadPartyChoose()
+    public void LoadPartyChoose()
     {
         SceneManager.LoadScene("PartyChoose");
     }
@@ -20,9 +20,9 @@ public class ButtonControler : MonoBehaviour
         MainControl.currentName = partyName;
         SceneManager.LoadScene("PartyCaseSettings");
     }
-    public void Back(){
+    public void Back()
+    {
         SceneManager.LoadScene(MainControl.lastPage);
     }
 }
-
 

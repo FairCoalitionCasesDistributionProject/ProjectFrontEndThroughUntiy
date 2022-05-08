@@ -10,8 +10,8 @@ public class PopularCaseLine : MonoBehaviour
     public Text caseName;
     void Start()
     {
-        caseDefaultName.text = (GlobalPartyChoose.ministeries[index]==null || GlobalPartyChoose.ministeries[index]=="")? "Case" + index: GlobalPartyChoose.ministeries[index];
-        caseName.text = (GlobalPartyChoose.ministeries[index]==null || GlobalPartyChoose.ministeries[index]=="") ? "Case" + index: GlobalPartyChoose.ministeries[index];
+        caseDefaultName.text = (GlobalPartyChoose.ministeries[index] == null || GlobalPartyChoose.ministeries[index] == "") ? "Case" + index : GlobalPartyChoose.ministeries[index];
+        caseName.text = (GlobalPartyChoose.ministeries[index] == null || GlobalPartyChoose.ministeries[index] == "") ? "Case" + index : GlobalPartyChoose.ministeries[index];
     }
     void Update()
     {
@@ -19,6 +19,6 @@ public class PopularCaseLine : MonoBehaviour
     }
     public bool allSpaces(string str)
     {
-        return str.Replace(" ","").Length == 0;
+        return str.Replace(" ", "").Length == 0;
     }
 }

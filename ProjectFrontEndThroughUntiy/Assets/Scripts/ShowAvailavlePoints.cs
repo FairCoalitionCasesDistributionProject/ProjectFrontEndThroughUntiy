@@ -9,7 +9,7 @@ public class ShowAvailavlePoints : MonoBehaviour
     public Text balance;
     void Start()
     {
-      switch (MainControl.currentName)
+        switch (MainControl.currentName)
         {
             case "likud":
                 MainControl.currentIdentifier = ((int)MainControl.parties.likud);
@@ -50,11 +50,11 @@ public class ShowAvailavlePoints : MonoBehaviour
             case "meretz":
                 MainControl.currentIdentifier = ((int)MainControl.parties.meretz);
                 break;
-        }  
+        }
     }
     void Update()
     {
-        balance.text = " " + (100-MainControl.partyBalance[MainControl.currentIdentifier]);
+        balance.text = " " + (100 - MainControl.partyBalance[MainControl.currentIdentifier]);
     }
 }
 

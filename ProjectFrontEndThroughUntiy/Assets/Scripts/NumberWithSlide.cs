@@ -65,7 +65,7 @@ public class NumberWithSlide : MonoBehaviour
     public async void ValueChangeCheck()
     {
         MainControl.partyParameters[MainControl.currentIdentifier, caseNumber] = (int)Math.Round(slider.value);
-        MainControl.partyBalance[MainControl.currentIdentifier]=0;
+        MainControl.partyBalance[MainControl.currentIdentifier] = 0;
         for (int i = 0; i < 29; i++)
         {
             MainControl.partyBalance[MainControl.currentIdentifier] += MainControl.partyParameters[MainControl.currentIdentifier, i];

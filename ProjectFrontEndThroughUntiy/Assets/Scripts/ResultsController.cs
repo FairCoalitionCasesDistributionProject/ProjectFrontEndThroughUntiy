@@ -12,8 +12,8 @@ public class ResultsController : MonoBehaviour
     void Start()
     {
         InstantiateCaseViewRows();
-        InputKey1.text=MainControl.key;
-        InputKey1.readOnly=true;
+        InputKey1.text = MainControl.key;
+        InputKey1.readOnly = true;
     }
     public void InstantiateCaseViewRows()
     {
@@ -24,10 +24,10 @@ public class ResultsController : MonoBehaviour
             if (MainControl.relevantCases[i])
             {
                 numberOfInstantiation++;
-                GameObject newCaseViewRow = Instantiate(CaseViewRow,transform.position,transform.rotation,transform);
+                GameObject newCaseViewRow = Instantiate(CaseViewRow, transform.position, transform.rotation, transform);
                 newCaseViewRow.transform.localScale = new Vector3(0.39f, 0.39f, 0.39f);
-                newCaseViewRow.transform.position = new Vector3(539, height*numberOfInstantiation ,0);
-                newCaseViewRow.GetComponent<Results>().caseNumber=i;
+                newCaseViewRow.transform.position = new Vector3(539, height * numberOfInstantiation, 0);
+                newCaseViewRow.GetComponent<Results>().caseNumber = i;
             }
         }
     }

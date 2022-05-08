@@ -23,13 +23,13 @@ public class Welcome : MonoBehaviour
     {
         SceneManager.LoadScene("Popular");
     }
-
 #if !UNITY_EDITOR
     void Start()
     {
         string url = Application.absoluteURL;
         string key = baseConversator64To10(remove1(getUrlWithoutDomain(url)));
-        if(key != ""){
+        if (key != "")
+        {
             MainControl.key = key;
             ReUse();
         }
@@ -39,7 +39,6 @@ public class Welcome : MonoBehaviour
     {
         return str.Replace("?", "").Replace("/", "");
     }
-
     public string getUrlWithoutDomain(string url)
     {
         string[] array = url.Split('/');
@@ -154,6 +153,15 @@ public class Welcome : MonoBehaviour
         return num;
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

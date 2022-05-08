@@ -382,16 +382,6 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
-
-
-
-
-
-
-
-
-
-
     public void caseNumberWasChanged()
     {
         numberOfCasesWasChanged = true;
@@ -405,6 +395,8 @@ public class GlobalPartyChoose : MonoBehaviour
         numberOfMandatesWasChanged = true;
     }
 }
+
+
 
 
 

@@ -14,7 +14,6 @@ public class Results : MonoBehaviour
     public Image party;
     public Image party1;
     public Sprite likud, haavoda, hareshimaHamshutefet, hareshimaHaaravitHameshutefet, hazionutHadatit, israelBeitenu, kaholLavan, meretz, shas, tikvaHadasha, yahadutHatora, yemina, yeshAtid;
-
     void Start()
     {
         (int, int) tuple = partySplitter(caseNumber);
@@ -107,6 +106,51 @@ public class Results : MonoBehaviour
         return (value * 100).ToString("0.00") + "%";
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

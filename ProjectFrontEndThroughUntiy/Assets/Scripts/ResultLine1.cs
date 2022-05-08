@@ -20,23 +20,17 @@ public class ResultLine1 : MonoBehaviour
             numberOfInstantiation++;
             GameObject newPartyChooseLine = Instantiate(resultsCell, transform.position, transform.rotation, result.transform);
             // channge the position og the newPartyChooseLine so it will fit one after the other in horizontal line
-            newPartyChooseLine.transform.position = new Vector3(i*width,(-147*index)+320f, 0);
+            newPartyChooseLine.transform.position = new Vector3(i * width, (-147 * index) + 320f, 0);
             newPartyChooseLine.GetComponent<ResultsCell>().cIndex = index;
             newPartyChooseLine.GetComponent<ResultsCell>().pIndex = i;
-
         }
     }
-
-
-
-
-
-
-
-
-
     public bool allSpaces(string str)
     {
         return str.Replace(" ", "").Length == 0;
     }
 }
+
+
+
+

@@ -12,7 +12,6 @@ public class PartyChooseLine : MonoBehaviour
     public Text partyMandates;
     public Slider partyMandatesSlider;
     public Button partyPreference;
-
     void Start()
     {
         partyMandatesSlider.minValue = 0;
@@ -59,6 +58,7 @@ public class PartyChooseLine : MonoBehaviour
         GlobalPartyChoose.preferenceIndex = index;
     }
 }
+
 
 
 
