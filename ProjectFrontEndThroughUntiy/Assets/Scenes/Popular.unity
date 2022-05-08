@@ -486,7 +486,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2141715837}
+        m_TargetAssemblyTypeName: GlobalPartyChoose, Assembly-CSharp
+        m_MethodName: caseNumberWasChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2675,7 +2687,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2141715837}
+        m_TargetAssemblyTypeName: GlobalPartyChoose, Assembly-CSharp
+        m_MethodName: mandatesWasChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3561,7 +3585,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2141715837}
+        m_TargetAssemblyTypeName: GlobalPartyChoose, Assembly-CSharp
+        m_MethodName: partyNumberWasChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4245,3 +4281,6 @@ MonoBehaviour:
   recievedAnswer: 0
   loading: {fileID: 686584362}
   resultLine1: {fileID: 2554104254738597854, guid: 9caa6a17e2c4b2c448fc591af88532cf, type: 3}
+  numberOfCasesWasChanged: 1
+  numberOfPartiesWasChanged: 1
+  numberOfMandatesWasChanged: 1

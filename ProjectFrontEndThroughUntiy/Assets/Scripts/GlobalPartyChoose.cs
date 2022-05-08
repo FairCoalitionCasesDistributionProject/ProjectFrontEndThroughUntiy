@@ -44,6 +44,9 @@ public class GlobalPartyChoose : MonoBehaviour
     public bool recievedAnswer = false;
     public GameObject loading;
     public GameObject resultLine1;
+    public bool numberOfCasesWasChanged = true;
+    public bool numberOfPartiesWasChanged = true;
+    public bool numberOfMandatesWasChanged = true;
     void Start()
     {
         partyScreen.SetActive(false);
@@ -79,7 +82,7 @@ public class GlobalPartyChoose : MonoBehaviour
                         newPartyChooseLine.GetComponent<PartySlider>().party = preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
-                    partyName.text = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? partyNames[preferenceIndex] : "Party" + preferenceIndex;
+                    partyName.text =  partyNames[preferenceIndex] ;
                 }
                 wasClicked = false;
                 preferenceIndex = -1;
@@ -128,9 +131,10 @@ public class GlobalPartyChoose : MonoBehaviour
                     }
                     else
                     {
-                        if (control > 0)
+                        if (control > 0 && numberOfCasesWasChanged)
                         {
-                            ministeries = new string[numberOfMinisteriesInt];
+                            ministeries = stringArray(numberOfMinisteriesInt, "Case");
+                            numberOfCasesWasChanged = false;
                         }
                         settings0.SetActive(false);
                         back.interactable = true;
@@ -177,13 +181,15 @@ public class GlobalPartyChoose : MonoBehaviour
                     }
                     else
                     {
-                        if (control > 0)
+                        if (control > 0 && numberOfPartiesWasChanged)
                         {
-                            partyNames = new string[numberOfPartiesInt];
+                            partyNames = stringArray(numberOfPartiesInt, "Party");
                             mandates = new int[numberOfPartiesInt];
                             partyParameters = new int[numberOfPartiesInt, ministeries.Length];
                             results = new float[ministeries.Length, numberOfPartiesInt];
+                            numberOfPartiesWasChanged = false;
                         }
+
                         confirm.GetComponentInChildren<Text>().text = "Calculate";
                         settings1.SetActive(false);
                         float height = -41f;
@@ -340,7 +346,7 @@ public class GlobalPartyChoose : MonoBehaviour
     public void showResults()
     {
         float height = 147.89f;
-        float numberOfInstantiation = (1/5.79f);
+        float numberOfInstantiation = (1 / 5.79f);
         positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length * height) - 447.5f);
         for (int i = 0; i < ministeries.Length; i++)
         {
@@ -349,6 +355,38 @@ public class GlobalPartyChoose : MonoBehaviour
             newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * numberOfInstantiation) + 567.495f, 0);
             newPartyChooseLine.GetComponent<ResultLine1>().index = i;
         }
+    }
+
+    public string[] stringArray(int length, string value)
+    {
+        string[] output = new string[length];
+        for (int i = 0; i < length; i++)
+        {
+            output[i] = value + "" + i;
+        }
+        return output;
+    }
+
+
+
+
+
+
+
+
+
+
+    public void caseNumberWasChanged()
+    {
+        numberOfCasesWasChanged = true;
+    }
+    public void partyNumberWasChanged()
+    {
+        numberOfPartiesWasChanged = true;
+    }
+    public void mandatesWasChanged()
+    {
+        numberOfMandatesWasChanged = true;
     }
 }
 

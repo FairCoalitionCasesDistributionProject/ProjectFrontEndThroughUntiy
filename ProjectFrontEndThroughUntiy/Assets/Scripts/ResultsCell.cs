@@ -10,12 +10,12 @@ public class ResultsCell : MonoBehaviour
     public Text value;
     void Start()
     {
-        party.text = (GlobalPartyChoose.partyNames[pIndex] != null && GlobalPartyChoose.partyNames[pIndex] != "" && !(allSpaces(GlobalPartyChoose.partyNames[pIndex]))) ? "Party" + pIndex: GlobalPartyChoose.partyNames[pIndex] ;
+        party.text = (GlobalPartyChoose.partyNames[pIndex] != null && GlobalPartyChoose.partyNames[pIndex] != "" && !allSpaces(GlobalPartyChoose.partyNames[pIndex])) ? GlobalPartyChoose.partyNames[pIndex] : "Party" + pIndex;
         value.text = percentage(GlobalPartyChoose.results[cIndex, pIndex]);
     }
     public bool allSpaces(string str)
     {
-        return str.Replace(" ", "").Length == 0;
+        return str.Replace(" ", "").Length == 0 || string.IsNullOrWhiteSpace(str.Replace(" ", ""));
     }
     public string percentage(float value)
     {

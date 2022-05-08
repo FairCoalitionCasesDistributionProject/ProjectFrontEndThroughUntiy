@@ -110,13 +110,13 @@ public class FirstScreenController : MonoBehaviour
     {
         string URL = "http://faircol.herokuapp.com/api/";
         string json = "{WakeUpAndBeReady.}";
-        StartCoroutine(Upload(URL, json,true));
+        StartCoroutine(Upload(URL, json, true));
     }
     public void ReUse()
     {
         string URL = "http://faircol.herokuapp.com/api/getsave";
         string json = "{\"key\":\"" + MainControl.key + "\"}";
-        StartCoroutine(Upload(URL, json,false));
+        StartCoroutine(Upload(URL, json, false));
     }
     IEnumerator Upload(string URL, string json, bool forWakingUp)
     {
