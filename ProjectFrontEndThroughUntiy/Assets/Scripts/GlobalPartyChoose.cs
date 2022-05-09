@@ -229,13 +229,11 @@ public class GlobalPartyChoose : MonoBehaviour
                         break;
                     }
                 }
-                back.interactable = false;
-
-
-                timeConfirm = -1;
-                confirm.GetComponentInChildren<Text>().text = "Recalculate";
                 if (allMandatesFilled)
                 {
+                    back.interactable = false;
+                    timeConfirm = -1;
+                    confirm.GetComponentInChildren<Text>().text = "Recalculate";
                     foreach (Transform child in positions.transform)
                     {
                         Destroy(child.gameObject);
