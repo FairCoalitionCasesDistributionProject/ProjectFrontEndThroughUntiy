@@ -12,6 +12,7 @@ public class ResultsController : MonoBehaviour
     void Start()
     {
         InstantiateCaseViewRows();
+        Application.ExternalEval(Application.absoluteURL + "?" + MainControl.key);
         InputKey1.text = MainControl.key;
         InputKey1.readOnly = true;
     }

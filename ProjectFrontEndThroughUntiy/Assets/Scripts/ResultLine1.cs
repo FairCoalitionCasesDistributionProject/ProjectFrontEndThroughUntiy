@@ -32,5 +32,3 @@ public class ResultLine1 : MonoBehaviour
 }
 
 
-
-

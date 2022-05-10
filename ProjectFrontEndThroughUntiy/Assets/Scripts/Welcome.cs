@@ -23,18 +23,19 @@ public class Welcome : MonoBehaviour
     {
         SceneManager.LoadScene("Popular");
     }
-#if !UNITY_EDITOR
     void Start()
     {
         string url = Application.absoluteURL;
-        string key = baseConversator64To10(remove1(getUrlWithoutDomain(url)));
-        if (key != "")
+        if (url.Contains("?") && url.Length > url.IndexOf("?") + 1)
         {
-            MainControl.key = key;
-            ReUse();
+            string key = baseConversator64To10(remove1(getUrlWithoutDomain(url)));
+            if (key != "")
+            {
+                MainControl.key = key;
+                ReUse();
+            }
         }
     }
-#endif
     public string remove1(string str)
     {
         return str.Replace("?", "").Replace("/", "");
@@ -51,7 +52,7 @@ public class Welcome : MonoBehaviour
     }
     public void ReUse()
     {
-        string URL = MainControl.url + "/getsave";
+        string URL = MainControl.url + "getsave";
         string json = "{\"key\":\"" + MainControl.key + "\"}";
         StartCoroutine(Upload(URL, json));
     }
