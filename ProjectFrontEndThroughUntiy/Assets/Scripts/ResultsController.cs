@@ -8,13 +8,11 @@ using UnityEngine.UI;
 public class ResultsController : MonoBehaviour
 {
     public GameObject CaseViewRow;
-    public InputField InputKey1;
+    public Button reuseKey1;
     void Start()
     {
         InstantiateCaseViewRows();
-        Application.ExternalEval(Application.absoluteURL + "?" + MainControl.key);
-        InputKey1.text = MainControl.key;
-        InputKey1.readOnly = true;
+        reuseKey1.GetComponentInChildren<Text>().text =  MainControl.key;
     }
     public void InstantiateCaseViewRows()
     {
@@ -35,5 +33,19 @@ public class ResultsController : MonoBehaviour
     public void Reload()
     {
         SceneManager.LoadScene("PartyChoose");
+    }
+    public void Link1()
+    {
+        Application.ExternalEval("prompt(\"Copy the following link to reload this session later:\",\"" + domain(Application.absoluteURL) + "?" + MainControl.key + "\")");
+    }
+    public string domain(string url)
+    {
+        string[] array = url.Split('/');
+        string output = "";
+        for (int i = 0; i < 3; i++)
+        {
+            output += array[i] + "/";
+        }
+        return output;
     }
 }
