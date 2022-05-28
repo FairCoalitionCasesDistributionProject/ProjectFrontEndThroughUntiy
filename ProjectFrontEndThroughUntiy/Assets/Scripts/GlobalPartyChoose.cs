@@ -55,6 +55,7 @@ public class GlobalPartyChoose : MonoBehaviour
         alert.SetActive(false);
         timeConfirm = 0;
         back.interactable = false;
+        back.enabled = false;
         wasClicked = false;
         preferenceIndex = -1;
         recievedAnswer = false;
@@ -107,6 +108,7 @@ public class GlobalPartyChoose : MonoBehaviour
                     Destroy(child.gameObject);
                 }
                 back.interactable = false;
+                back.enabled = false;
                 settings0.SetActive(true);
                 settings1.SetActive(false);
                 break;
@@ -139,7 +141,8 @@ public class GlobalPartyChoose : MonoBehaviour
                             numberOfCasesWasChanged = false;
                         }
                         settings0.SetActive(false);
-                        back.interactable = true;
+                        back.enabled = true;
+                        back.interactable=true;
                         float height = 49f;
                         float numberOfInstantiation = -5.79f;
                         positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfMinisteriesInt * height) - 447.5f);
@@ -232,6 +235,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 if (allMandatesFilled)
                 {
                     back.interactable = false;
+                    back.enabled = false;
                     timeConfirm = -1;
                     confirm.GetComponentInChildren<Text>().text = "Recalculate";
                     foreach (Transform child in positions.transform)

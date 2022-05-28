@@ -26,3 +26,19 @@ public class ButtonControler : MonoBehaviour
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

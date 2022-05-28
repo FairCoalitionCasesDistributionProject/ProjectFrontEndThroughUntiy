@@ -12,7 +12,7 @@ public class ResultsController : MonoBehaviour
     void Start()
     {
         InstantiateCaseViewRows();
-        reuseKey1.GetComponentInChildren<Text>().text =  MainControl.key;
+        reuseKey1.GetComponentInChildren<Text>().text = MainControl.key;
     }
     public void InstantiateCaseViewRows()
     {
