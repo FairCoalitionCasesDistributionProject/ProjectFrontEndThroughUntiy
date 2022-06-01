@@ -4353,6 +4353,7 @@ MonoBehaviour:
   partyChooseLine: {fileID: 8109797661729100453, guid: 8512724702360db469442f0d97442bdd, type: 3}
   popularCaseLine: {fileID: 5549240050799811657, guid: b1943bceb37c7b44c9c8cd8491b7d7c7, type: 3}
   timeConfirm: 0
+  back1: {fileID: 1079696556}
   back: {fileID: 1079696560}
   preferences: {fileID: 1518703262}
   partyScreen: {fileID: 1013435251}

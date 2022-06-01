@@ -191,7 +191,14 @@ public class Manager : MonoBehaviour
     }
     public void settingsPressed()
     {
-        settings1.SetActive(true);
+        if (settings1.activeSelf)
+        {
+           settings1.SetActive(false);
+        }
+        else
+        {
+            settings1.SetActive(true);
+        }
     }
     public void save1()
     {

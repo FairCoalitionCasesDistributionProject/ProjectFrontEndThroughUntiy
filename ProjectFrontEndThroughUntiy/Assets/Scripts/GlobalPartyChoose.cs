@@ -32,6 +32,7 @@ public class GlobalPartyChoose : MonoBehaviour
     public static int[] mandates;
     public static int[,] partyParameters;
     public static int summary;
+    public GameObject back1;
     public Button back;
     public GameObject preferences;
     public GameObject partyScreen;
@@ -54,6 +55,7 @@ public class GlobalPartyChoose : MonoBehaviour
         settings1.SetActive(false);
         alert.SetActive(false);
         timeConfirm = 0;
+        back1.SetActive(false);
         back.interactable = false;
         back.enabled = false;
         wasClicked = false;
@@ -107,6 +109,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
+                back1.SetActive(false);
                 back.interactable = false;
                 back.enabled = false;
                 settings0.SetActive(true);
@@ -141,6 +144,9 @@ public class GlobalPartyChoose : MonoBehaviour
                             numberOfCasesWasChanged = false;
                         }
                         settings0.SetActive(false);
+
+
+                        back1.SetActive(true);
                         back.enabled = true;
                         back.interactable=true;
                         float height = 49f;
@@ -397,10 +403,4 @@ public class GlobalPartyChoose : MonoBehaviour
         numberOfMandatesWasChanged = true;
     }
 }
-
-
-
-
-
-
 
