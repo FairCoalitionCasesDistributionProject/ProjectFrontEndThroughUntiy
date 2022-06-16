@@ -81,7 +81,7 @@ public class GlobalPartyChoose : MonoBehaviour
                     {
                         numberOfInstantiation++;
                         GameObject newPartyChooseLine = Instantiate(party, transform.position, transform.rotation, preferences.transform);
-                        newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
+                        newPartyChooseLine.transform.position = new Vector3(600, ((-1) * height * i) + 447.5f, 0);
                         newPartyChooseLine.GetComponent<PartySlider>().party = preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
@@ -156,7 +156,7 @@ public class GlobalPartyChoose : MonoBehaviour
                         {
                             numberOfInstantiation++;
                             GameObject newPartyChooseLine = Instantiate(popularCaseLine, transform.position, transform.rotation, positions.transform);
-                            newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
+                            newPartyChooseLine.transform.position = new Vector3(600, ((-1) * height * i) + 447.5f, 0);
                             newPartyChooseLine.GetComponent<PopularCaseLine>().index = i;
                         }
                     }
@@ -218,7 +218,7 @@ public class GlobalPartyChoose : MonoBehaviour
                             {
                                 numberOfInstantiation++;
                                 GameObject newPartyChooseLine = Instantiate(partyChooseLine, transform.position, transform.rotation, positions.transform);
-                                newPartyChooseLine.transform.position = new Vector3(480, (height * i) + 447.5f, 0);
+                                newPartyChooseLine.transform.position = new Vector3(600, (height * i) + 447.5f, 0);
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().index = i;
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().amountOfMandates = amountOfMandateInt;
                             }
@@ -376,7 +376,7 @@ public class GlobalPartyChoose : MonoBehaviour
         {
             numberOfInstantiation++;
             GameObject newPartyChooseLine = Instantiate(resultLine1, transform.position, transform.rotation, positions.transform);
-            newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * numberOfInstantiation) + 567.495f, 0);
+            newPartyChooseLine.transform.position = new Vector3(600, ((-1) * height * numberOfInstantiation) + 567.495f, 0);
             newPartyChooseLine.GetComponent<ResultLine1>().index = i;
         }
     }
