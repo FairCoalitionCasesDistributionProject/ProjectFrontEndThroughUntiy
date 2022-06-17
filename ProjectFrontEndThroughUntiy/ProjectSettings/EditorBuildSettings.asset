@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/InfEn.unity
     guid: beabc5c8c2816be689434491ccc1ba37
   - enabled: 1
+    path: Assets/Scenes/Information.unity
+    guid: 1d2031325292a5248a7f2154e501fc2b
+  - enabled: 1
     path: Assets/Scenes/Results.unity
     guid: 10bf93239eec56e45b6542aa7210c834
   m_configObjects: {}
