@@ -35,6 +35,9 @@ public class Welcome : MonoBehaviour
                 ReUse();
             }
         }
+        else{
+            MainControl.lastPage="Main1";
+        }
     }
     public string remove1(string str)
     {
