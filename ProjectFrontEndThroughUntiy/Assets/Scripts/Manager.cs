@@ -30,8 +30,8 @@ public class Manager : MonoBehaviour
 
         recievedAnswer = false;
         int[] key = CurrentDateTime();
-        string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + keyString(key) + "\"}";
-        MainControl.key = EncodeTo64(key);
+        string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + "IL24."+keyString(key) + "\"}";
+        MainControl.key = "IL24."+EncodeTo64(key);
         MainControl.relevantCases = relevantColumnCheck(MainControl.partyParameters);
         MainControl.relevantParties = relevantRowCheck(MainControl.partyParameters);
         MainControl.serverInput = draft;

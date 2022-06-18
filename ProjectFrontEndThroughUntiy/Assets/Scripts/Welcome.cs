@@ -13,8 +13,26 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
+using TMPro;
+public enum typeRun
+{
+    EMPTY = -1,
+    EN = 0,
+    IL24 = 1,
+}
 public class Welcome : MonoBehaviour
 {
+    public GameObject question;
+    public Text enQuestion;
+    public TextMeshProUGUI il24Question;
+    public TextMeshProUGUI il24Apply;
+    public TextMeshProUGUI il24Cancel;
+    public Text enApply;
+    public Text enCancel;
+
+
+
+    public Image image;
     public void LoadIsraelMode1()
     {
         SceneManager.LoadScene("Screen1");
@@ -25,23 +43,65 @@ public class Welcome : MonoBehaviour
     }
     void Start()
     {
+        question.SetActive(false);
         string url = Application.absoluteURL;
+        MainControl.lastPage = "Main1";
         if (url.Contains("?") && url.Length > url.IndexOf("?") + 1)
         {
-            string key = baseConversator64To10(remove1(getUrlWithoutDomain(url)));
+            string query = remove1(getUrlWithoutDomain(url));
+            typeRun type1;
+            (query, type1) = il24OrEn(query);
+            string key = baseConversator64To10(query);
             if (key != "")
             {
-                MainControl.key = key;
-                ReUse();
+                MainControl.key = (type1 == typeRun.EMPTY) ? "" + key : ((type1 == typeRun.IL24) ? "IL24." + key : "EN." + key);
+                question.SetActive(true);
+                if (type1 == typeRun.EMPTY || type1 == typeRun.IL24)
+                {
+                    il24Question.text = "האם ברצונך לשחזר הרצה ?";
+                    il24Apply.gameObject.SetActive(true);
+                    il24Cancel.gameObject.SetActive(true);
+                }
+                else
+                {
+                    enQuestion.text = "Do you want to reload the session ?";
+                    enApply.gameObject.SetActive(true);
+                    enCancel.gameObject.SetActive(true);
+                }
             }
         }
-        else{
-            MainControl.lastPage="Main1";
+    }
+    public (string, typeRun) il24OrEn(string str)
+    {
+        if (str.Contains("EN."))
+        {
+            return (str.Replace("EN.", ""), typeRun.EN);
+        }
+        else
+        {
+            if (str.Contains("IL24."))
+            {
+                return (str.Replace("IL24.", ""), typeRun.IL24);
+            }
+            else
+            {
+                return (str, typeRun.EMPTY);
+            }
         }
     }
     public string remove1(string str)
     {
         return str.Replace("?", "").Replace("/", "");
+    }
+    public void applyWasClicked()
+    {
+        image.gameObject.SetActive(false);
+        ReUse();
+    }
+    public void cancelWasClick1()
+    {
+        question.SetActive(false);
+        MainControl.key = "";
     }
     public string getUrlWithoutDomain(string url)
     {

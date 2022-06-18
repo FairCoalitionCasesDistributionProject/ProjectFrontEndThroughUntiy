@@ -62,6 +62,7 @@ public class GlobalPartyChoose : MonoBehaviour
         preferenceIndex = -1;
         recievedAnswer = false;
         loading.SetActive(false);
+        MainControl.lastPage = "Popular";
     }
     void Update()
     {
@@ -148,7 +149,7 @@ public class GlobalPartyChoose : MonoBehaviour
 
                         back1.SetActive(true);
                         back.enabled = true;
-                        back.interactable=true;
+                        back.interactable = true;
                         float height = 49f;
                         float numberOfInstantiation = -5.79f;
                         positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfMinisteriesInt * height) - 447.5f);
@@ -282,7 +283,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         string URL = "http://faircol.herokuapp.com/api/";
         int[] key = CurrentDateTime();
-        string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + keyString(key) + "\"}";
+        string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + "EN." + keyString(key) + "\"}";
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
@@ -403,4 +404,3 @@ public class GlobalPartyChoose : MonoBehaviour
         numberOfMandatesWasChanged = true;
     }
 }
-
