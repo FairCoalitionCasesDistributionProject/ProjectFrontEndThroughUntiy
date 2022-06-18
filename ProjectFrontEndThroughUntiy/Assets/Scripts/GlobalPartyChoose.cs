@@ -48,6 +48,9 @@ public class GlobalPartyChoose : MonoBehaviour
     public bool numberOfCasesWasChanged = true;
     public bool numberOfPartiesWasChanged = true;
     public bool numberOfMandatesWasChanged = true;
+    public GameObject session;
+    public Button copy1;
+    public Text key01;
     void Start()
     {
         partyScreen.SetActive(false);
@@ -63,6 +66,7 @@ public class GlobalPartyChoose : MonoBehaviour
         recievedAnswer = false;
         loading.SetActive(false);
         MainControl.lastPage = "Popular";
+        session.SetActive(false);
     }
     void Update()
     {
@@ -82,7 +86,7 @@ public class GlobalPartyChoose : MonoBehaviour
                     {
                         numberOfInstantiation++;
                         GameObject newPartyChooseLine = Instantiate(party, transform.position, transform.rotation, preferences.transform);
-                        newPartyChooseLine.transform.position = new Vector3(600, ((-1) * height * i) + 447.5f, 0);
+                        newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
                         newPartyChooseLine.GetComponent<PartySlider>().party = preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
@@ -110,6 +114,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
+                session.SetActive(false);
                 back1.SetActive(false);
                 back.interactable = false;
                 back.enabled = false;
@@ -117,6 +122,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 settings1.SetActive(false);
                 break;
             case 1:
+                session.SetActive(false);
                 confirm.GetComponentInChildren<Text>().text = "Confirm";
                 foreach (Transform child in positions.transform)
                 {
@@ -156,8 +162,8 @@ public class GlobalPartyChoose : MonoBehaviour
                         for (int i = 0; i < numberOfMinisteriesInt; i++)
                         {
                             numberOfInstantiation++;
-                            GameObject newPartyChooseLine = Instantiate(popularCaseLine, transform.position, transform.rotation, positions.transform);
-                            newPartyChooseLine.transform.position = new Vector3(600, ((-1) * height * i) + 447.5f, 0);
+                            GameObject newPartyChooseLine = Instantiate(popularCaseLine,  Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
+                            newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
                             newPartyChooseLine.GetComponent<PopularCaseLine>().index = i;
                         }
                     }
@@ -170,6 +176,7 @@ public class GlobalPartyChoose : MonoBehaviour
                     Destroy(child.gameObject);
                 }
                 settings0.SetActive(false);
+                session.SetActive(false);
                 settings1.SetActive(true);
                 break;
             case 3:
@@ -187,6 +194,7 @@ public class GlobalPartyChoose : MonoBehaviour
                 else
                 {
                     amountOfMandateInt = int.Parse(amountOfMandate.text);
+                    session.SetActive(false);
                     numberOfPartiesInt = int.Parse(numberOfParties.text);
                     if (amountOfMandateInt <= 0 || numberOfPartiesInt <= 0)
                     {
@@ -218,8 +226,8 @@ public class GlobalPartyChoose : MonoBehaviour
                             for (int i = 0; i < numberOfPartiesInt; i++)
                             {
                                 numberOfInstantiation++;
-                                GameObject newPartyChooseLine = Instantiate(partyChooseLine, transform.position, transform.rotation, positions.transform);
-                                newPartyChooseLine.transform.position = new Vector3(600, (height * i) + 447.5f, 0);
+                                GameObject newPartyChooseLine = Instantiate(partyChooseLine,Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
+                                newPartyChooseLine.transform.position = new Vector3(480, (height * i) + 447.5f, 0);
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().index = i;
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().amountOfMandates = amountOfMandateInt;
                             }
@@ -284,6 +292,7 @@ public class GlobalPartyChoose : MonoBehaviour
         string URL = "http://faircol.herokuapp.com/api/";
         int[] key = CurrentDateTime();
         string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + "EN." + keyString(key) + "\"}";
+        key01.text = "EN." + keyString(key);
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
@@ -370,18 +379,18 @@ public class GlobalPartyChoose : MonoBehaviour
     }
     public void showResults()
     {
+        session.SetActive(true);
         float height = 147.89f;
         float numberOfInstantiation = (1 / 5.79f);
         positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length * height) - 447.5f);
         for (int i = 0; i < ministeries.Length; i++)
         {
             numberOfInstantiation++;
-            GameObject newPartyChooseLine = Instantiate(resultLine1, transform.position, transform.rotation, positions.transform);
-            newPartyChooseLine.transform.position = new Vector3(600, ((-1) * height * numberOfInstantiation) + 567.495f, 0);
+            GameObject newPartyChooseLine = Instantiate(resultLine1,Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
+            newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * numberOfInstantiation) + 567.495f, 0);
             newPartyChooseLine.GetComponent<ResultLine1>().index = i;
         }
     }
-
     public string[] stringArray(int length, string value)
     {
         string[] output = new string[length];
@@ -402,5 +411,19 @@ public class GlobalPartyChoose : MonoBehaviour
     public void mandatesWasChanged()
     {
         numberOfMandatesWasChanged = true;
+    }
+    public void copyTheKey()
+    {
+        Application.ExternalEval("prompt(\"Copy the following link to reload this session later:\",\"" + domain(Application.absoluteURL) + "?" + key01.text + "\")");
+    }
+    public string domain(string url)
+    {
+        string[] array = url.Split('/');
+        string output = "";
+        for (int i = 0; i < 3; i++)
+        {
+            output += array[i] + "/";
+        }
+        return output;
     }
 }

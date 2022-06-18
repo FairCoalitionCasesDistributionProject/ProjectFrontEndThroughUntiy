@@ -30,9 +30,8 @@ public class Welcome : MonoBehaviour
     public Text enApply;
     public Text enCancel;
 
-
-
     public Image image;
+    public typeRun type1;
     public void LoadIsraelMode1()
     {
         SceneManager.LoadScene("Screen1");
@@ -49,7 +48,6 @@ public class Welcome : MonoBehaviour
         if (url.Contains("?") && url.Length > url.IndexOf("?") + 1)
         {
             string query = remove1(getUrlWithoutDomain(url));
-            typeRun type1;
             (query, type1) = il24OrEn(query);
             string key = baseConversator64To10(query);
             if (key != "")
@@ -217,27 +215,6 @@ public class Welcome : MonoBehaviour
         return num;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
