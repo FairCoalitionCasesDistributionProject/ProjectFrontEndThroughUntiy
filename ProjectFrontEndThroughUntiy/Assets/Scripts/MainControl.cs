@@ -70,8 +70,8 @@ public class MainControl : MonoBehaviour
     public static bool[] relevantParties = new bool[13];
     public static bool[] relevantCases = new bool[30];
     public static string url = "http://faircol.herokuapp.com/api/";
-
-
+    public static bool session = false;
+    public static string[] inputArray = new string[9];
 
 
 

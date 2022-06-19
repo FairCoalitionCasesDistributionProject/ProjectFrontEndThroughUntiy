@@ -67,6 +67,25 @@ public class GlobalPartyChoose : MonoBehaviour
         loading.SetActive(false);
         MainControl.lastPage = "Popular";
         session.SetActive(false);
+
+
+
+
+
+
+
+
+
+        if (MainControl.session)
+        {
+            numberOfMinisteries.text = MainControl.inputArray[(int)parce.items];
+            numberOfParties.text = MainControl.inputArray[(int)parce.numberofparties];
+            amountOfMandate.text = MainControl.inputArray[(int)parce.amountofmandate];
+            ministeries = stringToStringArray(MainControl.inputArray[(int)parce.ministeries]);
+            partyNames = stringToStringArray(MainControl.inputArray[(int)parce.partynames]);
+            mandates = stringToArray(MainControl.inputArray[(int)parce.mandates]);
+            partyParameters = stringToIntMatrix(MainControl.inputArray[(int)parce.preferences]);
+        }
     }
     void Update()
     {
@@ -162,7 +181,7 @@ public class GlobalPartyChoose : MonoBehaviour
                         for (int i = 0; i < numberOfMinisteriesInt; i++)
                         {
                             numberOfInstantiation++;
-                            GameObject newPartyChooseLine = Instantiate(popularCaseLine,  Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
+                            GameObject newPartyChooseLine = Instantiate(popularCaseLine, Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
                             newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * i) + 447.5f, 0);
                             newPartyChooseLine.GetComponent<PopularCaseLine>().index = i;
                         }
@@ -226,7 +245,7 @@ public class GlobalPartyChoose : MonoBehaviour
                             for (int i = 0; i < numberOfPartiesInt; i++)
                             {
                                 numberOfInstantiation++;
-                                GameObject newPartyChooseLine = Instantiate(partyChooseLine,Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
+                                GameObject newPartyChooseLine = Instantiate(partyChooseLine, Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
                                 newPartyChooseLine.transform.position = new Vector3(480, (height * i) + 447.5f, 0);
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().index = i;
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().amountOfMandates = amountOfMandateInt;
@@ -291,8 +310,9 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         string URL = "http://faircol.herokuapp.com/api/";
         int[] key = CurrentDateTime();
-        string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + "EN." + keyString(key) + "\"}";
-        key01.text = "EN." + keyString(key);
+        string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"EN." + keyString(key) + "\",\"type\":0,\"partynames\":" + arrayToString(partyNames) + ",\"numberofparties\":" + numberOfParties.text + ",\"ministeries\":" + arrayToString(ministeries) + ",\"amountofmandate\":" + amountOfMandate.text + "}";
+        Debug.Log(json);
+        key01.text = "EN." + EncodeTo64(key);
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
@@ -386,7 +406,7 @@ public class GlobalPartyChoose : MonoBehaviour
         for (int i = 0; i < ministeries.Length; i++)
         {
             numberOfInstantiation++;
-            GameObject newPartyChooseLine = Instantiate(resultLine1,Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
+            GameObject newPartyChooseLine = Instantiate(resultLine1, Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
             newPartyChooseLine.transform.position = new Vector3(480, ((-1) * height * numberOfInstantiation) + 567.495f, 0);
             newPartyChooseLine.GetComponent<ResultLine1>().index = i;
         }
@@ -426,4 +446,83 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    public string arrayToString(string[] array)
+    {
+        string output = "[";
+        for (int i = 0; i < array.Length; i++)
+        {
+            output += "\"" + array[i] + "\"" + ((i < (array.Length - 1)) ? "," : "");
+        }
+        output += "]";
+        return output;
+    }
+    public string EncodeTo64(int[] input)
+    {
+        string output = "";
+        for (int i = 0; i < input.Length; i++)
+        {
+            output += ((i == 0) ? "" : ".") + fromDeci(61, input[i]);
+        }
+        return output;
+    }
+    public char reVal(int num)
+    {
+        if (num >= 0 && num <= 9)
+        {
+            return (char)(num + 48);
+        }
+        else
+        {
+            return (char)(num - 10 + 65);
+        }
+    }
+    public string fromDeci(int base1, int inputNum)
+    {
+        string s = "";
+        while (inputNum > 0)
+        {
+            s += reVal(inputNum % base1);
+            inputNum /= base1;
+        }
+        char[] res = s.ToCharArray();
+        Array.Reverse(res);
+        return new String(res);
+    }
+    public int[] stringToArray(string input)
+    {
+        string[] array = input.Replace("[", "").Replace("]", "").Split(',');
+        int[] output = new int[array.Length];
+        for (int i = 0; i < array.Length; i++)
+        {
+            output[i] = int.Parse(array[i]);
+        }
+        return output;
+    }
+     public string[] stringToStringArray(string input)
+    {
+        string[] array = input.Replace("[", "").Replace("]", "").Split(',');
+        string[] output = new string[array.Length];
+        for (int i = 0; i < array.Length; i++)
+        {
+            output[i] = array[i];
+        }
+        return output;
+    }
+    public int[,] stringToIntMatrix(string input)
+    {
+        string[] array = input.Replace("[", "").Replace("]", "").Split(']');
+        int[,] output = new int[array.Length, array[0].Split(',').Length];
+        for (int i = 0; i < array.Length; i++)
+        {
+            string[] array2 = array[i].Split(',');
+            for (int j = 0; j < array2.Length; j++)
+            {
+                output[i, j] = int.Parse(array2[j]);
+            }
+        }
+        return output;
+    }
 }
+
+
+

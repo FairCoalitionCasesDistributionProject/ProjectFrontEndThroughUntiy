@@ -20,6 +20,21 @@ public enum typeRun
     EN = 0,
     IL24 = 1,
 }
+
+
+public enum parce
+{
+    items = 0,
+    mandates = 1,
+    preferences = 2,
+    key = 3,
+    type = 4,
+    partynames = 5,
+    numberofparties = 6,
+    ministeries = 7,
+    amountofmandate = 8,
+
+}
 public class Welcome : MonoBehaviour
 {
     public GameObject question;
@@ -135,9 +150,18 @@ public class Welcome : MonoBehaviour
             Debug.Log("Received: " + uwr.downloadHandler.text);
             MainControl.serverOutput = uwr.downloadHandler.text;
         }
-        Parse(MainControl.serverOutput);
-        MainControl.lastPage = "PartyChoose";
-        SceneManager.LoadScene("PartyChoose");
+        if (type1 == typeRun.IL24 || type1 == typeRun.EMPTY)
+        {
+            Parse(MainControl.serverOutput);
+            MainControl.lastPage = "PartyChoose";
+            SceneManager.LoadScene("PartyChoose");
+        }
+        else
+        {
+
+            ParseVerEn1(MainControl.serverOutput);
+            SceneManager.LoadScene("Popular");
+        }
     }
     public void Parse(string input)
     {
@@ -214,7 +238,95 @@ public class Welcome : MonoBehaviour
         }
         return num;
     }
+    public string changeComma(string str, char c)
+    {
+        string output = "";
+        int inBrackets = 0;
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (str[i] == '[')
+            {
+                inBrackets++;
+            }
+            if (str[i] == ']')
+            {
+                inBrackets--;
+            }
+            if (str[i] == ',' && inBrackets == 0)
+            {
+                output += c;
+            }
+            else
+            {
+                output += str[i];
+            }
+        }
+        return output;
+    }
+    public char findUncontainedChar(string str)
+    {
+        for (int i = 0; i < 65536; i++)
+        {
+            if (!str.Contains((char)i))
+            {
+                return (char)i;
+            }
+        }
+        return '|';
+    }
+    public void ParseVerEn1(string input)
+    {
+        char c = findUncontainedChar(input);
+        input = changeComma(input, c);
+        string[] inputArray = input.Split(c);
+        for (int i = 0; i < inputArray.Length; i++)
+        {
+            inputArray[i] = inputArray[i].Replace("{", "").Replace("\"", "").Replace("\\", "").Replace("u200b", "").Replace(" ", "").Replace("}", "");
+            int index = inputArray[i].IndexOf(':');
+            if (index != -1)
+            {
+                index += 1;
+                inputArray[i] = inputArray[i].Substring(index);
+            }
+            Debug.Log(inputArray[i]);
+            MainControl.inputArray[i] = inputArray[i];
+        }
+        MainControl.session = true;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
