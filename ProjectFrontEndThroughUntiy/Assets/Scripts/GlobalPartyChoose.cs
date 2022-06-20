@@ -53,24 +53,24 @@ public class GlobalPartyChoose : MonoBehaviour
     public Text key01;
     public Scrollbar scrollbar;
     public GameObject info;
-    void OnEnable()
+    void Awake()
     {
+        partyScreen.SetActive(false);
+        settings0.SetActive(true);
+        settings1.SetActive(false);
+        alert.SetActive(false);
+        timeConfirm = 0;
+        back1.SetActive(false);
+        back.interactable = false;
+        back.enabled = false;
+        wasClicked = false;
+        preferenceIndex = -1;
+        recievedAnswer = false;
+        loading.SetActive(false);
+        MainControl.lastPage = "Popular";
+        session.SetActive(false);
         if (MainControl.session)
         {
-            partyScreen.SetActive(false);
-            settings0.SetActive(true);
-            settings1.SetActive(false);
-            alert.SetActive(false);
-            timeConfirm = 0;
-            back1.SetActive(false);
-            back.interactable = false;
-            back.enabled = false;
-            wasClicked = false;
-            preferenceIndex = -1;
-            recievedAnswer = false;
-            loading.SetActive(false);
-            MainControl.lastPage = "Popular";
-            session.SetActive(false);
             numberOfMinisteries.text = MainControl.inputArray[(int)parce.items];
             numberOfParties.text = MainControl.inputArray[(int)parce.numberofparties];
             amountOfMandate.text = MainControl.inputArray[(int)parce.amountofmandate];
@@ -108,7 +108,7 @@ public class GlobalPartyChoose : MonoBehaviour
                     {
                         numberOfInstantiation++;
                         GameObject newPartyChooseLine = Instantiate(party, transform.position, transform.rotation, preferences.transform);
-                        newPartyChooseLine.transform.position = new Vector3(0, ((-1) * height * i) + 173f /*+ 447.5f*/, 0);
+                        newPartyChooseLine.transform.position = new Vector3(0, ((-1) * height * i) + 173f, 0);
                         newPartyChooseLine.GetComponent<PartySlider>().party = preferenceIndex;
                         newPartyChooseLine.GetComponent<PartySlider>().index = i;
                     }
@@ -175,19 +175,17 @@ public class GlobalPartyChoose : MonoBehaviour
                             numberOfCasesWasChanged = false;
                         }
                         settings0.SetActive(false);
-
-
                         back1.SetActive(true);
                         back.enabled = true;
                         back.interactable = true;
                         float height = 49f;
                         float numberOfInstantiation = -5.79f;
-                        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfMinisteriesInt > 9) ? ((numberOfMinisteriesInt - 8) * (height + 0.15f)) : positions.GetComponent<RectTransform>().sizeDelta.y /*- 447.5f*/);
+                        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfMinisteriesInt > 9) ? ((numberOfMinisteriesInt - 8) * (height + 0.15f)) : positions.GetComponent<RectTransform>().sizeDelta.y);
                         for (int i = 0; i < numberOfMinisteriesInt; i++)
                         {
                             numberOfInstantiation++;
-                            GameObject newPartyChooseLine = Instantiate(popularCaseLine, Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
-                            newPartyChooseLine.transform.position = new Vector3(0, ((-1) * height * i) + 172.3859f /*+ 447.5f*/, 0);
+                            GameObject newPartyChooseLine = Instantiate(popularCaseLine, Vector3.zero, Quaternion.identity, positions.transform);
+                            newPartyChooseLine.transform.position = new Vector3(0, ((-1) * height * i) + 172.3859f, 0);
                             newPartyChooseLine.GetComponent<PopularCaseLine>().index = i;
                         }
                     }
@@ -414,8 +412,8 @@ public class GlobalPartyChoose : MonoBehaviour
         for (int i = 0; i < ministeries.Length; i++)
         {
             numberOfInstantiation++;
-            GameObject newPartyChooseLine = Instantiate(resultLine1, Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
-            newPartyChooseLine.transform.position = new Vector3(0, ((-1) * height * i) + 173f /*+ 567.495f*/, 0);
+            GameObject newPartyChooseLine = Instantiate(resultLine1, Vector3.zero, Quaternion.identity, positions.transform);
+            newPartyChooseLine.transform.position = new Vector3(0, ((-1) * height * i) + 173f, 0);
             newPartyChooseLine.GetComponent<ResultLine1>().index = i;
         }
     }
@@ -516,9 +514,21 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    public char findUncontainedChar(string str)
+    {
+        for (int i = 0; i < 65536; i++)
+        {
+            if (!str.Contains((char)i))
+            {
+                return (char)i;
+            }
+        }
+        return '|';
+    }
     public int[,] stringToIntMatrix(string input)
     {
-        string[] array = input.Replace("[", "").Replace("]", "").Split(']');
+        char separator = findUncontainedChar(input);
+        string[] array = input.Replace("],", "" + separator).Replace("[", "").Replace("]", "").Split(separator);
         int[,] output = new int[array.Length, array[0].Split(',').Length];
         for (int i = 0; i < array.Length; i++)
         {
@@ -539,16 +549,6 @@ public class GlobalPartyChoose : MonoBehaviour
         info.SetActive(true);
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

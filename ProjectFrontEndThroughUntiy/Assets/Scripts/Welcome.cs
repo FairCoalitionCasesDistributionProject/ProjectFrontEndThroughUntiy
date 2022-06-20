@@ -57,11 +57,6 @@ public class Welcome : MonoBehaviour
     }
     void Start()
     {
-        
-
-
-
-
         load1.SetActive(false);
         question.SetActive(false);
         string url = Application.absoluteURL;
@@ -301,6 +296,22 @@ public class Welcome : MonoBehaviour
         MainControl.session = true;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

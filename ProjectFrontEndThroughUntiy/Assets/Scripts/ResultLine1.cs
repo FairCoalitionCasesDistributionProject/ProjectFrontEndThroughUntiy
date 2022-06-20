@@ -18,10 +18,9 @@ public class ResultLine1 : MonoBehaviour
         for (int i = 0; i < GlobalPartyChoose.partyNames.Length; i++)
         {
             numberOfInstantiation++;
-            GameObject newPartyChooseLine = Instantiate(resultsCell, /*Vector3.zero*/transform.position, /*Quaternion.identity*/transform.rotation, result.transform);
-            newPartyChooseLine.transform.position = new Vector3(/*142.5f+*/(i * width) - 337.5f, (index * -147f) + 58f - (1.8946f * index)/*(-147 * index) + 320f*/, 0);
-            newPartyChooseLine.GetComponent<ResultsCell>().cIndex = index;
-            newPartyChooseLine.GetComponent<ResultsCell>().pIndex = i;
+            GameObject newPartyChooseLine = Instantiate(resultsCell, transform.position, transform.rotation, result.transform);
+            newPartyChooseLine.transform.position = new Vector3((i * width) - 337.5f, (index * -147f) + 58f - (1.8946f * index), 0);
+            (newPartyChooseLine.GetComponent<ResultsCell>().cIndex, newPartyChooseLine.GetComponent<ResultsCell>().pIndex) = (index, i);
             SetRectTransform(newPartyChooseLine, 0, 0);
         }
     }
@@ -29,19 +28,10 @@ public class ResultLine1 : MonoBehaviour
     {
         return str.Replace(" ", "").Length == 0;
     }
-
-
-
-
-    // Function receives a GameObject and float parameters Bottom, Top and sets the RectTransform of the GameObject to the given values.
     public void SetRectTransform(GameObject go, float bottom, float top)
     {
         RectTransform rect = go.GetComponent<RectTransform>();
         rect.offsetMin = new Vector2(rect.offsetMin.x, bottom);
         rect.offsetMax = new Vector2(rect.offsetMax.x, top);
     }
-
 }
-
-
-
