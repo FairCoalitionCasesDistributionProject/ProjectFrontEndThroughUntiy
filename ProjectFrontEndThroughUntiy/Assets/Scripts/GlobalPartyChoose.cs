@@ -80,7 +80,6 @@ public class GlobalPartyChoose : MonoBehaviour
             partyParameters = stringToIntMatrix(MainControl.inputArray[(int)parce.preferences]);
         }
     }
-
     void Start()
     {
         partyScreen.SetActive(false);
@@ -104,7 +103,7 @@ public class GlobalPartyChoose : MonoBehaviour
                     partyScreen.SetActive(true);
                     float height = 41f;
                     float numberOfInstantiation = -5.79f;
-                    preferences.GetComponent<RectTransform>().sizeDelta = new Vector2(preferences.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 11) ? ((ministeries.Length - 11) * height) : preferences.GetComponent<RectTransform>().sizeDelta.y);
+                    preferences.GetComponent<RectTransform>().sizeDelta = new Vector2(preferences.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 11) ? ((ministeries.Length - 10) * height) : preferences.GetComponent<RectTransform>().sizeDelta.y);
                     for (int i = 0; i < ministeries.Length; i++)
                     {
                         numberOfInstantiation++;
@@ -183,7 +182,7 @@ public class GlobalPartyChoose : MonoBehaviour
                         back.interactable = true;
                         float height = 49f;
                         float numberOfInstantiation = -5.79f;
-                        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfMinisteriesInt > 9) ? ((numberOfMinisteriesInt - 9) * (height + 0.15f)) : positions.GetComponent<RectTransform>().sizeDelta.y /*- 447.5f*/);
+                        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfMinisteriesInt > 9) ? ((numberOfMinisteriesInt - 8) * (height + 0.15f)) : positions.GetComponent<RectTransform>().sizeDelta.y /*- 447.5f*/);
                         for (int i = 0; i < numberOfMinisteriesInt; i++)
                         {
                             numberOfInstantiation++;
@@ -249,7 +248,7 @@ public class GlobalPartyChoose : MonoBehaviour
                             settings1.SetActive(false);
                             float height = -41f;
                             float numberOfInstantiation = -5.79f;
-                            positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfPartiesInt > 11) ? ((numberOfPartiesInt - 11) * 41) : positions.GetComponent<RectTransform>().sizeDelta.y);
+                            positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (numberOfPartiesInt > 11) ? ((numberOfPartiesInt - 10) * 41) : positions.GetComponent<RectTransform>().sizeDelta.y);
                             for (int i = 0; i < numberOfPartiesInt; i++)
                             {
                                 numberOfInstantiation++;
@@ -411,7 +410,7 @@ public class GlobalPartyChoose : MonoBehaviour
         session.SetActive(true);
         float height = 147.89f;
         float numberOfInstantiation = (1 / 5.79f);
-        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 3) ? ((ministeries.Length - 3) * height) : positions.GetComponent<RectTransform>().sizeDelta.y);
+        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 3) ? ((ministeries.Length - 2) * height) : positions.GetComponent<RectTransform>().sizeDelta.y);
         for (int i = 0; i < ministeries.Length; i++)
         {
             numberOfInstantiation++;
@@ -539,7 +538,21 @@ public class GlobalPartyChoose : MonoBehaviour
     {
         info.SetActive(true);
     }
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
