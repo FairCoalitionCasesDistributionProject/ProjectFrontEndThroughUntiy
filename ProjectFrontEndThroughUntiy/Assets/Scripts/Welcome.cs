@@ -44,9 +44,9 @@ public class Welcome : MonoBehaviour
     public TextMeshProUGUI il24Cancel;
     public Text enApply;
     public Text enCancel;
-
     public Image image;
     public typeRun type1;
+    public GameObject load1;
     public void LoadIsraelMode1()
     {
         SceneManager.LoadScene("Screen1");
@@ -57,6 +57,12 @@ public class Welcome : MonoBehaviour
     }
     void Start()
     {
+        
+
+
+
+
+        load1.SetActive(false);
         question.SetActive(false);
         string url = Application.absoluteURL;
         MainControl.lastPage = "Main1";
@@ -108,6 +114,7 @@ public class Welcome : MonoBehaviour
     }
     public void applyWasClicked()
     {
+        load1.SetActive(true);
         image.gameObject.SetActive(false);
         ReUse();
     }
@@ -158,7 +165,6 @@ public class Welcome : MonoBehaviour
         }
         else
         {
-
             ParseVerEn1(MainControl.serverOutput);
             SceneManager.LoadScene("Popular");
         }
@@ -279,6 +285,7 @@ public class Welcome : MonoBehaviour
         char c = findUncontainedChar(input);
         input = changeComma(input, c);
         string[] inputArray = input.Split(c);
+        MainControl.inputArray = new string[inputArray.Length];
         for (int i = 0; i < inputArray.Length; i++)
         {
             inputArray[i] = inputArray[i].Replace("{", "").Replace("\"", "").Replace("\\", "").Replace("u200b", "").Replace(" ", "").Replace("}", "");
