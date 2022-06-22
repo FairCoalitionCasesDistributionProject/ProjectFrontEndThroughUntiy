@@ -840,6 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f9848be390a7847879758aa46dec86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode1: 0
   caseNumber: 0
   number: {fileID: 7167935740076055246}
   number1: {fileID: 7167935742068852479}

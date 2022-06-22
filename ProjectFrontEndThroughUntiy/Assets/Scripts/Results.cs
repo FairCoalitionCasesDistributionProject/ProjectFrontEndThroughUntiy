@@ -6,6 +6,7 @@ using TMPro;
 using System;
 public class Results : MonoBehaviour
 {
+    public int mode1;
     public int caseNumber;
     public Text number;
     public Text number1;
@@ -16,29 +17,34 @@ public class Results : MonoBehaviour
     public Sprite likud, haavoda, hareshimaHamshutefet, hareshimaHaaravitHameshutefet, hazionutHadatit, israelBeitenu, kaholLavan, meretz, shas, tikvaHadasha, yahadutHatora, yemina, yeshAtid;
     void Start()
     {
-        (int, int) tuple = partySplitter(caseNumber);
-        bool equal = isEqual(tuple);
-        int theBigger = bigger(tuple);
-        slider.value = (equal) ? MainControl.results[caseNumber, tuple.Item1] : MainControl.results[caseNumber, theBigger];
-        number.text = "" + percentage(slider.value);
-        party.sprite = partyImages(tuple.Item1);
-        party.SetNativeSize();
-        if (equal)
+        if (mode1 == 0)
         {
-            party1.enabled = false;
-            number1.enabled = false;
+            (int, int) tuple = partySplitter(caseNumber);
+            bool equal = isEqual(tuple);
+            int theBigger = bigger(tuple);
+            int theSmaller = smaller(tuple);
+
+            slider.value = (equal) ? MainControl.results[caseNumber, tuple.Item1] : ((1 / (MainControl.results[caseNumber, theBigger] + MainControl.results[caseNumber, theSmaller])) * MainControl.results[caseNumber, theBigger]);
+            number.text = "" + percentage(slider.value);
+            party.sprite = partyImages(tuple.Item1);
+            party.SetNativeSize();
+            if (equal || (percentage(1 - slider.value) == "0.00%"))
+            {
+                party1.enabled = false;
+                number1.enabled = false;
+            }
+            else
+            {
+                party1.sprite = partyImages(tuple.Item2);
+                party1.SetNativeSize();
+                number1.text = "" + percentage(1 - slider.value);
+            }
+            name.text = MainControl.casesNameTranslation[caseNumber];
         }
-        else
-        {
-            party1.sprite = partyImages(tuple.Item2);
-            party1.SetNativeSize();
-            number1.text = "" + percentage(1 - slider.value);
-        }
-        name.text = MainControl.casesNameTranslation[caseNumber];
     }
     public (int, int) partySplitter(int caseNumber)
     {
-        int counter = 0;
+        /*int counter = 0;
         int first = 0;
         int second = 0;
         for (int i = 0; i < MainControl.results.GetLength(1); i++)
@@ -58,10 +64,36 @@ public class Results : MonoBehaviour
             }
         }
         return (first, second);
+        */
+        // Go through all the [caseNumber, ] and return a turple of the two parties that have the biggest results
+        int first = 0;
+        int second = 0;
+        float firstValue = 0;
+        float secondValue = 0;
+        for (int i = 0; i < MainControl.results.GetLength(1); i++)
+        {
+            if (MainControl.results[caseNumber, i] > firstValue)
+            {
+                secondValue = firstValue;
+                firstValue = MainControl.results[caseNumber, i];
+                second = first;
+                first = i;
+            }
+            else if (MainControl.results[caseNumber, i] > secondValue)
+            {
+                secondValue = MainControl.results[caseNumber, i];
+                second = i;
+            }
+        }
+        return (first, second);
     }
     public int bigger((int, int) tuple)
     {
         return (MainControl.results[caseNumber, tuple.Item1] > MainControl.results[caseNumber, tuple.Item2]) ? tuple.Item1 : tuple.Item2;
+    }
+    public int smaller((int, int) tuple)
+    {
+        return (MainControl.results[caseNumber, tuple.Item1] < MainControl.results[caseNumber, tuple.Item2]) ? tuple.Item1 : tuple.Item2;
     }
     public bool isEqual((int, int) tuple)
     {
@@ -106,18 +138,6 @@ public class Results : MonoBehaviour
         return (value * 100).ToString("0.00") + "%";
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

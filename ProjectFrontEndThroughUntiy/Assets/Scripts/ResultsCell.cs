@@ -21,4 +21,14 @@ public class ResultsCell : MonoBehaviour
     {
         return (value * 100).ToString("0.00") + "%";
     }
+    public void info1()
+    {
+        GlobalPartyChoose.infoResultParty = pIndex;
+        GlobalPartyChoose.infoResultCase1 = cIndex;
+        GlobalPartyChoose.infoResultsJump = true;
+    }
+
 }
+
+
+

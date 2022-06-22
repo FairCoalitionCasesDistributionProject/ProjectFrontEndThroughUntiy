@@ -272,8 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  caseDefaultName: {fileID: 5549240051322284299}
-  caseName: {fileID: 5549240050479521502}
+  caseName: {fileID: 5549240049991736171}
 --- !u!1 &5549240051322284301
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,8 +7,7 @@ public class PartyChooseLine : MonoBehaviour
 {
     public int amountOfMandates;
     public int index;
-    public TMP_Text partyDefaultName;
-    public TMP_Text partyName;
+    public InputField partyName;
     public Text partyMandates;
     public Slider partyMandatesSlider;
     public Button partyPreference;
@@ -26,12 +25,11 @@ public class PartyChooseLine : MonoBehaviour
             GlobalPartyChoose.mandates[index] = amountOfMandates;
         }
         partyMandates.text = " " + partyMandatesSlider.value;
-        partyDefaultName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
         partyName.text = (GlobalPartyChoose.partyNames[index] == null || GlobalPartyChoose.partyNames[index] == "") ? "Party" + index : GlobalPartyChoose.partyNames[index];
     }
     void Update()
     {
-        GlobalPartyChoose.partyNames[index] = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? partyName.text : partyDefaultName.text;
+        GlobalPartyChoose.partyNames[index] = (partyName.text != null && partyName.text != "" && !(allSpaces(partyName.text))) ? partyName.text : partyName.text;
         partyMandatesSlider.onValueChanged.AddListener(delegate { sliderMoves(); });
     }
     public bool allSpaces(string str)
@@ -58,6 +56,8 @@ public class PartyChooseLine : MonoBehaviour
         GlobalPartyChoose.preferenceIndex = index;
     }
 }
+
+
 
 
 

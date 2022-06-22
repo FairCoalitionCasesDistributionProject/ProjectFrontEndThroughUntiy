@@ -18,6 +18,9 @@ public class GlobalPartyChoose : MonoBehaviour
     public Text numberOfParties;
     public Text amountOfMandate;
     public Text numberOfMinisteries;
+    public InputField numberOfPartiesPlaceHolders;
+    public InputField amountOfMandatePlaceHolders;
+    public InputField numberOfMinisteriesPlaceHolder;
     public Button confirm;
     public GameObject alert;
     public Text alertText;
@@ -53,6 +56,14 @@ public class GlobalPartyChoose : MonoBehaviour
     public Text key01;
     public Scrollbar scrollbar;
     public GameObject info;
+    public bool[] session01 = new bool[4];
+    public GameObject infoResults;
+    public Text infoResultsText;
+    public Button infoResultsClose1;
+    public static bool infoResultsJump = false;
+
+    public static int infoResultParty;
+    public static int infoResultCase1;
     void Awake()
     {
         partyScreen.SetActive(false);
@@ -71,13 +82,14 @@ public class GlobalPartyChoose : MonoBehaviour
         session.SetActive(false);
         if (MainControl.session)
         {
-            numberOfMinisteries.text = MainControl.inputArray[(int)parce.items];
-            numberOfParties.text = MainControl.inputArray[(int)parce.numberofparties];
-            amountOfMandate.text = MainControl.inputArray[(int)parce.amountofmandate];
-            ministeries = stringToStringArray(MainControl.inputArray[(int)parce.ministeries]);
-            partyNames = stringToStringArray(MainControl.inputArray[(int)parce.partynames]);
-            mandates = stringToArray(MainControl.inputArray[(int)parce.mandates]);
-            partyParameters = stringToIntMatrix(MainControl.inputArray[(int)parce.preferences]);
+            for (int i = 0; i < session01.Length; i++)
+            {
+                session01[i] = true;
+            }
+            numberOfCasesWasChanged = false;
+            numberOfPartiesWasChanged = false;
+            numberOfMandatesWasChanged = false;
+            confirmPressed(0);
         }
     }
     void Start()
@@ -87,11 +99,16 @@ public class GlobalPartyChoose : MonoBehaviour
         settings1.SetActive(false);
         alert.SetActive(false);
         loading.SetActive(false);
-
         MainControl.lastPage = "Popular";
     }
     void Update()
     {
+        if (infoResultsJump)
+        {
+            infoResultsJump = false;
+            showInfoResults();
+            infoResText("\nThe party " + partyNames[infoResultParty] + " has " + results[infoResultCase1, infoResultParty] * 100 + "% of the " + ministeries[infoResultCase1] + " Ministry.");
+        }
         if (timeConfirm == 3)
         {
             int sum = 0;
@@ -144,6 +161,12 @@ public class GlobalPartyChoose : MonoBehaviour
                 back.enabled = false;
                 settings0.SetActive(true);
                 settings1.SetActive(false);
+                if (session01[0])
+                {
+                    numberOfMinisteries.text = MainControl.inputArray[(int)parce.items];
+                    numberOfMinisteriesPlaceHolder.text = MainControl.inputArray[(int)parce.items];
+                    session01[0] = false;
+                }
                 break;
             case 1:
                 session.SetActive(false);
@@ -169,10 +192,18 @@ public class GlobalPartyChoose : MonoBehaviour
                     }
                     else
                     {
-                        if (control > 0 && numberOfCasesWasChanged)
+                        if (session01[1])
                         {
-                            ministeries = stringArray(numberOfMinisteriesInt, "Case");
-                            numberOfCasesWasChanged = false;
+                            ministeries = stringToStringArray(MainControl.inputArray[(int)parce.ministeries]);
+                            session01[1] = false;
+                        }
+                        else
+                        {
+                            if (control > 0 && numberOfCasesWasChanged)
+                            {
+                                ministeries = stringArray(numberOfMinisteriesInt, "Case");
+                                numberOfCasesWasChanged = false;
+                            }
                         }
                         settings0.SetActive(false);
                         back1.SetActive(true);
@@ -201,6 +232,14 @@ public class GlobalPartyChoose : MonoBehaviour
                 scrollbar.value = 1;
                 settings0.SetActive(false);
                 session.SetActive(false);
+                if (session01[2])
+                {
+                    numberOfParties.text = MainControl.inputArray[(int)parce.numberofparties];
+                    numberOfPartiesPlaceHolders.text = MainControl.inputArray[(int)parce.numberofparties];
+                    amountOfMandate.text = MainControl.inputArray[(int)parce.amountofmandate];
+                    amountOfMandatePlaceHolders.text = MainControl.inputArray[(int)parce.amountofmandate];
+                    session01[2] = false;
+                }
                 settings1.SetActive(true);
                 break;
             case 3:
@@ -234,13 +273,24 @@ public class GlobalPartyChoose : MonoBehaviour
                         }
                         else
                         {
-                            if (control > 0 && numberOfPartiesWasChanged)
+                            if (session01[3])
                             {
-                                partyNames = stringArray(numberOfPartiesInt, "Party");
-                                mandates = new int[numberOfPartiesInt];
-                                partyParameters = new int[numberOfPartiesInt, ministeries.Length];
+                                partyNames = stringToStringArray(MainControl.inputArray[(int)parce.partynames]);
+                                mandates = stringToArray(MainControl.inputArray[(int)parce.mandates]);
+                                partyParameters = stringToIntMatrix(MainControl.inputArray[(int)parce.preferences]);
                                 results = new float[ministeries.Length, numberOfPartiesInt];
-                                numberOfPartiesWasChanged = false;
+                                session01[3] = false;
+                            }
+                            else
+                            {
+                                if (control > 0 && numberOfPartiesWasChanged)
+                                {
+                                    partyNames = stringArray(numberOfPartiesInt, "Party");
+                                    mandates = new int[numberOfPartiesInt];
+                                    partyParameters = new int[numberOfPartiesInt, ministeries.Length];
+                                    results = new float[ministeries.Length, numberOfPartiesInt];
+                                    numberOfPartiesWasChanged = false;
+                                }
                             }
                             confirm.GetComponentInChildren<Text>().text = "Calculate";
                             settings1.SetActive(false);
@@ -548,7 +598,43 @@ public class GlobalPartyChoose : MonoBehaviour
     {
         info.SetActive(true);
     }
+    public void showInfoResults()
+    {
+        infoResults.SetActive(true);
+    }
+
+    public void closeInfoResults1()
+    {
+        infoResults.SetActive(false);
+    }
+
+    public void infoResText(string input)
+    {
+        infoResultsText.text = input;
+    }
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
