@@ -74,8 +74,8 @@ public class MainControl : MonoBehaviour
     public static bool session = false;
     public static string[] inputArray = new string[9];
     public static int infoResultParty;
+    public static int infoResultCase;
     public static bool infoResultsJump = false;
-
 
 
 

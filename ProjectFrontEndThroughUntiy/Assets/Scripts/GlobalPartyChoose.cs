@@ -111,7 +111,7 @@ public class GlobalPartyChoose : MonoBehaviour
             int sumOfMandatesParam1 = sumOfMandates();
             float satisfiedParam1 = satisfied(infoResultParty);
             int sumOfChoiceParam1 = sumOfChoice(infoResultParty);
-            infoResText("\nThe party " + partyNames[infoResultParty] + " has " + mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)mandates[infoResultParty] / (float)sumOfMandatesParam1) + " of the total mandates and got total value of " + satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1) + ".");
+            infoResText("\nThe party " + partyNames[infoResultParty] + " has " + mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)mandates[infoResultParty] / (float)sumOfMandatesParam1) + " of the total mandates and got total value of " + ((satisfiedParam1 == 0 && sumOfChoiceParam1 == 0) ? percentage(1) : satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1)) + ".");
         }
         if (timeConfirm == 3)
         {

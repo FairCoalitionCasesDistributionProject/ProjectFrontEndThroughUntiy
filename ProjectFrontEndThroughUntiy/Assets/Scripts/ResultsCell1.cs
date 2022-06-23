@@ -37,8 +37,8 @@ public class ResultsCell1 : MonoBehaviour
     public void info1()
     {
         MainControl.infoResultParty = pIndex;
+        MainControl.infoResultCase = cIndex;
         MainControl.infoResultsJump = true;
     }
 }
-
 

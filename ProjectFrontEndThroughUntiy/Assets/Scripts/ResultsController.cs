@@ -121,7 +121,7 @@ public class ResultsController : MonoBehaviour
         int sumOfMandatesParam1 = sumOfMandates();
         float satisfiedParam1 = satisfied(infoResultParty);
         int sumOfChoiceParam1 = sumOfChoice(infoResultParty);
-        text.text = "למפלגת " + MainControl.partyHebrewName[infoResultParty] + " יש " + ReverseString(MainControl.mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)MainControl.mandates[infoResultParty] / (float)sumOfMandatesParam1)) + " מסך המנדטים שיש לקואוליציה, והיא בפועל קיבלה " + ReverseString(satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1)) + " ממה שביקשה .";
+        text.text = "למפלגת " + MainControl.partyHebrewName[infoResultParty] + " יש " + ReverseString(MainControl.mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)MainControl.mandates[infoResultParty] / (float)sumOfMandatesParam1)) + " מסך המנדטים שיש לקואוליציה, והיא בפועל קיבלה " + ReverseString((satisfiedParam1 == 0 && sumOfChoiceParam1 == 0) ? percentage(MainControl.results[MainControl.infoResultCase, MainControl.infoResultParty]) : satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1)) + " ממה שביקשה .";
     }
     public string ReverseString(string s)
     {

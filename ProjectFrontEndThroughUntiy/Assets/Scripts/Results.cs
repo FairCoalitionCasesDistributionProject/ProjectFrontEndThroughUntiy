@@ -6,6 +6,7 @@ using TMPro;
 using System;
 public class Results : MonoBehaviour
 {
+    public (int, int) param = (0, 0);
     public int mode1;
     public int caseNumber;
     public Text number;
@@ -19,10 +20,6 @@ public class Results : MonoBehaviour
     public GameObject positions;
     public bool leftImageClick1 = false;
     public bool rightImageClick = false;
-
-
-
-    public (int, int) param = (0, 0);
     void Start()
     {
         if (mode1 == 0)
@@ -193,6 +190,9 @@ public class Results : MonoBehaviour
         rightImageClick = true;
     }
 }
+
+
+
 
 
 
