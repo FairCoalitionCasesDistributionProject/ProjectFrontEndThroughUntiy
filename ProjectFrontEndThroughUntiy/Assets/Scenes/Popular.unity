@@ -3983,7 +3983,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: How many parties you want to build you coalition with ?
+  m_Text: 'How many parties do you want to build your coalition with? '
 --- !u!222 &644344828
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11447,3 +11447,4 @@ MonoBehaviour:
   infoResults: {fileID: 856474605}
   infoResultsText: {fileID: 847204089}
   infoResultsClose1: {fileID: 1605724425}
+  scrollbarForPreferences: {fileID: 527927806}

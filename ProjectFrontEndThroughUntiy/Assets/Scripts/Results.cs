@@ -15,10 +15,14 @@ public class Results : MonoBehaviour
     public Image party;
     public Image party1;
     public Sprite likud, haavoda, hareshimaHamshutefet, hareshimaHaaravitHameshutefet, hazionutHadatit, israelBeitenu, kaholLavan, meretz, shas, tikvaHadasha, yahadutHatora, yemina, yeshAtid;
+    public GameObject partyResultOnCase;
+    public GameObject positions;
     void Start()
     {
         if (mode1 == 0)
         {
+            partyResultOnCase = null;
+            positions = null;
             (int, int) tuple = partySplitter(caseNumber);
             bool equal = isEqual(tuple);
             int theBigger = bigger(tuple);
@@ -39,8 +43,34 @@ public class Results : MonoBehaviour
                 party1.SetNativeSize();
                 number1.text = "" + percentage(1 - slider.value);
             }
-            name.text = MainControl.casesNameTranslation[caseNumber];
         }
+        else
+        {
+            int[] parties = partiesInCase();
+            // float height = 147.89f;
+            // positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (parties.Length > 3) ? ((parties.Length - 2) * height) : positions.GetComponent<RectTransform>().sizeDelta.y);
+            // for (int i = 0; i < parties.Length; i++)
+            // {
+            //     GameObject partyLine = Instantiate(partyResultOnCase, Vector3.zero, Quaternion.identity, positions.transform);
+            //     partyLine.transform.position = new Vector3(0, ((-1) * height * i) + 173f, 0);
+            //     partyLine.GetComponent<ResultsCell1>().cIndex = caseNumber;
+            //     partyLine.GetComponent<ResultsCell1>().pIndex = parties[i];
+            //     partyLine.GetComponent<ResultsCell1>().sprite = partyImages(parties[i]);
+            // }
+
+            float width = 285f;
+            positions.GetComponent<RectTransform>().sizeDelta = new Vector2((parties.Length > 2) ? ((parties.Length - 2) * width) : positions.GetComponent<RectTransform>().sizeDelta.x, positions.GetComponent<RectTransform>().sizeDelta.y);
+            for (int i = 0; i < parties.Length; i++)
+            {
+                GameObject partyLine = Instantiate(partyResultOnCase, transform.position, transform.rotation, positions.transform);
+                partyLine.transform.position = new Vector3((i * width) - 337.5f, (caseNumber * -147f) + 58f - (1.8946f * caseNumber), 0);
+                partyLine.GetComponent<ResultsCell1>().cIndex = caseNumber;
+                partyLine.GetComponent<ResultsCell1>().pIndex = parties[i];
+                partyLine.GetComponent<ResultsCell1>().sprite = partyImages(parties[i]);
+                SetRectTransform(partyLine, 0, -5f, 142f * ((2*i)+1), 285f);
+            }
+        }
+        name.text = MainControl.casesNameTranslation[caseNumber];
     }
     public (int, int) partySplitter(int caseNumber)
     {
@@ -137,38 +167,40 @@ public class Results : MonoBehaviour
     {
         return (value * 100).ToString("0.00") + "%";
     }
+    public int[] partiesInCase()
+    {
+        ArrayList parties = new ArrayList();
+        for (int i = 0; i < MainControl.results.GetLength(1); i++)
+        {
+            if (MainControl.results[caseNumber, i] > 0)
+            {
+                parties.Add(i);
+            }
+        }
+        parties.Sort();
+        for (int i = 0; i < parties.Count - 1; i++)
+        {
+            if (parties[i] == parties[i + 1])
+            {
+                parties.RemoveAt(i);
+                i--;
+            }
+        }
+        return (int[])parties.ToArray(typeof(int));
+    }
+
+
+
+
+    public void SetRectTransform(GameObject go, float bottom, float top, float posX, float width)
+    {
+        RectTransform rect = go.GetComponent<RectTransform>();
+        rect.offsetMin = new Vector2(rect.offsetMin.x, bottom);
+        rect.offsetMax = new Vector2(rect.offsetMax.x, top);
+        rect.position = new Vector3(posX, rect.position.y, rect.position.z);
+        rect.sizeDelta = new Vector2(width, rect.sizeDelta.y);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

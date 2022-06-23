@@ -61,9 +61,10 @@ public class GlobalPartyChoose : MonoBehaviour
     public Text infoResultsText;
     public Button infoResultsClose1;
     public static bool infoResultsJump = false;
-
     public static int infoResultParty;
     public static int infoResultCase1;
+
+    public Scrollbar scrollbarForPreferences;
     void Awake()
     {
         partyScreen.SetActive(false);
@@ -107,7 +108,10 @@ public class GlobalPartyChoose : MonoBehaviour
         {
             infoResultsJump = false;
             showInfoResults();
-            infoResText("\nThe party " + partyNames[infoResultParty] + " has " + results[infoResultCase1, infoResultParty] * 100 + "% of the " + ministeries[infoResultCase1] + " Ministry.");
+            int sumOfMandatesParam1 = sumOfMandates();
+            float satisfiedParam1 = satisfied(infoResultParty);
+            int sumOfChoiceParam1 = sumOfChoice(infoResultParty);
+            infoResText("\nThe party " + partyNames[infoResultParty] + " has " + mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage(mandates[infoResultParty] / sumOfMandatesParam1) + " of the total mandates and got total value of " + satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1) + ".");
         }
         if (timeConfirm == 3)
         {
@@ -117,9 +121,13 @@ public class GlobalPartyChoose : MonoBehaviour
                 GameObject now = child.gameObject;
                 if (wasClicked)
                 {
+
                     partyScreen.SetActive(true);
+
                     float height = 41f;
+
                     float numberOfInstantiation = -5.79f;
+
                     preferences.GetComponent<RectTransform>().sizeDelta = new Vector2(preferences.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 11) ? ((ministeries.Length - 10) * height) : preferences.GetComponent<RectTransform>().sizeDelta.y);
                     for (int i = 0; i < ministeries.Length; i++)
                     {
@@ -351,6 +359,7 @@ public class GlobalPartyChoose : MonoBehaviour
     }
     public void backFromPartyWasPressed()
     {
+        scrollbarForPreferences.value = 1;
         foreach (Transform child in preferences.transform)
         {
             Destroy(child.gameObject);
@@ -612,7 +621,51 @@ public class GlobalPartyChoose : MonoBehaviour
     {
         infoResultsText.text = input;
     }
+    public int sumOfMandates()
+    {
+        int output = 0;
+        for (int i = 0; i < mandates.Length; i++)
+        {
+            output += mandates[i];
+        }
+        return output;
+    }
+    public float satisfied(int party)
+    {
+        float output = 0;
+        for (int i = 0; i < ministeries.Length; i++)
+        {
+            output += partyParameters[party, i] * results[i, party];
+        }
+        return output;
+    }
+    public int sumOfChoice(int party)
+    {
+        int output = 0;
+        for (int i = 0; i < ministeries.Length; i++)
+        {
+            output += partyParameters[party, i];
+        }
+        return output;
+    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public string percentage(float value)
+    {
+        return (value * 100).ToString("0.00") + "%";
+    }
 
 
 }
