@@ -35,3 +35,10 @@ public class ResultLine1 : MonoBehaviour
         rect.offsetMax = new Vector2(rect.offsetMax.x, top);
     }
 }
+
+
+
+
+
+
+

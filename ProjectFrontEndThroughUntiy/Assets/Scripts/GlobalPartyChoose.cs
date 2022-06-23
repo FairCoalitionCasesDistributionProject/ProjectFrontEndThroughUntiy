@@ -63,8 +63,8 @@ public class GlobalPartyChoose : MonoBehaviour
     public static bool infoResultsJump = false;
     public static int infoResultParty;
     public static int infoResultCase1;
-
     public Scrollbar scrollbarForPreferences;
+    public GameObject explainTheResults;
     void Awake()
     {
         partyScreen.SetActive(false);
@@ -111,7 +111,7 @@ public class GlobalPartyChoose : MonoBehaviour
             int sumOfMandatesParam1 = sumOfMandates();
             float satisfiedParam1 = satisfied(infoResultParty);
             int sumOfChoiceParam1 = sumOfChoice(infoResultParty);
-            infoResText("\nThe party " + partyNames[infoResultParty] + " has " + mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage(mandates[infoResultParty] / sumOfMandatesParam1) + " of the total mandates and got total value of " + satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1) + ".");
+            infoResText("\nThe party " + partyNames[infoResultParty] + " has " + mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)mandates[infoResultParty] / (float)sumOfMandatesParam1) + " of the total mandates and got total value of " + satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1) + ".");
         }
         if (timeConfirm == 3)
         {
@@ -121,13 +121,9 @@ public class GlobalPartyChoose : MonoBehaviour
                 GameObject now = child.gameObject;
                 if (wasClicked)
                 {
-
                     partyScreen.SetActive(true);
-
                     float height = 41f;
-
                     float numberOfInstantiation = -5.79f;
-
                     preferences.GetComponent<RectTransform>().sizeDelta = new Vector2(preferences.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 11) ? ((ministeries.Length - 10) * height) : preferences.GetComponent<RectTransform>().sizeDelta.y);
                     for (int i = 0; i < ministeries.Length; i++)
                     {
@@ -162,6 +158,7 @@ public class GlobalPartyChoose : MonoBehaviour
                     Destroy(child.gameObject);
                 }
                 session.SetActive(false);
+                explainTheResults.SetActive(false);
                 positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, 0);
                 scrollbar.value = 1;
                 back1.SetActive(false);
@@ -179,6 +176,7 @@ public class GlobalPartyChoose : MonoBehaviour
             case 1:
                 session.SetActive(false);
                 confirm.GetComponentInChildren<Text>().text = "Confirm";
+                explainTheResults.SetActive(false);
                 foreach (Transform child in positions.transform)
                 {
                     Destroy(child.gameObject);
@@ -248,9 +246,11 @@ public class GlobalPartyChoose : MonoBehaviour
                     amountOfMandatePlaceHolders.text = MainControl.inputArray[(int)parce.amountofmandate];
                     session01[2] = false;
                 }
+                explainTheResults.SetActive(false);
                 settings1.SetActive(true);
                 break;
             case 3:
+                explainTheResults.SetActive(false);
                 confirm.GetComponentInChildren<Text>().text = "Confirm";
                 foreach (Transform child in positions.transform)
                 {
@@ -468,6 +468,7 @@ public class GlobalPartyChoose : MonoBehaviour
         float height = 147.89f;
         float numberOfInstantiation = (1 / 5.79f);
         positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 3) ? ((ministeries.Length - 2) * height) : positions.GetComponent<RectTransform>().sizeDelta.y);
+        explainTheResults.SetActive(true);
         for (int i = 0; i < ministeries.Length; i++)
         {
             numberOfInstantiation++;
@@ -648,40 +649,28 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public string percentage(float value)
     {
         return (value * 100).ToString("0.00") + "%";
     }
-
-
+    public void ExplainTheResults()
+    {
+        /*
+        string output = "";
+        for (int infoResultParty = 0; infoResultParty < partyNames.Length; infoResultParty++)
+        {
+        */
+        showInfoResults();
+        /*
+            int sumOfMandatesParam1 = sumOfMandates();
+            float satisfiedParam1 = satisfied(infoResultParty);
+            int sumOfChoiceParam1 = sumOfChoice(infoResultParty);
+            output += "\nThe party " + partyNames[infoResultParty] + " has " + mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)mandates[infoResultParty] / (float)sumOfMandatesParam1) + " of the total mandates and got total value of " + satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1) + ".\n";
+        }
+        */
+        infoResText("Click on any party name you see at the results screen to see the explanation of the results for that party.");
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

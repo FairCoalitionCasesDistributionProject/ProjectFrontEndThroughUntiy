@@ -17,6 +17,12 @@ public class Results : MonoBehaviour
     public Sprite likud, haavoda, hareshimaHamshutefet, hareshimaHaaravitHameshutefet, hazionutHadatit, israelBeitenu, kaholLavan, meretz, shas, tikvaHadasha, yahadutHatora, yemina, yeshAtid;
     public GameObject partyResultOnCase;
     public GameObject positions;
+    public bool leftImageClick1 = false;
+    public bool rightImageClick = false;
+
+
+
+    public (int, int) param = (0, 0);
     void Start()
     {
         if (mode1 == 0)
@@ -27,7 +33,6 @@ public class Results : MonoBehaviour
             bool equal = isEqual(tuple);
             int theBigger = bigger(tuple);
             int theSmaller = smaller(tuple);
-
             slider.value = (equal) ? MainControl.results[caseNumber, tuple.Item1] : ((1 / (MainControl.results[caseNumber, theBigger] + MainControl.results[caseNumber, theSmaller])) * MainControl.results[caseNumber, theBigger]);
             number.text = "" + percentage(slider.value);
             party.sprite = partyImages(tuple.Item1);
@@ -43,21 +48,11 @@ public class Results : MonoBehaviour
                 party1.SetNativeSize();
                 number1.text = "" + percentage(1 - slider.value);
             }
+            param = (theSmaller, theBigger);
         }
         else
         {
             int[] parties = partiesInCase();
-            // float height = 147.89f;
-            // positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (parties.Length > 3) ? ((parties.Length - 2) * height) : positions.GetComponent<RectTransform>().sizeDelta.y);
-            // for (int i = 0; i < parties.Length; i++)
-            // {
-            //     GameObject partyLine = Instantiate(partyResultOnCase, Vector3.zero, Quaternion.identity, positions.transform);
-            //     partyLine.transform.position = new Vector3(0, ((-1) * height * i) + 173f, 0);
-            //     partyLine.GetComponent<ResultsCell1>().cIndex = caseNumber;
-            //     partyLine.GetComponent<ResultsCell1>().pIndex = parties[i];
-            //     partyLine.GetComponent<ResultsCell1>().sprite = partyImages(parties[i]);
-            // }
-
             float width = 285f;
             positions.GetComponent<RectTransform>().sizeDelta = new Vector2((parties.Length > 2) ? ((parties.Length - 2) * width) : positions.GetComponent<RectTransform>().sizeDelta.x, positions.GetComponent<RectTransform>().sizeDelta.y);
             for (int i = 0; i < parties.Length; i++)
@@ -67,35 +62,28 @@ public class Results : MonoBehaviour
                 partyLine.GetComponent<ResultsCell1>().cIndex = caseNumber;
                 partyLine.GetComponent<ResultsCell1>().pIndex = parties[i];
                 partyLine.GetComponent<ResultsCell1>().sprite = partyImages(parties[i]);
-                SetRectTransform(partyLine, 0, -5f, 142f * ((2*i)+1), 285f);
+                SetRectTransform(partyLine, 0, -5f, 142f * ((2 * i) + 1), 285f);
             }
         }
         name.text = MainControl.casesNameTranslation[caseNumber];
     }
+    void Update()
+    {
+        if (leftImageClick1)
+        {
+            leftImageClick1 = false;
+            MainControl.infoResultParty = param.Item1;
+            MainControl.infoResultsJump = true;
+        }
+        if (rightImageClick)
+        {
+            rightImageClick = false;
+            MainControl.infoResultParty = param.Item2;
+            MainControl.infoResultsJump = true;
+        }
+    }
     public (int, int) partySplitter(int caseNumber)
     {
-        /*int counter = 0;
-        int first = 0;
-        int second = 0;
-        for (int i = 0; i < MainControl.results.GetLength(1); i++)
-        {
-            if (MainControl.results[caseNumber, i] > 0)
-            {
-                if (counter == 0)
-                {
-                    first = i;
-                    second = i;
-                    counter++;
-                }
-                else
-                {
-                    second = i;
-                }
-            }
-        }
-        return (first, second);
-        */
-        // Go through all the [caseNumber, ] and return a turple of the two parties that have the biggest results
         int first = 0;
         int second = 0;
         float firstValue = 0;
@@ -188,10 +176,6 @@ public class Results : MonoBehaviour
         }
         return (int[])parties.ToArray(typeof(int));
     }
-
-
-
-
     public void SetRectTransform(GameObject go, float bottom, float top, float posX, float width)
     {
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -200,7 +184,17 @@ public class Results : MonoBehaviour
         rect.position = new Vector3(posX, rect.position.y, rect.position.z);
         rect.sizeDelta = new Vector2(width, rect.sizeDelta.y);
     }
+    public void leftImageClicked1()
+    {
+        leftImageClick1 = true;
+    }
+    public void rightImageClicked()
+    {
+        rightImageClick = true;
+    }
 }
+
+
 
 
 

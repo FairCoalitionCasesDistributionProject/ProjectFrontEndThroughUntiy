@@ -34,7 +34,11 @@ public class ResultsCell1 : MonoBehaviour
         rectTransform.pivot = new Vector2(0.5f, 1);
         rectTransform.anchoredPosition = new Vector2(0, 0);
     }
-
-
+    public void info1()
+    {
+        MainControl.infoResultParty = pIndex;
+        MainControl.infoResultsJump = true;
+    }
 }
+
 

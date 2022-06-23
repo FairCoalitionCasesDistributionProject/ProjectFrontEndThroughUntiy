@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 using UnityEngine.UI;
+
+using TMPro;
 public class ResultsController : MonoBehaviour
 {
     public GameObject caseViewRow;
@@ -14,12 +16,23 @@ public class ResultsController : MonoBehaviour
     public Image image;
     public GameObject positions;
     public Scrollbar scrollbar;
+    public GameObject infoResults;
+    public TextMeshProUGUI text;
     void Start()
     {
         filterOn1 = true;
         image.enabled = true;
         InstantiateCaseViewRows();
         reuseKey1.GetComponentInChildren<Text>().text = MainControl.key;
+    }
+
+    void Update()
+    {
+        if (MainControl.infoResultsJump)
+        {
+            MainControl.infoResultsJump = false;
+            ExplainTheResults(MainControl.infoResultParty);
+        }
     }
     public void InstantiateCaseViewRows()
     {
@@ -61,7 +74,7 @@ public class ResultsController : MonoBehaviour
         positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, positions.GetComponent<RectTransform>().sizeDelta.y);
         float height = -105f;
         float numberOfInstantiation = -5.79f;
-        int j = -1 ;
+        int j = -1;
         for (int i = 0; i < MainControl.relevantCases.Length; i++)
         {
             if (MainControl.relevantCases[i])
@@ -71,11 +84,10 @@ public class ResultsController : MonoBehaviour
                 GameObject newCaseViewRow = Instantiate(caseViewRow, transform.position, transform.rotation, positions.transform);
                 newCaseViewRow.transform.position = new Vector3(0, height * j, 0);
                 newCaseViewRow.GetComponent<Results>().caseNumber = i;
-                SetRectTransform(newCaseViewRow, 0, 0, (-1) * (115f * ((2 * j) + 1)), 225);
+                SetRectTransform(newCaseViewRow, 0, 0, -115f * ((2 * j) + 1), 225);
             }
         }
     }
-    // Function gets a GameObject and float parameters left, right, posY and height and sets the RectTransform of the GameObject to the given parameters.
     public void SetRectTransform(GameObject go, float left, float right, float posY, float height)
     {
         RectTransform rect = go.GetComponent<RectTransform>();
@@ -103,4 +115,90 @@ public class ResultsController : MonoBehaviour
             InstantiateCaseViewRow1();
         }
     }
+    public void ExplainTheResults(int infoResultParty)
+    {
+        infoResults.SetActive(true);
+        int sumOfMandatesParam1 = sumOfMandates();
+        float satisfiedParam1 = satisfied(infoResultParty);
+        int sumOfChoiceParam1 = sumOfChoice(infoResultParty);
+        text.text = "למפלגת " + MainControl.partyHebrewName[infoResultParty] + " יש " + ReverseString(MainControl.mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)MainControl.mandates[infoResultParty] / (float)sumOfMandatesParam1)) + " מסך המנדטים שיש לקואוליציה, והיא בפועל קיבלה " + ReverseString(satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1)) + " ממה שביקשה .";
+    }
+    public string ReverseString(string s)
+    {
+        char[] arr = s.ToCharArray();
+        Array.Reverse(arr);
+        return new string(arr);
+    }
+    public int sumOfMandates()
+    {
+        int output = 0;
+        for (int i = 0; i < MainControl.mandates.Length; i++)
+        {
+            if (MainControl.relevantParties[i])
+            {
+                output += MainControl.mandates[i];
+            }
+        }
+        return output;
+    }
+    public float satisfied(int party)
+    {
+        float output = 0;
+        for (int i = 0; i < MainControl.relevantCases.Length; i++)
+        {
+            if (MainControl.relevantCases[i])
+            {
+                output += MainControl.partyParameters[party, i] * MainControl.results[i, party];
+            }
+        }
+        return output;
+    }
+    public int sumOfChoice(int party)
+    {
+        int output = 0;
+        for (int i = 0; i < MainControl.relevantCases.Length; i++)
+        {
+            if (MainControl.relevantCases[i])
+            {
+                output += MainControl.partyParameters[party, i];
+            }
+        }
+        return output;
+    }
+    public string percentage(float value)
+    {
+        return (value * 100).ToString("0.00") + "%";
+    }
+    public void closeExp1()
+    {
+        infoResults.SetActive(false);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

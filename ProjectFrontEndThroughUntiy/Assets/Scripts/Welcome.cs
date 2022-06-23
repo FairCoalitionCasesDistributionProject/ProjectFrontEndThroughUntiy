@@ -20,8 +20,6 @@ public enum typeRun
     EN = 0,
     IL24 = 1,
 }
-
-
 public enum parce
 {
     items = 0,
@@ -296,22 +294,6 @@ public class Welcome : MonoBehaviour
         MainControl.session = true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
