@@ -8,6 +8,7 @@ public class InfoControl : MonoBehaviour
     public GameObject infoAlgo;
     public GameObject infoTech;
     public GameObject infoAbout;
+    //* Scripts sets the info screen attributes to the relevant to the relevant tab opened.
     void Start()
     {
         infoMain.SetActive(true);
@@ -57,3 +58,7 @@ public class InfoControl : MonoBehaviour
         infoAbout.SetActive(true);
     }
 }
+
+
+
+

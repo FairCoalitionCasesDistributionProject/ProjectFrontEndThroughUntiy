@@ -20,14 +20,16 @@ public class Manager : MonoBehaviour
     public GameObject settings1;
     public Text settingsInp;
     private bool recievedAnswer = false;
+    public GameObject error;
+    public Text sessionKey1;
     void Start()
     {
         settings1.SetActive(false);
         loading.SetActive(false);
+        error.SetActive(false);
     }
     public void Send()
     {
-
         recievedAnswer = false;
         int[] key = CurrentDateTime();
         string draft = "{\"items\":" + MainControl.numberOfCases + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"" + "IL24." + keyString(key) + "\"}";
@@ -108,18 +110,35 @@ public class Manager : MonoBehaviour
         yield return uwr.SendWebRequest();
         if (uwr.isNetworkError)
         {
-            Debug.Log("Error While Sending: " + uwr.error);
             MainControl.serverOutput = "" + (-1);
+            error.SetActive(true);
+            sessionKey1.text = MainControl.key;
+            loading.SetActive(false);
+            mainImage.SetActive(true);
         }
         else
         {
-            Debug.Log("Received: " + uwr.downloadHandler.text);
             MainControl.serverOutput = uwr.downloadHandler.text;
-        }
-        Parse(MainControl.serverOutput);
-        if (recievedAnswer)
-        {
-            SceneManager.LoadScene("Results");
+            Parse(MainControl.serverOutput);
+            if (recievedAnswer)
+            {
+                SceneManager.LoadScene("Results");
+            }
+            if (uwr.downloadHandler.text == "-1")
+            {
+                error.SetActive(true);
+                sessionKey1.text = MainControl.key;
+                loading.SetActive(false);
+                mainImage.SetActive(true);
+            }
+            else
+            {
+                Parse(MainControl.serverOutput);
+                if (recievedAnswer)
+                {
+                    SceneManager.LoadScene("Results");
+                }
+            }
         }
     }
     public void Parse(string input)
@@ -212,4 +231,36 @@ public class Manager : MonoBehaviour
     {
         settings1.SetActive(false);
     }
+    public void closeError()
+    {
+        error.SetActive(false);
+    }
+    public void Link1()
+    {
+        Application.ExternalEval("prompt(\" כדי לשחזר בעתיד את ההרצה הנוכחית, אנא תעתיקו את הלינק המצורף:\",\"" + domain(Application.absoluteURL) + "?" + MainControl.key + "\")");
+    }
+    public string domain(string url)
+    {
+        string[] array = url.Split('/');
+        string output = "";
+        for (int i = 0; i < 3; i++)
+        {
+            output += array[i] + "/";
+        }
+        return output;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

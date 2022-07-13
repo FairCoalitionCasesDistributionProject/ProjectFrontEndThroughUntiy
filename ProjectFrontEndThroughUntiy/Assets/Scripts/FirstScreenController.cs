@@ -61,7 +61,6 @@ public class FirstScreenController : MonoBehaviour
             int deciNum = toDeci(array[i], 61);
             if (deciNum == -1)
             {
-                Debug.Log("Error: Invalid input.");
                 return "";
             }
             else
@@ -169,6 +168,7 @@ public class FirstScreenController : MonoBehaviour
         MainControl.partyParameters = matrix;
     }
 }
+
 
 
 

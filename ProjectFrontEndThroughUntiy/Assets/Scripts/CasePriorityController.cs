@@ -6,6 +6,7 @@ public class CasePriorityController : MonoBehaviour
 {
     public Sprite likud, haavoda, hareshimaHamshutefet, hareshimaHaaravitHameshutefet, hazionutHadatit, israelBeitenu, kaholLavan, meretz, shas, tikvaHadasha, yahadutHatora, yemina, yeshAtid;
     public Image current;
+    //* Function sets the current party image to the relevant to the current party name parameter .
     void Start()
     {
         switch (MainControl.currentName)
@@ -66,29 +67,3 @@ public class CasePriorityController : MonoBehaviour
         current.SetNativeSize();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

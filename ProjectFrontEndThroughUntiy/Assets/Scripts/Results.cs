@@ -69,13 +69,13 @@ public class Results : MonoBehaviour
         if (leftImageClick1)
         {
             leftImageClick1 = false;
-            MainControl.infoResultParty = param.Item1;
+            MainControl.infoResultParty = param.Item2;
             MainControl.infoResultsJump = true;
         }
         if (rightImageClick)
         {
             rightImageClick = false;
-            MainControl.infoResultParty = param.Item2;
+            MainControl.infoResultParty = param.Item1;
             MainControl.infoResultsJump = true;
         }
     }

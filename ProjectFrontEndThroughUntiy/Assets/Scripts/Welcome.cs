@@ -192,7 +192,6 @@ public class Welcome : MonoBehaviour
             int deciNum = toDeci(array[i], 61);
             if (deciNum == -1)
             {
-                Debug.Log("Error: Invalid input.");
                 return "";
             }
             else
@@ -288,12 +287,13 @@ public class Welcome : MonoBehaviour
                 index += 1;
                 inputArray[i] = inputArray[i].Substring(index);
             }
-            Debug.Log(inputArray[i]);
             MainControl.inputArray[i] = inputArray[i];
         }
         MainControl.session = true;
     }
 }
+
+
 
 
 

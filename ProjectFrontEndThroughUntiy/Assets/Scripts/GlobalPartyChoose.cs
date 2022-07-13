@@ -65,6 +65,9 @@ public class GlobalPartyChoose : MonoBehaviour
     public static int infoResultCase1;
     public Scrollbar scrollbarForPreferences;
     public GameObject explainTheResults;
+    public GameObject error;
+    public Text sessionKey1;
+    //* Function is called when the scene is loaded.
     void Awake()
     {
         partyScreen.SetActive(false);
@@ -93,8 +96,10 @@ public class GlobalPartyChoose : MonoBehaviour
             confirmPressed(0);
         }
     }
+    //* Function is called before the first frame update.
     void Start()
     {
+        error.SetActive(false);
         partyScreen.SetActive(false);
         settings0.SetActive(true);
         settings1.SetActive(false);
@@ -102,6 +107,7 @@ public class GlobalPartyChoose : MonoBehaviour
         loading.SetActive(false);
         MainControl.lastPage = "Popular";
     }
+    //*Function is called every frame .
     void Update()
     {
         if (infoResultsJump)
@@ -142,16 +148,20 @@ public class GlobalPartyChoose : MonoBehaviour
             GlobalPartyChoose.summary = sum;
         }
     }
+    //*Function checks if the given string input contains meaningful characters .
     public bool allSpaces(string str)
     {
         return str.Replace(" ", "").Length == 0;
     }
+    //*Function which runs when the user presses the confirm button .
     public void confirmPressed(int control)
     {
         timeConfirm += control;
         switch (timeConfirm)
         {
             case 0:
+                confirm.interactable = true;
+                confirm.gameObject.SetActive(true);
                 confirm.GetComponentInChildren<Text>().text = "Confirm";
                 foreach (Transform child in positions.transform)
                 {
@@ -334,6 +344,9 @@ public class GlobalPartyChoose : MonoBehaviour
                     back.interactable = false;
                     back.enabled = false;
                     back1.SetActive(false);
+                    confirm.interactable = false;
+                    confirm.gameObject.SetActive(false);
+
                     timeConfirm = -1;
                     confirm.GetComponentInChildren<Text>().text = "Recalculate";
                     foreach (Transform child in positions.transform)
@@ -346,17 +359,20 @@ public class GlobalPartyChoose : MonoBehaviour
                 break;
         }
     }
+    //*Function which is launching/turning off (by the given show parameter) the alert message with the given message and launches hideAlert function with the given time parameter .
     public void alertShow(bool show, string message, float time)
     {
         alert.SetActive(show);
         alertText.text = message;
         StartCoroutine(hideAlert(time));
     }
+    //* Function showing the alert message for the given as input amount of time .
     IEnumerator hideAlert(float time)
     {
         yield return new WaitForSeconds(time);
         alert.SetActive(false);
     }
+    //* Function which being called each time the user returns from the party preferences screen to the party choosing screen .
     public void backFromPartyWasPressed()
     {
         scrollbarForPreferences.value = 1;
@@ -366,6 +382,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         partyScreen.SetActive(false);
     }
+    //* Function perform upload of the relevant data to the server.
     IEnumerator Upload()
     {
         loading.SetActive(true);
@@ -376,7 +393,6 @@ public class GlobalPartyChoose : MonoBehaviour
         string URL = "http://faircol.herokuapp.com/api/";
         int[] key = CurrentDateTime();
         string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"EN." + keyString(key) + "\",\"type\":0,\"partynames\":" + arrayToString(partyNames) + ",\"numberofparties\":" + numberOfParties.text + ",\"ministeries\":" + arrayToString(ministeries) + ",\"amountofmandate\":" + amountOfMandate.text + "}";
-        Debug.Log(json);
         key01.text = "EN." + EncodeTo64(key);
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -386,22 +402,34 @@ public class GlobalPartyChoose : MonoBehaviour
         yield return uwr.SendWebRequest();
         if (uwr.isNetworkError)
         {
-            Debug.Log("Error While Sending: " + uwr.error);
             serverOutput = "" + (-1);
+            alertShow(true, "Unknown Network Error", 1.5f);
         }
         else
         {
-            Debug.Log("Received: " + uwr.downloadHandler.text);
             serverOutput = uwr.downloadHandler.text;
-        }
-        Parse(serverOutput);
-        if (recievedAnswer)
-        {
-            loading.SetActive(false);
-            Debug.Log("Recieved");
-            showResults();
+            if (uwr.downloadHandler.text == "-1")
+            {
+                error.SetActive(true);
+                timeConfirm = 0;
+                sessionKey1.text = key01.text;
+                confirmPressed(0);
+                loading.SetActive(false);
+            }
+            else
+            {
+                Parse(serverOutput);
+                if (recievedAnswer)
+                {
+                    loading.SetActive(false);
+                    showResults();
+                }
+            }
+            confirm.interactable = true;
+            confirm.gameObject.SetActive(true);
         }
     }
+    //* Function parse the server calculation output and a float matrix.
     public void Parse(string input)
     {
         if (input == "-1")
@@ -423,11 +451,13 @@ public class GlobalPartyChoose : MonoBehaviour
         results = matrix;
         recievedAnswer = true;
     }
+    //* Function retunrs an integer array [year, month, day, hour, minute, second, millisecond] of the moment its called.
     public int[] CurrentDateTime()
     {
         DateTime currentDateTime = DateTime.Now;
         return new int[7] { currentDateTime.Year, currentDateTime.Month, currentDateTime.Day, currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second, currentDateTime.Millisecond };
     }
+    //* Function returns a string representation of the mandates array.
     public string mandatesString()
     {
         string mandates1 = "[";
@@ -438,6 +468,7 @@ public class GlobalPartyChoose : MonoBehaviour
         mandates1 += "]";
         return mandates1;
     }
+    //*Function returns a string representation of the preferences matrix.
     public string preferencesString()
     {
         string preference1 = "[";
@@ -453,6 +484,7 @@ public class GlobalPartyChoose : MonoBehaviour
         preference1 += "]";
         return preference1;
     }
+    //* Function recieves an integer array and returns a string where each element is separated from the next by a comma .
     public string keyString(int[] key)
     {
         string output = "";
@@ -462,6 +494,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //* Function shows the result of the calculation by instantiating prefabs with relevant parameters .
     public void showResults()
     {
         session.SetActive(true);
@@ -477,6 +510,7 @@ public class GlobalPartyChoose : MonoBehaviour
             newPartyChooseLine.GetComponent<ResultLine1>().index = i;
         }
     }
+    //* Function recieves an integer representing the length of the array and a string representing a value, and returns a string array with the given length and the given value in each .
     public string[] stringArray(int length, string value)
     {
         string[] output = new string[length];
@@ -486,22 +520,27 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //* Function notifies the local trigger that the number of cases parameter was changed.
     public void caseNumberWasChanged()
     {
         numberOfCasesWasChanged = true;
     }
+    //* Function notifies the local trigger that the number of parties paramenter was changed.
     public void partyNumberWasChanged()
     {
         numberOfPartiesWasChanged = true;
     }
+    //* Function notifies the local trigger for the number of mandates parameter was changed 
     public void mandatesWasChanged()
     {
         numberOfMandatesWasChanged = true;
     }
+    //* Function launches a browser prompt with the url with a key for user to copy and restore the current session.
     public void copyTheKey()
     {
         Application.ExternalEval("prompt(\"Copy the following link to reload this session later:\",\"" + domain(Application.absoluteURL) + "?" + key01.text + "\")");
     }
+    //*Function to get the domain of the current URL.
     public string domain(string url)
     {
         string[] array = url.Split('/');
@@ -512,6 +551,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //*Function receives a string array and returns a string with the array's elements separated by a comma, where all the array is inside [.....] .
     public string arrayToString(string[] array)
     {
         string output = "[";
@@ -522,6 +562,7 @@ public class GlobalPartyChoose : MonoBehaviour
         output += "]";
         return output;
     }
+    //* Function receives an array of integers and returns a string where each array element is encoded to base64 and separated with a "." from the other elements in the array.
     public string EncodeTo64(int[] input)
     {
         string output = "";
@@ -531,6 +572,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //* Function receives an integer and returns a character which is (char)input+48 for an input between 0 and 9 and (char)input+55 for other.
     public char reVal(int num)
     {
         if (num >= 0 && num <= 9)
@@ -542,6 +584,7 @@ public class GlobalPartyChoose : MonoBehaviour
             return (char)(num - 10 + 65);
         }
     }
+    //* Function receives an integer representing a number in base10 and a integer representing the base number, to which the inputed number should be converted to.
     public string fromDeci(int base1, int inputNum)
     {
         string s = "";
@@ -554,6 +597,7 @@ public class GlobalPartyChoose : MonoBehaviour
         Array.Reverse(res);
         return new String(res);
     }
+    //*Function receives a string which represents an integer array, parses it and returns an array of integers.
     public int[] stringToArray(string input)
     {
         string[] array = input.Replace("[", "").Replace("]", "").Split(',');
@@ -564,6 +608,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //*Function recieves a string which represents a string array, parses it and returns an array of strings.
     public string[] stringToStringArray(string input)
     {
         string[] array = input.Replace("[", "").Replace("]", "").Split(',');
@@ -574,6 +619,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //* Function receives a string and finds the (char)index of the first character which is not contained in the string .
     public char findUncontainedChar(string str)
     {
         for (int i = 0; i < 65536; i++)
@@ -585,6 +631,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return '|';
     }
+    //* Function receives a string which represents a integer matrix, parses it and returns a matrix of integers .
     public int[,] stringToIntMatrix(string input)
     {
         char separator = findUncontainedChar(input);
@@ -600,28 +647,32 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //*Function closes the information panel.
     public void infoClose()
     {
         info.SetActive(false);
     }
+    //*Function opens the information panel.
     public void infoShow()
     {
         info.SetActive(true);
     }
+    //* Function opens the explation of the results panel. 
     public void showInfoResults()
     {
         infoResults.SetActive(true);
     }
-
+    //* Function closes the explation of the results panel.
     public void closeInfoResults1()
     {
         infoResults.SetActive(false);
     }
-
+    //* Function sets infoResultsText value to the given input.
     public void infoResText(string input)
     {
         infoResultsText.text = input;
     }
+    //* Function returns the number of mandates the coalition has.
     public int sumOfMandates()
     {
         int output = 0;
@@ -631,6 +682,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //* Function receives a integer representing a party and calculates the sum of the party prefferences multiplied by the actual result for any relevant case.
     public float satisfied(int party)
     {
         float output = 0;
@@ -640,6 +692,7 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //*Function receives an integer representing a party and returns the summation of the parties preferences.
     public int sumOfChoice(int party)
     {
         int output = 0;
@@ -649,26 +702,21 @@ public class GlobalPartyChoose : MonoBehaviour
         }
         return output;
     }
+    //*Function receives a float value in range [0,1] and returns a string which represents the value in percentage.
     public string percentage(float value)
     {
         return (value * 100).ToString("0.00") + "%";
     }
+    //* Function opens the information about openining the results explanation.
     public void ExplainTheResults()
     {
-        /*
-        string output = "";
-        for (int infoResultParty = 0; infoResultParty < partyNames.Length; infoResultParty++)
-        {
-        */
         showInfoResults();
-        /*
-            int sumOfMandatesParam1 = sumOfMandates();
-            float satisfiedParam1 = satisfied(infoResultParty);
-            int sumOfChoiceParam1 = sumOfChoice(infoResultParty);
-            output += "\nThe party " + partyNames[infoResultParty] + " has " + mandates[infoResultParty] + "/" + sumOfMandatesParam1 + "=" + percentage((float)mandates[infoResultParty] / (float)sumOfMandatesParam1) + " of the total mandates and got total value of " + satisfiedParam1 + "/" + sumOfChoiceParam1 + "=" + percentage(satisfiedParam1 / sumOfChoiceParam1) + ".\n";
-        }
-        */
         infoResText("Click on any party name you see at the results screen to see the explanation of the results for that party.");
+    }
+    //*Function closes the error notification.
+    public void closeError1()
+    {
+        error.SetActive(false);
     }
 }
 

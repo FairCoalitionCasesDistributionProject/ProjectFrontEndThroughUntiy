@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
 using TMPro;
 public class ResultsController : MonoBehaviour
 {
@@ -25,7 +24,6 @@ public class ResultsController : MonoBehaviour
         InstantiateCaseViewRows();
         reuseKey1.GetComponentInChildren<Text>().text = MainControl.key;
     }
-
     void Update()
     {
         if (MainControl.infoResultsJump)
@@ -96,7 +94,6 @@ public class ResultsController : MonoBehaviour
         rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, posY);
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, height);
     }
-
     public void filter1()
     {
         scrollbar.value = 1;
@@ -174,6 +171,9 @@ public class ResultsController : MonoBehaviour
         infoResults.SetActive(false);
     }
 }
+
+
+
 
 
 
