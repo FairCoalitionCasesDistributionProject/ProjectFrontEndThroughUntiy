@@ -1,8 +1,6 @@
-# FrontEnd
-
 # Welcome To The Fair Division Of Ministries In A Govermental Coalition Calculation System.
 
-A web application which calculates a fair division of ministries between government coalition members.
+## A web application which calculates a fair division of ministries between government coalition members.
 
 The platform gets from each party of a potential coalition, its number of mandates and values for each ministry representing their interest in it as an input. The software returns a fair division of the ministries between the parties as an output accordingly to the leximin criterion.
 
@@ -38,7 +36,7 @@ Here we take an existing allocation and use integer programming to divide the it
 
 The frontend is completely written in Unity and ment to be used in a web browser using WebGL.
 
-##### For downloading and running in Unity editor
+#### For downloading and running in Unity editor
 
 ```
 git clone https://github.com/FairCoalitionCasesDistributionProject/ProjectFrontEndThroughUntiy.git
@@ -55,4 +53,6 @@ Open the project folder through Unity Hub and run the project.
 # About Us
 
 ![5](Media/5.png)
+
+
 
