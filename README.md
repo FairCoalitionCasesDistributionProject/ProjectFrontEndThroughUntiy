@@ -50,7 +50,7 @@ Open the project folder through Unity Hub and run the project.
 
 # Technology
 
-![4](Media/4.png)
+![4](Media/4.jpg)
 
 # About Us
 
