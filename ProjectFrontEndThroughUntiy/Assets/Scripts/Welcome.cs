@@ -152,13 +152,19 @@ public class Welcome : MonoBehaviour
         }
         if (type1 == typeRun.IL24 || type1 == typeRun.EMPTY)
         {
-            Parse(MainControl.serverOutput);
+            if (MainControl.serverOutput != "-1")
+            {
+                Parse(MainControl.serverOutput);
+            }
             MainControl.lastPage = "PartyChoose";
             SceneManager.LoadScene("PartyChoose");
         }
         else
         {
-            ParseVerEn1(MainControl.serverOutput);
+            if (MainControl.serverOutput != "-1")
+            {
+                ParseVerEn1(MainControl.serverOutput);
+            }
             SceneManager.LoadScene("Popular");
         }
     }
@@ -166,7 +172,6 @@ public class Welcome : MonoBehaviour
     {
         if (input == "-1")
         {
-            //*TODO: What to do if the input is broken.
             return;
         }
         var cleanedRows = Regex.Split(input.Replace("\"", "").Replace("[", "{").Replace("]", "}"), @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
@@ -292,6 +297,19 @@ public class Welcome : MonoBehaviour
         MainControl.session = true;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -318,8 +318,8 @@ public class GlobalPartyChoose : MonoBehaviour
                             for (int i = 0; i < numberOfPartiesInt; i++)
                             {
                                 numberOfInstantiation++;
-                                GameObject newPartyChooseLine = Instantiate(partyChooseLine, Vector3.zero/*transform.position*/, Quaternion.identity/*transform.rotation*/, positions.transform);
-                                newPartyChooseLine.transform.position = new Vector3(0, (height * i) + 172.569f /*+ 447.5f*/, 0);
+                                GameObject newPartyChooseLine = Instantiate(partyChooseLine, Vector3.zero, Quaternion.identity, positions.transform);
+                                newPartyChooseLine.transform.position = new Vector3(0, (height * i) + 172.569f, 0);
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().index = i;
                                 newPartyChooseLine.GetComponent<PartyChooseLine>().amountOfMandates = amountOfMandateInt;
                             }
@@ -346,7 +346,6 @@ public class GlobalPartyChoose : MonoBehaviour
                     back1.SetActive(false);
                     confirm.interactable = false;
                     confirm.gameObject.SetActive(false);
-
                     timeConfirm = -1;
                     confirm.GetComponentInChildren<Text>().text = "Recalculate";
                     foreach (Transform child in positions.transform)
@@ -434,7 +433,6 @@ public class GlobalPartyChoose : MonoBehaviour
     {
         if (input == "-1")
         {
-            //*TODO: What to do if the input is broken.
             return;
         }
         var cleanedRows = Regex.Split(input.Replace("\"", ""), @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
@@ -500,7 +498,7 @@ public class GlobalPartyChoose : MonoBehaviour
         session.SetActive(true);
         float height = 147.89f;
         float numberOfInstantiation = (1 / 5.79f);
-        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 3) ? ((ministeries.Length - 2) * height) : positions.GetComponent<RectTransform>().sizeDelta.y);
+        positions.GetComponent<RectTransform>().sizeDelta = new Vector2(positions.GetComponent<RectTransform>().sizeDelta.x, (ministeries.Length > 3) ? ((ministeries.Length - 3) * height) : positions.GetComponent<RectTransform>().sizeDelta.y);
         explainTheResults.SetActive(true);
         for (int i = 0; i < ministeries.Length; i++)
         {
@@ -719,6 +717,8 @@ public class GlobalPartyChoose : MonoBehaviour
         error.SetActive(false);
     }
 }
+
+
 
 
 
