@@ -100,7 +100,7 @@ public class Manager : MonoBehaviour
     {
         mainImage.SetActive(false);
         loading.SetActive(true);
-        string URL = MainControl.url;
+        string URL = MainControl.url + "test";
         string json = MainControl.serverInput;
         var uwr = new UnityWebRequest(URL, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -118,6 +118,7 @@ public class Manager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Received: " + uwr.downloadHandler.text);
             MainControl.serverOutput = uwr.downloadHandler.text;
             Parse(MainControl.serverOutput);
             if (recievedAnswer)
@@ -148,19 +149,26 @@ public class Manager : MonoBehaviour
             //*TODO: What to do if the input is broken.
             return;
         }
-        var cleanedRows = Regex.Split(input.Replace("\"", ""), @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
-        float[,] matrix = new float[cleanedRows.Count, 13];
-        for (var i = 0; i < cleanedRows.Count; i++)
+        string[] split = input.Split(new string[] { "{\"allocation\":", ",\"rounded_allocation\":" }, StringSplitOptions.None);
+        split[2] = split[2].Replace("}", "");
+        MainControl.results = Parse2DArray(split[1]);
+        MainControl.results01 = Parse2DArray(split[2]);
+        recievedAnswer = true;
+    }
+    public float[,] Parse2DArray(string input)
+    {
+        input = input.Substring(1, input.Length - 2);
+        string[] rows = input.Split(new string[] { "]," }, StringSplitOptions.None);
+        float[,] array = new float[rows.Length, rows[0].Split(',').Length];
+        for (int i = 0; i < rows.Length; i++)
         {
-            var data = cleanedRows.ElementAt(i).Split(',');
-            var matrixHelper = data.Select(c => float.Parse(c.Trim())).ToArray();
-            for (var j = 0; j < matrixHelper.Length; j++)
+            string[] columns = rows[i].Split(',');
+            for (int j = 0; j < columns.Length; j++)
             {
-                matrix[i, j] = matrixHelper[j];
+                array[i, j] = float.Parse(columns[j].Replace("[", "").Replace("]", "").Replace(",", "").Replace(" ", "").Replace("/", ""));
             }
         }
-        MainControl.results = matrix;
-        recievedAnswer = true;
+        return array;
     }
     public int[] CurrentDateTime()
     {
@@ -250,6 +258,66 @@ public class Manager : MonoBehaviour
         return output;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

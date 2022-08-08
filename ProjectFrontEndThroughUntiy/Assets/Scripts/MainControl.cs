@@ -65,6 +65,7 @@ public class MainControl : MonoBehaviour
     public static string serverInput = "";
     public static string serverOutput = "";
     public static float[,] results = new float[30, 13];
+    public static float[,] results01 = new float[30, 13];
     public static string key = "";
     public static string lastPage = "";
     public static bool[] relevantParties = new bool[13];
@@ -76,7 +77,6 @@ public class MainControl : MonoBehaviour
     public static int infoResultParty;
     public static int infoResultCase;
     public static bool infoResultsJump = false;
-
 
 
 
