@@ -389,7 +389,7 @@ public class GlobalPartyChoose : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        string URL = "http://faircol.herokuapp.com/api/";
+        string URL = "https://faircol.herokuapp.com/api/";
         int[] key = CurrentDateTime();
         string json = "{\"items\":" + ministeries.Length + ",\"mandates\":" + mandatesString() + ",\"preferences\":" + preferencesString() + ",\"key\": \"EN." + keyString(key) + "\",\"type\":0,\"partynames\":" + arrayToString(partyNames) + ",\"numberofparties\":" + numberOfParties.text + ",\"ministeries\":" + arrayToString(ministeries) + ",\"amountofmandate\":" + amountOfMandate.text + "}";
         key01.text = "EN." + EncodeTo64(key);
@@ -536,7 +536,14 @@ public class GlobalPartyChoose : MonoBehaviour
     //* Function launches a browser prompt with the url with a key for user to copy and restore the current session.
     public void copyTheKey()
     {
-        Application.ExternalEval("prompt(\"Copy the following link to reload this session later:\",\"" + domain(Application.absoluteURL) + "?" + key01.text + "\")");
+        string url = domain(Application.absoluteURL) + "?" + key01.text;
+        string message = "Copy the following link to reload this session later:\n" + url;
+        
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalCall("copyToClipboard", url);
+        #else
+        Debug.Log(message);
+        #endif
     }
     //*Function to get the domain of the current URL.
     public string domain(string url)
@@ -598,24 +605,60 @@ public class GlobalPartyChoose : MonoBehaviour
     //*Function receives a string which represents an integer array, parses it and returns an array of integers.
     public int[] stringToArray(string input)
     {
-        string[] array = input.Replace("[", "").Replace("]", "").Split(',');
-        int[] output = new int[array.Length];
-        for (int i = 0; i < array.Length; i++)
+        if (string.IsNullOrEmpty(input))
         {
-            output[i] = int.Parse(array[i]);
+            Debug.LogError("Input string is null or empty");
+            return new int[0];
         }
-        return output;
+        
+        try
+        {
+            string[] array = input.Replace("[", "").Replace("]", "").Split(',');
+            int[] output = new int[array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (int.TryParse(array[i].Trim(), out int result))
+                {
+                    output[i] = result;
+                }
+                else
+                {
+                    Debug.LogWarning($"Failed to parse integer: {array[i]}");
+                    output[i] = 0;
+                }
+            }
+            return output;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error parsing string to array: {ex.Message}");
+            return new int[0];
+        }
     }
     //*Function recieves a string which represents a string array, parses it and returns an array of strings.
     public string[] stringToStringArray(string input)
     {
-        string[] array = input.Replace("[", "").Replace("]", "").Split(',');
-        string[] output = new string[array.Length];
-        for (int i = 0; i < array.Length; i++)
+        if (string.IsNullOrEmpty(input))
         {
-            output[i] = array[i];
+            Debug.LogError("Input string is null or empty");
+            return new string[0];
         }
-        return output;
+        
+        try
+        {
+            string[] array = input.Replace("[", "").Replace("]", "").Split(',');
+            string[] output = new string[array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                output[i] = array[i].Trim();
+            }
+            return output;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error parsing string to string array: {ex.Message}");
+            return new string[0];
+        }
     }
     //* Function receives a string and finds the (char)index of the first character which is not contained in the string .
     public char findUncontainedChar(string str)
@@ -632,18 +675,49 @@ public class GlobalPartyChoose : MonoBehaviour
     //* Function receives a string which represents a integer matrix, parses it and returns a matrix of integers .
     public int[,] stringToIntMatrix(string input)
     {
-        char separator = findUncontainedChar(input);
-        string[] array = input.Replace("],", "" + separator).Replace("[", "").Replace("]", "").Split(separator);
-        int[,] output = new int[array.Length, array[0].Split(',').Length];
-        for (int i = 0; i < array.Length; i++)
+        if (string.IsNullOrEmpty(input))
         {
-            string[] array2 = array[i].Split(',');
-            for (int j = 0; j < array2.Length; j++)
-            {
-                output[i, j] = int.Parse(array2[j]);
-            }
+            Debug.LogError("Input string is null or empty");
+            return new int[0, 0];
         }
-        return output;
+        
+        try
+        {
+            char separator = findUncontainedChar(input);
+            string[] array = input.Replace("],", "" + separator).Replace("[", "").Replace("]", "").Split(separator);
+            
+            if (array.Length == 0)
+            {
+                Debug.LogError("No data found in matrix input");
+                return new int[0, 0];
+            }
+            
+            string[] firstRowColumns = array[0].Split(',');
+            int[,] output = new int[array.Length, firstRowColumns.Length];
+            
+            for (int i = 0; i < array.Length; i++)
+            {
+                string[] array2 = array[i].Split(',');
+                for (int j = 0; j < array2.Length && j < firstRowColumns.Length; j++)
+                {
+                    if (int.TryParse(array2[j].Trim(), out int result))
+                    {
+                        output[i, j] = result;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Failed to parse integer in matrix: {array2[j]}");
+                        output[i, j] = 0;
+                    }
+                }
+            }
+            return output;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error parsing string to int matrix: {ex.Message}");
+            return new int[0, 0];
+        }
     }
     //*Function closes the information panel.
     public void infoClose()

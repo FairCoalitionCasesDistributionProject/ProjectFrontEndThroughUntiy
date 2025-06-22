@@ -157,18 +157,50 @@ public class Manager : MonoBehaviour
     }
     public float[,] Parse2DArray(string input)
     {
-        input = input.Substring(1, input.Length - 2);
-        string[] rows = input.Split(new string[] { "]," }, StringSplitOptions.None);
-        float[,] array = new float[rows.Length, rows[0].Split(',').Length];
-        for (int i = 0; i < rows.Length; i++)
+        if (string.IsNullOrEmpty(input) || input.Length < 2)
         {
-            string[] columns = rows[i].Split(',');
-            for (int j = 0; j < columns.Length; j++)
-            {
-                array[i, j] = float.Parse(columns[j].Replace("[", "").Replace("]", "").Replace(",", "").Replace(" ", "").Replace("/", ""));
-            }
+            Debug.LogError("Invalid input for Parse2DArray");
+            return new float[0, 0];
         }
-        return array;
+        
+        try
+        {
+            input = input.Substring(1, input.Length - 2);
+            string[] rows = input.Split(new string[] { "]," }, StringSplitOptions.None);
+            
+            if (rows.Length == 0)
+            {
+                Debug.LogError("No rows found in input");
+                return new float[0, 0];
+            }
+            
+            string[] firstRowColumns = rows[0].Split(',');
+            float[,] array = new float[rows.Length, firstRowColumns.Length];
+            
+            for (int i = 0; i < rows.Length; i++)
+            {
+                string[] columns = rows[i].Split(',');
+                for (int j = 0; j < columns.Length && j < firstRowColumns.Length; j++)
+                {
+                    string cleanedValue = columns[j].Replace("[", "").Replace("]", "").Replace(",", "").Replace(" ", "").Replace("/", "");
+                    if (float.TryParse(cleanedValue, out float result))
+                    {
+                        array[i, j] = result;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Failed to parse value: {cleanedValue}");
+                        array[i, j] = 0f;
+                    }
+                }
+            }
+            return array;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error parsing 2D array: {ex.Message}");
+            return new float[0, 0];
+        }
     }
     public int[] CurrentDateTime()
     {
@@ -245,7 +277,14 @@ public class Manager : MonoBehaviour
     }
     public void Link1()
     {
-        Application.ExternalEval("prompt(\" כדי לשחזר בעתיד את ההרצה הנוכחית, אנא תעתיקו את הלינק המצורף:\",\"" + domain(Application.absoluteURL) + "?" + MainControl.key + "\")");
+        string url = domain(Application.absoluteURL) + "?" + MainControl.key;
+        string message = "Copy the following link to reload this session later:\n" + url;
+        
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalCall("copyToClipboard", url);
+        #else
+        Debug.Log(message);
+        #endif
     }
     public string domain(string url)
     {

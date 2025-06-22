@@ -55,7 +55,14 @@ public class ResultsController : MonoBehaviour
     }
     public void Link1()
     {
-        Application.ExternalEval("prompt(\"Copy the following link to reload this session later:\",\"" + domain(Application.absoluteURL) + "?" + MainControl.key + "\")");
+        string url = domain(Application.absoluteURL) + "?" + MainControl.key;
+        string message = "Copy the following link to reload this session later:\n" + url;
+        
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalCall("copyToClipboard", url);
+        #else
+        Debug.Log(message);
+        #endif
     }
     public string domain(string url)
     {

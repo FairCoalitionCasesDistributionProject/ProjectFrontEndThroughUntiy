@@ -107,13 +107,13 @@ public class FirstScreenController : MonoBehaviour
     }
     public void awake()
     {
-        string URL = "http://faircol.herokuapp.com/api/";
+        string URL = "https://faircol.herokuapp.com/api/";
         string json = "{WakeUpAndBeReady.}";
         StartCoroutine(Upload(URL, json, true));
     }
     public void ReUse()
     {
-        string URL = "http://faircol.herokuapp.com/api/getsave";
+        string URL = "https://faircol.herokuapp.com/api/getsave";
         string json = "{\"key\":\"" + MainControl.key + "\"}";
         StartCoroutine(Upload(URL, json, false));
     }
@@ -154,18 +154,51 @@ public class FirstScreenController : MonoBehaviour
             //*TODO: What to do if the input is broken.
             return;
         }
-        var cleanedRows = Regex.Split(input.Replace("\"", "").Replace("[", "{").Replace("]", "}"), @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
-        int[,] matrix = new int[cleanedRows.Count, 30];
-        for (var i = 0; i < cleanedRows.Count; i++)
+        
+        // Add input validation
+        if (string.IsNullOrEmpty(input))
         {
-            var data = cleanedRows.ElementAt(i).Split(',');
-            var matrixHelper = data.Select(c => int.Parse(c.Trim())).ToArray();
-            for (var j = 0; j < matrixHelper.Length; j++)
-            {
-                matrix[i, j] = matrixHelper[j];
-            }
+            Debug.LogError("Input string is null or empty");
+            return;
         }
-        MainControl.partyParameters = matrix;
+        
+        try
+        {
+            var cleanedRows = Regex.Split(input.Replace("\"", "").Replace("[", "{").Replace("]", "}"), @"}\s*,\s*{").Select(r => r.Replace("{", "").Replace("}", "").Trim()).ToList();
+            
+            if (cleanedRows.Count == 0)
+            {
+                Debug.LogError("No rows found in input");
+                return;
+            }
+            
+            int[,] matrix = new int[cleanedRows.Count, 30];
+            for (var i = 0; i < cleanedRows.Count; i++)
+            {
+                var data = cleanedRows.ElementAt(i).Split(',');
+                var matrixHelper = data.Select(c => {
+                    if (int.TryParse(c.Trim(), out int result))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Failed to parse integer: {c}");
+                        return 0;
+                    }
+                }).ToArray();
+                
+                for (var j = 0; j < matrixHelper.Length && j < 30; j++)
+                {
+                    matrix[i, j] = matrixHelper[j];
+                }
+            }
+            MainControl.partyParameters = matrix;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error parsing input: {ex.Message}");
+        }
     }
 }
 

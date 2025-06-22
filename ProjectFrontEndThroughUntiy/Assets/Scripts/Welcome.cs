@@ -279,22 +279,35 @@ public class Welcome : MonoBehaviour
     }
     public void ParseVerEn1(string input)
     {
-        char c = findUncontainedChar(input);
-        input = changeComma(input, c);
-        string[] inputArray = input.Split(c);
-        MainControl.inputArray = new string[inputArray.Length];
-        for (int i = 0; i < inputArray.Length; i++)
+        if (string.IsNullOrEmpty(input))
         {
-            inputArray[i] = inputArray[i].Replace("{", "").Replace("\"", "").Replace("\\", "").Replace("u200b", "").Replace(" ", "").Replace("}", "");
-            int index = inputArray[i].IndexOf(':');
-            if (index != -1)
-            {
-                index += 1;
-                inputArray[i] = inputArray[i].Substring(index);
-            }
-            MainControl.inputArray[i] = inputArray[i];
+            Debug.LogError("Input string is null or empty");
+            return;
         }
-        MainControl.session = true;
+        
+        try
+        {
+            char c = findUncontainedChar(input);
+            input = changeComma(input, c);
+            string[] inputArray = input.Split(c);
+            MainControl.inputArray = new string[inputArray.Length];
+            for (int i = 0; i < inputArray.Length; i++)
+            {
+                inputArray[i] = inputArray[i].Replace("{", "").Replace("\"", "").Replace("\\", "").Replace("u200b", "").Replace(" ", "").Replace("}", "");
+                int index = inputArray[i].IndexOf(':');
+                if (index != -1)
+                {
+                    index += 1;
+                    inputArray[i] = inputArray[i].Substring(index);
+                }
+                MainControl.inputArray[i] = inputArray[i];
+            }
+            MainControl.session = true;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error parsing input: {ex.Message}");
+        }
     }
 }
 

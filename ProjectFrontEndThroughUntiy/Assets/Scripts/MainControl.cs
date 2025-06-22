@@ -71,7 +71,7 @@ public class MainControl : MonoBehaviour
     public static bool[] relevantParties = new bool[13];
     public static string[] partyHebrewName = new string[13] { "ליכוד", "העבודה", "הרשימה המשותפת", "הרשימה הערבית המשותפת", "הציונות הדתית", "ישראל ביתנו", "כחול לבן", "מרצ", "שס", "תקווה חדשה", "יהדות התורה", "ימינה", "יש עתיד" };
     public static bool[] relevantCases = new bool[30];
-    public static string url = "http://faircol.herokuapp.com/api/";
+    public static string url = "https://faircol.herokuapp.com/api/";
     public static bool session = false;
     public static string[] inputArray = new string[9];
     public static int infoResultParty;
